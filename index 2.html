@@ -1,0 +1,635 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Aniversário do Buda · 19.10.2026</title>
+<meta name="description" content="Hoje começa um novo capítulo. Deixe sua mensagem de carinho para o Buda.">
+<meta property="og:title" content="Aniversário do Buda · Um novo capítulo">
+<meta property="og:description" content="Não teremos festa presencial, mas você pode deixar sua mensagem, sua foto e, se quiser, um presente.">
+<meta property="og:type" content="website">
+<!-- Para a imagem de prévia no WhatsApp: suba uma foto chamada capa.jpg junto com este arquivo e troque o endereço abaixo pelo do seu site -->
+<!-- <meta property="og:image" content="https://SEU-SITE.vercel.app/capa.jpg"> -->
+<meta name="theme-color" content="#0a0907">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap">
+<script>
+/* ============ CONFIGURAÇÃO — cole aqui os dados do seu Supabase ============ */
+window.CONFIG = {
+  SUPABASE_URL: "https://idibpedyvvyhkcdaxywr.supabase.co",        // ex.: https://abcdxyz.supabase.co
+  SUPABASE_ANON_KEY: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImlkaWJwZWR5dnZ5aGtjZGF4eXdyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTIzNjkyODcsImV4cCI6MjEwNzk0NTI4N30.gDwUcmFfvU61CQ1igAENgByLBF8x2kuWNhMgIxCFCP8" // Settings > API > anon public
+};
+</script>
+<style>
+/* Layout: convite-pôster preto e ouro, uma coluna no celular; hero → ao vivo → números → homenagem → mural → desejos */
+:root{
+  --bg:#0a0907; --bg-2:#14120d; --bg-3:#1e1b13; --line:#302b1f;
+  --gold:#f2c14e; --gold-2:#ffe08a; --gold-deep:#b98a26;
+  --white:#fbf8f1; --muted:#a8a08b; --ok:#6fd39a; --warn:#f0a956; --bad:#ef7b6b;
+  --display:"Bricolage Grotesque", "Arial Narrow", system-ui, sans-serif;
+  --body:"Figtree", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --r:18px;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:72px}
+body{margin:0;background:var(--bg);color:var(--white);font:16px/1.6 var(--body);-webkit-font-smoothing:antialiased}
+.wrap{max-width:1080px;margin:0 auto;padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px))}
+.narrow{max-width:620px;margin:0 auto}
+h1,h2,h3{font-family:var(--display);margin:0;line-height:1;text-wrap:balance;letter-spacing:-.02em}
+h2{font-size:clamp(2.1rem,7vw,3.4rem);font-weight:800}
+p{margin:0}
+a{color:var(--gold-2)}
+.kicker{font-size:.74rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--gold)}
+.muted{color:var(--muted)}
+.note{font-size:.85rem;color:var(--muted)}
+section{padding-block:64px}
+.sec-head{display:flex;flex-direction:column;gap:10px;margin-bottom:28px}
+
+/* Botões */
+.btn{appearance:none;display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:54px;padding:14px 24px;border-radius:999px;
+  border:1.5px solid var(--line);background:var(--bg-2);color:var(--white);font:700 1rem var(--body);text-decoration:none;cursor:pointer;transition:transform .15s,border-color .15s,background .15s}
+.btn:hover{border-color:var(--gold)}
+.btn:active{transform:scale(.98)}
+.btn.gold{background:var(--gold);border-color:var(--gold);color:#1a1405}
+.btn.gold:hover{background:var(--gold-2)}
+.btn.sm{min-height:40px;padding:8px 16px;font-size:.88rem}
+.btn[disabled]{opacity:.55;cursor:wait}
+:focus-visible{outline:2px solid var(--gold-2);outline-offset:3px}
+
+/* Topo */
+.top{position:sticky;top:0;z-index:20;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;height:60px}
+.brand{font-family:var(--display);font-weight:800;font-size:1.15rem;letter-spacing:-.01em}
+.brand span{color:var(--gold)}
+
+/* Hero */
+.hero{padding-block:44px 36px;display:grid;gap:28px;align-items:center}
+@media(min-width:860px){.hero{grid-template-columns:1.15fr .85fr;padding-block:72px 56px}}
+.hero h1{font-size:clamp(3rem,13vw,6.2rem);font-weight:800;letter-spacing:-.045em;line-height:.92}
+.hero h1 em{font-style:normal;color:var(--gold)}
+.hero .lede{font-size:1.08rem;color:#e7e0cf;max-width:34em;display:flex;flex-direction:column;gap:12px}
+.hero .ctas{display:flex;flex-wrap:wrap;gap:10px}
+.hero-txt{display:flex;flex-direction:column;gap:22px;min-width:0}
+.photo{position:relative;justify-self:center;width:min(360px,78vw);aspect-ratio:1;max-width:100%}
+.photo .ring{position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 200deg,var(--gold),var(--gold-deep),var(--gold-2),var(--gold));animation:spin 14s linear infinite}
+.photo .pic{position:absolute;inset:7px;border-radius:50%;overflow:hidden;background:radial-gradient(circle at 40% 35%,var(--bg-3),var(--bg));display:grid;place-items:center;border:5px solid var(--bg)}
+.photo .pic img{width:100%;height:100%;object-fit:cover}
+.photo .pic b{font-family:var(--display);font-size:8rem;color:var(--gold)}
+.photo .date{position:absolute;right:-4px;bottom:8%;background:var(--white);color:#15110a;font:800 1rem var(--display);padding:10px 16px;border-radius:999px;transform:rotate(-6deg);box-shadow:0 10px 30px rgba(0,0,0,.4)}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* Ao vivo */
+.live{border-block:1px solid var(--line);background:var(--bg-2);overflow:hidden;white-space:nowrap;display:flex;align-items:center}
+.live .tag{flex:none;display:flex;align-items:center;gap:8px;padding:12px max(18px,env(safe-area-inset-left,0px));font:800 .74rem var(--body);letter-spacing:.16em;color:var(--gold);background:var(--bg-2);z-index:1;border-right:1px solid var(--line)}
+.live .dot{width:8px;height:8px;border-radius:50%;background:#ff5a4f;box-shadow:0 0 0 0 #ff5a4f;animation:pulse 1.6s infinite}
+.live .track{display:inline-flex;gap:36px;padding-left:24px;animation:marq 40s linear infinite}
+.live .track span{font-size:.95rem;color:#e7e0cf}
+.live .track b{color:var(--gold-2)}
+@keyframes marq{to{transform:translateX(-50%)}}
+@keyframes pulse{70%{box-shadow:0 0 0 8px transparent}100%{box-shadow:0 0 0 0 transparent}}
+
+/* Números */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:28px}
+.stat{background:var(--bg-2);border:1px solid var(--line);border-radius:var(--r);padding:18px 12px;display:flex;flex-direction:column;gap:4px}
+.stat b{font:800 clamp(1.7rem,7.5vw,3rem)/1 var(--display);color:var(--white);font-variant-numeric:tabular-nums;letter-spacing:-.03em}
+.stat.money b{color:var(--gold)}
+.stat span{font-size:.8rem;color:var(--muted);line-height:1.3}
+
+/* Formulário */
+.card-form{background:var(--bg-2);border:1px solid var(--line);border-radius:24px;padding:22px;display:flex;flex-direction:column;gap:22px}
+.step{display:flex;flex-direction:column;gap:14px}
+.step-h{display:flex;align-items:center;gap:10px;font:800 1.25rem var(--display)}
+.step-h i{font-style:normal;width:30px;height:30px;border-radius:50%;background:var(--gold);color:#1a1405;display:grid;place-items:center;font-size:.95rem;flex:none}
+label.f{display:flex;flex-direction:column;gap:6px;font-weight:600;font-size:.9rem}
+label.f small{font-weight:400;color:var(--muted)}
+input[type=text],input[type=email],input[type=password],input[type=number],input[type=url],input[type=search],textarea,select{
+  width:100%;background:var(--bg);color:var(--white);border:1.5px solid var(--line);border-radius:14px;padding:14px;font:16px var(--body)}
+input:focus,textarea:focus,select:focus{border-color:var(--gold);outline:none}
+textarea{min-height:130px;resize:vertical}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+@media(max-width:480px){.row2{grid-template-columns:1fr}}
+.upload{display:flex;align-items:center;gap:14px;border:1.5px dashed var(--line);border-radius:14px;padding:12px;cursor:pointer}
+.upload:hover{border-color:var(--gold-deep)}
+.upload .thumb{width:64px;height:64px;border-radius:12px;background:var(--bg-3);display:grid;place-items:center;overflow:hidden;flex:none;color:var(--gold);font-size:1.6rem}
+.upload .thumb img{width:100%;height:100%;object-fit:cover}
+.upload input{position:absolute;width:1px;height:1px;opacity:0}
+.chips{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.chip{appearance:none;border:1.5px solid var(--line);background:var(--bg);color:var(--white);border-radius:14px;padding:14px 6px;font:800 1.05rem var(--display);cursor:pointer;font-variant-numeric:tabular-nums}
+.chip small{display:block;font:500 .72rem var(--body);color:var(--muted)}
+.chip[aria-pressed=true]{background:var(--gold);border-color:var(--gold);color:#1a1405}
+.chip[aria-pressed=true] small{color:#4a3a10}
+details.priv{border:1px solid var(--line);border-radius:14px;padding:4px 14px}
+details.priv summary{cursor:pointer;padding:10px 0;font-weight:600;font-size:.9rem}
+.tg{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--line);font-size:.92rem}
+.tg input,.consent input{width:22px;height:22px;accent-color:var(--gold);flex:none}
+.consent{display:flex;gap:10px;align-items:flex-start;font-size:.86rem;color:#ddd5c3}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.err{color:var(--bad);font-size:.9rem;font-weight:600}
+.done{display:flex;flex-direction:column;gap:16px;align-items:center;text-align:center}
+.done .big{font:800 clamp(2rem,8vw,2.8rem)/1 var(--display)}
+.qr{background:#fff;padding:14px;border-radius:16px;line-height:0}
+.code{width:100%;font:12px/1.45 ui-monospace,SFMono-Regular,Menlo,monospace;word-break:break-all;background:var(--bg);border:1.5px dashed var(--gold-deep);border-radius:12px;padding:12px;color:#cfc7b3;user-select:all;text-align:left}
+.amount{font:800 2.4rem/1 var(--display);color:var(--gold)}
+
+/* Mural */
+.tabs{display:flex;gap:8px;flex-wrap:wrap}
+.tab{appearance:none;border:1.5px solid var(--line);background:transparent;color:var(--muted);border-radius:999px;padding:9px 16px;font:700 .9rem var(--body);cursor:pointer}
+.tab[aria-selected=true]{background:var(--white);border-color:var(--white);color:#15110a}
+.wall{columns:1;column-gap:14px;margin-top:20px}
+@media(min-width:700px){.wall{columns:2}}
+@media(min-width:1000px){.wall{columns:3}}
+.post{break-inside:avoid;margin-bottom:14px;background:var(--bg-2);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column}
+.post.gift{border-color:var(--gold-deep);background:linear-gradient(180deg,#221b0c,var(--bg-2) 140px)}
+.post .gbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 16px;background:var(--gold);color:#1a1405}
+.post .gbar b{font:800 1.5rem/1 var(--display);font-variant-numeric:tabular-nums}
+.post .gbar span{font-weight:700;font-size:.8rem;letter-spacing:.06em;text-transform:uppercase}
+.post .img{width:100%;max-height:440px;object-fit:cover;display:block}
+.post .in{padding:16px;display:flex;flex-direction:column;gap:12px}
+.who{display:flex;align-items:center;gap:12px;min-width:0}
+.av{width:44px;height:44px;border-radius:50%;background:var(--bg-3);border:1.5px solid var(--gold-deep);display:grid;place-items:center;font:800 1.2rem var(--display);color:var(--gold);flex:none;overflow:hidden}
+.who div{min-width:0}
+.who strong{display:block;overflow-wrap:anywhere;line-height:1.25}
+.who a{font-size:.85rem;text-decoration:none;color:var(--muted)}
+.post .msg{font-size:1.04rem;line-height:1.55;color:#ece5d4;white-space:pre-wrap;overflow-wrap:anywhere}
+.post .when{font-size:.78rem;color:var(--muted)}
+.post.new{animation:pop .7s ease}
+@keyframes pop{0%{transform:scale(.96);box-shadow:0 0 0 0 var(--gold)}60%{box-shadow:0 0 0 6px transparent}100%{transform:none}}
+.empty{border:1.5px dashed var(--line);border-radius:var(--r);padding:32px 18px;text-align:center;color:var(--muted)}
+.more{display:flex;justify-content:center;margin-top:10px}
+
+/* Desejos */
+.wish{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,240px),1fr));gap:14px}
+.item{background:var(--bg-2);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column}
+.item .ph{aspect-ratio:1;background:var(--white);display:grid;place-items:center;max-width:100%}
+.item .ph img{width:100%;height:100%;object-fit:contain}
+.item .bd{padding:14px;display:flex;flex-direction:column;gap:8px;flex:1}
+.item h3{font-size:1.2rem;font-weight:700;letter-spacing:-.01em;line-height:1.15}
+.item .price{color:var(--gold);font-weight:700;font-variant-numeric:tabular-nums}
+.item .acts{margin-top:auto;display:flex;flex-direction:column;gap:8px}
+.item.got{opacity:.55}
+
+/* Final */
+.finale{text-align:center;padding-block:80px}
+.finale blockquote{margin:0 auto;max-width:22em;font:700 clamp(1.6rem,6vw,2.6rem)/1.15 var(--display);letter-spacing:-.02em}
+.finale blockquote em{font-style:normal;color:var(--gold)}
+.finale .sign{margin-top:22px;font-weight:800;letter-spacing:.28em;color:var(--gold);font-size:.85rem}
+.share{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:28px}
+footer{border-top:1px solid var(--line);padding-block:24px calc(24px + env(safe-area-inset-bottom,0px));text-align:center;font-size:.8rem;color:var(--muted)}
+
+/* Modal */
+.modal{position:fixed;inset:0;z-index:40;background:rgba(0,0,0,.7);display:grid;place-items:end center;padding:16px}
+@media(min-width:600px){.modal{place-items:center}}
+.sheet{width:100%;max-width:480px;background:var(--bg-2);border:1px solid var(--line);border-radius:22px;padding:22px;display:flex;flex-direction:column;gap:14px;max-height:90vh;overflow:auto;margin-bottom:env(safe-area-inset-bottom,0px)}
+.toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));z-index:50;background:var(--white);color:#15110a;font-weight:700;padding:12px 18px;border-radius:999px;max-width:92vw;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,.4)}
+.setup{background:var(--warn);color:#1a1405;padding:12px 18px;text-align:center;font-weight:700}
+
+/* Painel */
+.adm{padding-block:28px 80px;display:flex;flex-direction:column;gap:18px}
+.adm-head{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.sum{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px}
+.sum div{background:var(--bg-2);border:1px solid var(--line);border-radius:14px;padding:14px}
+.sum b{display:block;font:800 1.8rem/1.1 var(--display);font-variant-numeric:tabular-nums}
+.sum span{font-size:.8rem;color:var(--muted)}
+.list{display:flex;flex-direction:column;gap:12px}
+.ar{background:var(--bg-2);border:1px solid var(--line);border-radius:16px;padding:14px;display:flex;flex-direction:column;gap:10px}
+.ar .top2{display:flex;gap:12px;align-items:flex-start}
+.ar .top2 img{width:64px;height:64px;border-radius:12px;object-fit:cover;flex:none}
+.ar .top2 div{min-width:0;flex:1}
+.ar .msg{white-space:pre-wrap;overflow-wrap:anywhere;font-size:.95rem}
+.ar .acts{display:flex;gap:8px;flex-wrap:wrap}
+.pill{display:inline-block;font-size:.7rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;border:1.5px solid;border-radius:999px;padding:2px 9px;margin-left:6px;vertical-align:middle}
+.pill.ok{color:var(--ok)}.pill.warn{color:var(--warn)}.pill.bad{color:var(--bad)}
+.btn.okb{background:var(--ok);border-color:var(--ok);color:#06210f}
+.btn.danger{color:var(--bad)}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+<div id="setupWarn" class="setup" hidden>Falta configurar o Supabase no topo do arquivo index.html.</div>
+
+<!-- ======================= SITE PÚBLICO ======================= -->
+<div id="site">
+<header class="top"><div class="wrap">
+  <div class="brand">Buda <span>· 19.10</span></div>
+  <a class="btn gold sm" href="#homenagem">Deixar mensagem</a>
+</div></header>
+
+<main>
+<div class="wrap">
+  <div class="hero">
+    <div class="hero-txt">
+      <div class="kicker">Aniversário do Buda · Um novo capítulo da minha vida</div>
+      <h1>Hoje começa um <em>novo capítulo.</em></h1>
+      <div class="lede">
+        <p>Esse ano meu aniversário será diferente. Estou no hospital, depois de uma cirurgia que representa um novo começo. Não teremos festa presencial, mas quero reunir aqui o carinho de todos que fazem parte da minha história.</p>
+        <p>Cada mensagem fica guardada para eu reler daqui a muitos anos. Sua mensagem já é um presente enorme.</p>
+      </div>
+      <div class="ctas">
+        <a class="btn gold" href="#homenagem">Deixar minha mensagem</a>
+        <a class="btn" href="#mural">Ver mural de carinho</a>
+      </div>
+    </div>
+    <div class="photo" aria-hidden="true">
+      <div class="ring"></div>
+      <div class="pic" id="heroPic"><b>B</b></div>
+      <div class="date">19 · 10 · 26</div>
+    </div>
+  </div>
+</div>
+
+<div class="live" id="live" hidden><div class="tag"><span class="dot"></span>AO VIVO</div><div class="track" id="liveTrack"></div></div>
+
+<div class="wrap">
+  <div class="stats">
+    <div class="stat"><b id="sMsg">0</b><span>mensagens de carinho</span></div>
+    <div class="stat"><b id="sGift">0</b><span>presentes recebidos</span></div>
+    <div class="stat money" id="sTotalBox"><b id="sTotal">R$ 0</b><span>em presentes Pix</span></div>
+  </div>
+</div>
+
+<section id="homenagem">
+  <div class="wrap narrow">
+    <div class="sec-head">
+      <div class="kicker">Livro de visitas</div>
+      <h2>Deixe sua homenagem</h2>
+      <p class="muted">Sem cadastro e sem senha. Assim que o Buda aprovar, ela aparece no mural com seu nome e, se você quiser, com o seu presente.</p>
+    </div>
+
+    <form class="card-form" id="form" novalidate>
+      <div class="step">
+        <div class="step-h"><i>1</i>Sua mensagem</div>
+        <div class="row2">
+          <label class="f" for="fName">Nome ou apelido<input type="text" id="fName" maxlength="60" autocomplete="name" required></label>
+          <label class="f" for="fInsta">Instagram <small>opcional</small><input type="text" id="fInsta" maxlength="31" placeholder="@seuperfil" autocapitalize="off" autocorrect="off"></label>
+        </div>
+        <label class="f" for="fMsg">Mensagem<textarea id="fMsg" maxlength="1500" required placeholder="Escreva o que você quer que o Buda guarde para sempre…"></textarea></label>
+        <label class="upload" for="fPhoto">
+          <span class="thumb" id="fThumb">＋</span>
+          <span><strong>Adicionar uma foto</strong><br><span class="note">Opcional. Uma foto de vocês juntos fica linda no mural.</span></span>
+          <input type="file" id="fPhoto" accept="image/*">
+        </label>
+      </div>
+
+      <div class="step" id="presente">
+        <div class="step-h"><i>2</i>Quer deixar um presente?</div>
+        <div class="chips" id="chips">
+          <button type="button" class="chip" data-v="0" aria-pressed="true">Só<small>mensagem</small></button>
+          <button type="button" class="chip" data-v="1000" aria-pressed="false">R$ 10<small>Pix</small></button>
+          <button type="button" class="chip" data-v="2000" aria-pressed="false">R$ 20<small>Pix</small></button>
+          <button type="button" class="chip" data-v="5000" aria-pressed="false">R$ 50<small>Pix</small></button>
+          <button type="button" class="chip" data-v="10000" aria-pressed="false">R$ 100<small>Pix</small></button>
+          <button type="button" class="chip" data-v="outro" aria-pressed="false">Outro<small>valor</small></button>
+        </div>
+        <label class="f" for="fOther" id="otherBox" hidden>Valor do presente (R$)<input type="number" id="fOther" min="1" step="1" inputmode="numeric" placeholder="Ex.: 30"></label>
+        <p class="note" id="pixNote">Depois de enviar, aparece o QR Code e o Pix Copia e Cola. Seu presente entra no mural quando o Buda confirmar que recebeu.</p>
+      </div>
+
+      <div class="step">
+        <div class="step-h"><i>3</i>Enviar</div>
+        <details class="priv">
+          <summary>O que aparece no mural (tudo marcado como sim)</summary>
+          <label class="tg" for="pName">Mostrar meu nome<input type="checkbox" id="pName" checked></label>
+          <label class="tg" for="pInsta">Mostrar meu Instagram<input type="checkbox" id="pInsta" checked></label>
+          <label class="tg" for="pPhoto">Mostrar minha foto<input type="checkbox" id="pPhoto" checked></label>
+          <label class="tg" for="pAmount">Mostrar o valor do presente<input type="checkbox" id="pAmount" checked></label>
+        </details>
+        <label class="consent" for="fConsent"><input type="checkbox" id="fConsent">
+          <span>Autorizo a publicação da minha homenagem com as opções acima. Meus dados são usados só para este mural e posso pedir a remoção quando quiser.</span></label>
+        <div class="hp" aria-hidden="true"><label for="fSite">Não preencha</label><input type="text" id="fSite" tabindex="-1" autocomplete="off"></div>
+        <p class="err" id="fErr" role="alert"></p>
+        <button type="submit" class="btn gold" id="fBtn">Enviar minha homenagem</button>
+      </div>
+    </form>
+
+    <div class="card-form done" id="done" hidden></div>
+  </div>
+</section>
+
+<section id="mural" style="border-top:1px solid var(--line)">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker">Mural de carinho · atualiza sozinho</div>
+      <h2>Quem esteve comigo</h2>
+    </div>
+    <div class="tabs" role="tablist">
+      <button class="tab" role="tab" aria-selected="true" data-f="all">Todas</button>
+      <button class="tab" role="tab" aria-selected="false" data-f="gift">🎁 Com presente</button>
+      <button class="tab" role="tab" aria-selected="false" data-f="photo">Com foto</button>
+    </div>
+    <div class="wall" id="wall"></div>
+    <div class="more"><button class="btn sm" id="moreBtn" hidden>Carregar mais</button></div>
+  </div>
+</section>
+
+<section id="desejos" style="border-top:1px solid var(--line)">
+  <div class="wrap">
+    <div class="sec-head">
+      <div class="kicker">Presentes físicos</div>
+      <h2>Lista de desejos do Buda</h2>
+      <p class="muted">A compra e a entrega são feitas no próprio Mercado Livre. Depois, toque em “Comprei” para o Buda saber que foi você.</p>
+    </div>
+    <div class="wish" id="wish"></div>
+  </div>
+</section>
+
+<section class="finale" style="border-top:1px solid var(--line)">
+  <div class="wrap">
+    <blockquote>Não foi o aniversário que eu imaginava, mas talvez seja <em>um dos mais importantes da minha vida.</em> Obrigado por fazer parte desse recomeço. Seja forte e corajoso. Deus está no controle.</blockquote>
+    <div class="sign">BUDA — 19.10.2026</div>
+    <div class="share">
+      <a class="btn gold sm" id="shareWa" target="_blank" rel="noopener">Compartilhar no WhatsApp</a>
+      <button class="btn sm" id="shareCopy" type="button">Copiar link para o Instagram</button>
+    </div>
+  </div>
+</section>
+</main>
+<footer><div class="wrap">Quer remover sua homenagem? Fale com o Buda e ela sai do mural.</div></footer>
+</div>
+
+<!-- ======================= PAINEL ======================= -->
+<div id="admin" hidden><div class="wrap adm" id="admInner"></div></div>
+
+<div id="modalHost"></div>
+<div id="toastHost"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+"use strict";
+/* ---------- utilidades ---------- */
+const $ = id => document.getElementById(id);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const brl = c => (c/100).toLocaleString("pt-BR",{style:"currency",currency:"BRL",minimumFractionDigits:c%100?2:0});
+const handle = h => String(h||"").trim().replace(/^@/,"").replace(/[^A-Za-z0-9._]/g,"").slice(0,30);
+const plain = s => String(s||"").normalize("NFD").replace(/[̀-ͯ]/g,"");
+function ago(t){ const d=(Date.now()-new Date(t))/1000; if(d<60) return "agora"; if(d<3600) return "há "+Math.floor(d/60)+" min"; if(d<86400) return "há "+Math.floor(d/3600)+" h";
+  return new Date(t).toLocaleDateString("pt-BR",{day:"2-digit",month:"2-digit",year:"numeric"}); }
+function fullDate(t){ return new Date(t).toLocaleString("pt-BR",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"}); }
+function toast(t){ $("toastHost").innerHTML='<div class="toast" role="status">'+esc(t)+'</div>'; clearTimeout(toast.t); toast.t=setTimeout(()=>$("toastHost").innerHTML="",3000); }
+async function copy(text){ try{ await navigator.clipboard.writeText(text); toast("Copiado!"); }catch(e){ toast("Toque e segure o código para copiar"); } }
+function resizeImage(file,max=1280,q=.82){ return new Promise((res,rej)=>{ const img=new Image(); const url=URL.createObjectURL(file);
+  img.onload=()=>{ const s=Math.min(1,max/Math.max(img.width,img.height)); const c=document.createElement("canvas"); c.width=Math.round(img.width*s); c.height=Math.round(img.height*s);
+    c.getContext("2d").drawImage(img,0,0,c.width,c.height); URL.revokeObjectURL(url); c.toBlob(b=>b?res(b):rej(new Error("foto")),"image/jpeg",q); };
+  img.onerror=()=>rej(new Error("foto")); img.src=url; }); }
+function animateNum(el,to,fmt){ const from=+el.dataset.v||0; el.dataset.v=to; if(from===to){ el.textContent=fmt(to); return; }
+  const t0=performance.now(), dur=900; const step=t=>{ const k=Math.min(1,(t-t0)/dur), e=1-Math.pow(1-k,3); el.textContent=fmt(Math.round(from+(to-from)*e)); if(k<1) requestAnimationFrame(step); }; requestAnimationFrame(step); }
+
+/* ---------- Pix (BR Code estático) ---------- */
+const pixTxt = s => plain(s).replace(/[^A-Za-z0-9 ]/g,"").toUpperCase();
+const tlv = (id,v) => id+String(v.length).padStart(2,"0")+v;
+function crc16(str){ let crc=0xFFFF; for(let i=0;i<str.length;i++){ crc^=str.charCodeAt(i)<<8; for(let j=0;j<8;j++) crc=(crc&0x8000)?((crc<<1)^0x1021)&0xFFFF:(crc<<1)&0xFFFF; } return crc.toString(16).toUpperCase().padStart(4,"0"); }
+function pixPayload(key,name,city,cents,ref){
+  let p=tlv("00","01")+tlv("26",tlv("00","br.gov.bcb.pix")+tlv("01",key.trim()))+tlv("52","0000")+tlv("53","986");
+  if(cents>0) p+=tlv("54",(cents/100).toFixed(2));
+  p+=tlv("58","BR")+tlv("59",pixTxt(name).slice(0,25)||"BUDA")+tlv("60",pixTxt(city).slice(0,15)||"SAO PAULO")+tlv("62",tlv("05",(ref||"***").replace(/[^A-Za-z0-9]/g,"").slice(0,25)||"***"))+"6304";
+  return p+crc16(p);
+}
+
+/* ---------- conexão ---------- */
+const C = window.CONFIG||{};
+const configured = /^https:\/\//.test(C.SUPABASE_URL||"") && (C.SUPABASE_ANON_KEY||"").length>20;
+const sb = configured ? supabase.createClient(C.SUPABASE_URL, C.SUPABASE_ANON_KEY) : null;
+const photoUrl = p => p && sb ? sb.storage.from("fotos").getPublicUrl(p).data.publicUrl : "";
+let SETTINGS = {pix_key:"",pix_name:"BUDA",pix_city:"SAO PAULO",show_total:true,hero_photo:""};
+
+async function loadSettings(){ if(!sb) return; const {data}=await sb.from("public_settings").select("*"); (data||[]).forEach(r=>SETTINGS[r.key]=r.value);
+  $("heroPic").innerHTML = SETTINGS.hero_photo ? '<img alt="Foto do Buda" src="'+esc(SETTINGS.hero_photo)+'">' : "<b>B</b>";
+  $("sTotalBox").hidden = SETTINGS.show_total===false; document.querySelector(".stats").style.gridTemplateColumns = SETTINGS.show_total===false?"repeat(2,1fr)":"";
+  const hasPix=!!String(SETTINGS.pix_key||"").trim(); $("presente").hidden=!hasPix; }
+
+/* ---------- números + ao vivo ---------- */
+async function loadStats(){ if(!sb) return; const {data}=await sb.from("public_stats").select("*").single(); if(!data) return;
+  animateNum($("sMsg"),data.messages,n=>n.toLocaleString("pt-BR"));
+  animateNum($("sGift"),data.pix_gifts+data.physical_gifts,n=>n.toLocaleString("pt-BR"));
+  if(data.total_cents!=null) animateNum($("sTotal"),Number(data.total_cents),brl); }
+function renderLive(rows){ const items=rows.slice(0,12).map(r=> r.has_gift ? '<span><b>'+esc(r.name)+'</b> enviou '+(r.gift_cents?'<b>'+brl(r.gift_cents)+'</b>':'um presente')+' 🎁 · '+ago(r.published_at)+'</span>'
+    : '<span><b>'+esc(r.name)+'</b> deixou uma mensagem 💛 · '+ago(r.published_at)+'</span>');
+  if(!items.length){ $("live").hidden=true; return; } $("live").hidden=false; const html=items.join(""); $("liveTrack").innerHTML=html+html; }
+
+/* ---------- mural ---------- */
+let wallFilter="all", wallLimit=24, seen=new Set(), firstLoad=true;
+function postHTML(r,isNew){ const name=r.name||"Alguém especial", ph=photoUrl(r.photo_path), h=r.instagram;
+  return '<article class="post'+(r.has_gift?' gift':'')+(isNew?' new':'')+'">'+
+   (r.has_gift?'<div class="gbar"><span>🎁 Presente</span><b>'+(r.gift_cents?brl(r.gift_cents):'Enviado')+'</b></div>':'')+
+   (ph?'<img class="img" loading="lazy" alt="Foto enviada por '+esc(name)+'" src="'+esc(ph)+'">':'')+
+   '<div class="in"><div class="who"><div class="av">'+esc(name.trim().charAt(0).toUpperCase()||"?")+'</div><div><strong>'+esc(name)+'</strong>'+
+   (h?'<a href="https://instagram.com/'+esc(h)+'" target="_blank" rel="noopener">@'+esc(h)+'</a>':'')+'</div></div>'+
+   '<p class="msg">'+esc(r.message)+'</p><span class="when" title="'+esc(fullDate(r.published_at))+'">'+ago(r.published_at)+'</span></div></article>'; }
+async function loadWall(){ if(!sb){ $("wall").innerHTML='<div class="empty">O mural aparece aqui assim que o site for conectado.</div>'; return; }
+  let q=sb.from("public_wall").select("*").order("published_at",{ascending:false}).limit(wallLimit+1);
+  if(wallFilter==="gift") q=q.eq("has_gift",true); if(wallFilter==="photo") q=q.not("photo_path","is",null);
+  const {data,error}=await q; if(error){ return; }
+  const rows=data.slice(0,wallLimit);
+  if(!rows.length){ $("wall").innerHTML='<div class="empty">'+(wallFilter==="all"?"As homenagens aprovadas aparecem aqui. Seja a primeira pessoa a deixar a sua!":"Nada por aqui ainda.")+'</div>'; }
+  else $("wall").innerHTML=rows.map(r=>{ const isNew=!firstLoad&&!seen.has(r.id); seen.add(r.id); return postHTML(r,isNew); }).join("");
+  firstLoad=false; $("moreBtn").hidden=data.length<=wallLimit;
+  if(wallFilter==="all") renderLive(rows); }
+async function loadLiveOnly(){ if(!sb||wallFilter==="all") return; const {data}=await sb.from("public_wall").select("*").order("published_at",{ascending:false}).limit(12); renderLive(data||[]); }
+document.querySelector(".tabs").addEventListener("click",e=>{ const b=e.target.closest(".tab"); if(!b) return; document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",t===b)); wallFilter=b.dataset.f; wallLimit=24; firstLoad=true; loadWall(); });
+$("moreBtn").addEventListener("click",()=>{ wallLimit+=24; loadWall(); });
+
+/* ---------- lista de desejos ---------- */
+let WISH=[];
+async function loadWish(){ if(!sb) return; const {data}=await sb.from("public_wishlist").select("*").order("created_at"); WISH=data||[];
+  $("desejos").hidden=!WISH.length;
+  $("wish").innerHTML=WISH.map(i=>'<article class="item'+(i.status==="received"?" got":"")+'"><div class="ph">'+(i.image_url?'<img loading="lazy" alt="" src="'+esc(i.image_url)+'">':'<span style="font-size:3rem">🎁</span>')+'</div><div class="bd"><h3>'+esc(i.title)+'</h3>'+
+   (i.description?'<p class="note">'+esc(i.description)+'</p>':'')+(i.reference_price_cents?'<span class="price">'+brl(i.reference_price_cents)+' <small class="muted">referência</small></span>':'')+
+   '<div class="acts">'+(i.status==="received"?'<span class="note">Já ganhei, obrigado! 💛</span>':'<a class="btn gold sm" href="'+esc(i.product_url)+'" target="_blank" rel="noopener">Comprar no Mercado Livre</a><button type="button" class="btn sm" data-claim="'+esc(i.id)+'">Comprei este presente</button>')+'</div></div></article>').join(""); }
+$("wish").addEventListener("click",e=>{ const b=e.target.closest("[data-claim]"); if(!b) return; const it=WISH.find(i=>i.id===b.dataset.claim);
+  $("modalHost").innerHTML='<div class="modal" id="mdl"><form class="sheet" id="claimForm"><h3 style="font-size:1.5rem">Comprei: '+esc(it?.title)+'</h3>'+
+   '<label class="f" for="cName">Seu nome<input type="text" id="cName" maxlength="60" required></label>'+
+   '<label class="f" for="cMsg">Recado <small>opcional</small><textarea id="cMsg" maxlength="500" style="min-height:90px"></textarea></label>'+
+   '<label class="f" for="cOrder">Número do pedido <small>opcional, só o Buda vê</small><input type="text" id="cOrder" maxlength="120"></label>'+
+   '<label class="tg" for="cShow" style="border:0">Mostrar meu nome<input type="checkbox" id="cShow" checked></label>'+
+   '<div class="hp" aria-hidden="true"><input type="text" id="cSite" tabindex="-1" autocomplete="off"></div>'+
+   '<button class="btn gold" type="submit">Avisar o Buda</button><button class="btn sm" type="button" id="cClose">Cancelar</button></form></div>';
+  $("cClose").onclick=()=>$("modalHost").innerHTML=""; $("mdl").onclick=ev=>{ if(ev.target.id==="mdl") $("modalHost").innerHTML=""; };
+  $("claimForm").onsubmit=async ev=>{ ev.preventDefault(); const n=$("cName").value.trim(); if(!n){ toast("Escreva seu nome"); return; }
+    const {error}=await sb.rpc("claim_gift",{p_item:it.id,p_name:n,p_message:$("cMsg").value,p_order:$("cOrder").value,p_show_name:$("cShow").checked,p_website:$("cSite").value});
+    if(error){ toast("Não foi possível avisar agora. Tente de novo."); return; } $("modalHost").innerHTML=""; toast("Aviso enviado! Obrigado pelo presente 💛"); };
+});
+
+/* ---------- formulário ---------- */
+let gift=0, photoBlob=null;
+$("chips").addEventListener("click",e=>{ const b=e.target.closest(".chip"); if(!b) return;
+  document.querySelectorAll(".chip").forEach(c=>c.setAttribute("aria-pressed",c===b));
+  const other=b.dataset.v==="outro"; $("otherBox").hidden=!other;
+  gift = other ? Math.max(0,Math.round((+$("fOther").value||0)*100)) : +b.dataset.v;
+  if(other) $("fOther").focus(); });
+$("fOther").addEventListener("input",()=>{ gift=Math.max(0,Math.round((+$("fOther").value||0)*100)); });
+$("fPhoto").addEventListener("change",async()=>{ const f=$("fPhoto").files[0]; if(!f) return;
+  try{ photoBlob=await resizeImage(f); $("fThumb").innerHTML='<img alt="" src="'+URL.createObjectURL(photoBlob)+'">'; }
+  catch(e){ photoBlob=null; toast("Não consegui abrir essa foto. Tente outra."); } });
+
+$("form").addEventListener("submit",async e=>{ e.preventDefault(); const err=$("fErr"); err.textContent="";
+  const name=$("fName").value.trim(), msg=$("fMsg").value.trim();
+  if(!name){ err.textContent="Escreva seu nome ou apelido."; $("fName").focus(); return; }
+  if(!msg){ err.textContent="Escreva sua mensagem para o Buda."; $("fMsg").focus(); return; }
+  if(!$("fConsent").checked){ err.textContent="Marque a autorização de publicação para enviar."; return; }
+  if(!$("otherBox").hidden && gift<100){ err.textContent="Digite o valor do presente, ou escolha “Só mensagem”."; return; }
+  if(!sb){ err.textContent="O site ainda não está conectado."; return; }
+  const btn=$("fBtn"); btn.disabled=true; btn.textContent="Enviando…";
+  try{
+    let path=null;
+    if(photoBlob){ const p="t/"+crypto.randomUUID()+".jpg"; const up=await sb.storage.from("fotos").upload(p,photoBlob,{contentType:"image/jpeg",upsert:false}); if(!up.error) path=p; }
+    const {data,error}=await sb.rpc("submit_tribute",{p_name:name,p_instagram:handle($("fInsta").value),p_message:msg,p_photo_path:path,
+      p_show_name:$("pName").checked,p_show_instagram:$("pInsta").checked,p_show_photo:$("pPhoto").checked,p_show_gift_amount:$("pAmount").checked,
+      p_gift_cents:gift,p_consent:true,p_website:$("fSite").value});
+    if(error) throw error;
+    showDone(name,data&&data.ref);
+  }catch(ex){ err.textContent=/rate_limited/.test(ex?.message||"")?"Muita gente enviando agora. Espere um minuto e tente de novo.":"Não foi possível enviar. Confira sua internet e tente de novo."; }
+  finally{ btn.disabled=false; btn.textContent="Enviar minha homenagem"; }
+});
+function showDone(name,ref){ const d=$("done"); $("form").hidden=true; d.hidden=false;
+  const first=esc(name.split(" ")[0]);
+  if(gift>0 && SETTINGS.pix_key){
+    const code=pixPayload(String(SETTINGS.pix_key),SETTINGS.pix_name,SETTINGS.pix_city,gift,ref);
+    d.innerHTML='<div class="kicker">Mensagem recebida</div><div class="big">Obrigado, '+first+'! 💛</div><p class="muted">Agora é só fazer o Pix do seu presente:</p><div class="amount">'+brl(gift)+'</div>'+
+     '<div class="qr" id="qr"></div><div class="code" id="pixCode">'+esc(code)+'</div><button type="button" class="btn gold" id="copyPix">Copiar Pix Copia e Cola</button>'+
+     '<p class="note">Abra o app do seu banco › Pix › Pagar com QR Code ou Copia e Cola. Quando o Buda confirmar, sua mensagem e seu presente aparecem juntos no mural.</p>'+
+     '<a class="btn sm" href="#mural">Ver o mural</a>';
+    try{ new QRCode($("qr"),{text:code,width:220,height:220,colorDark:"#000000",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M}); }catch(e){ $("qr").remove(); }
+    $("copyPix").onclick=()=>copy(code);
+  } else {
+    d.innerHTML='<div class="kicker">Mensagem recebida</div><div class="big">Obrigado, '+first+'! 💛</div><p class="muted">Sua homenagem aparece no mural assim que o Buda aprovar.</p><a class="btn gold" href="#mural">Ver o mural</a>';
+  }
+  d.insertAdjacentHTML("beforeend",'<button type="button" class="btn sm" id="again">Enviar outra homenagem</button>');
+  $("again").onclick=()=>{ $("form").reset(); photoBlob=null; gift=0; $("fThumb").textContent="＋"; document.querySelectorAll(".chip").forEach((c,i)=>c.setAttribute("aria-pressed",i===0)); $("otherBox").hidden=true; d.hidden=true; $("form").hidden=false; };
+  d.scrollIntoView({behavior:"smooth",block:"start"});
+}
+
+/* ---------- compartilhar ---------- */
+const siteUrl=location.origin+location.pathname;
+$("shareWa").href="https://wa.me/?text="+encodeURIComponent("Hoje é o aniversário do Buda 🎉 Deixe sua mensagem de carinho: "+siteUrl);
+$("shareCopy").onclick=()=>copy(siteUrl);
+
+/* =========================== PAINEL =========================== */
+let admTab="pending", admQ="", delArm=null;
+const A = () => $("admInner");
+async function adminView(){
+  $("site").hidden=true; $("admin").hidden=false; document.title="Painel do Buda";
+  if(!sb){ A().innerHTML='<h2>Painel do Buda</h2><p class="err">Configure o Supabase no topo do arquivo primeiro.</p>'; return; }
+  const {data:{session}}=await sb.auth.getSession();
+  if(!session) return renderLogin();
+  renderAdmin();
+}
+function renderLogin(msg){ A().innerHTML='<div class="narrow" style="width:100%"><form class="card-form" id="login"><div class="kicker">Área privada</div><h2>Painel do Buda</h2>'+
+  '<label class="f" for="lEmail">E-mail<input type="email" id="lEmail" autocomplete="username" required></label>'+
+  '<label class="f" for="lPass">Senha<input type="password" id="lPass" autocomplete="current-password" required></label>'+
+  '<p class="err">'+esc(msg||"")+'</p><button class="btn gold" type="submit">Entrar</button><a class="note" href="./">Voltar ao site</a></form></div>';
+  $("login").onsubmit=async e=>{ e.preventDefault(); const {error}=await sb.auth.signInWithPassword({email:$("lEmail").value.trim(),password:$("lPass").value});
+    if(error) return renderLogin("E-mail ou senha incorretos."); renderAdmin(); }; }
+
+async function renderAdmin(){
+  const [pend,pixw,stats]=await Promise.all([
+    sb.from("tributes").select("id",{count:"exact",head:true}).eq("status","pending"),
+    sb.from("tributes").select("id",{count:"exact",head:true}).eq("gift_status","pending"),
+    sb.from("public_stats").select("*").single()]);
+  if(pend.error){ await sb.auth.signOut(); return renderLogin("Este e-mail não tem acesso ao painel."); }
+  const tabs=[["pending","Aprovar"],["approved","Publicadas"],["hidden","Ocultas"],["physical","Presentes ML"],["wish","Lista de desejos"],["settings","Configurações"]];
+  let h='<div class="adm-head"><div><div class="kicker">Área privada</div><h2>Painel do Buda</h2></div><div style="display:flex;gap:8px"><a class="btn sm" href="./" target="_blank">Ver site</a><button class="btn sm" id="logout">Sair</button></div></div>'+
+   '<div class="sum"><div><b>'+(pend.count||0)+'</b><span>aguardando aprovação</span></div><div><b>'+(pixw.count||0)+'</b><span>Pix a conferir no banco</span></div>'+
+   '<div><b>'+(stats.data?.messages||0)+'</b><span>mensagens publicadas</span></div><div><b style="color:var(--gold)">'+brl(Number(stats.data?.total_cents||0))+'</b><span>Pix confirmado</span></div></div>'+
+   '<div class="tabs">'+tabs.map(([k,l])=>'<button class="tab" data-at="'+k+'" aria-selected="'+(admTab===k)+'">'+l+(k==="pending"&&pend.count?' ('+pend.count+')':'')+'</button>').join("")+'</div><div id="admBody" class="list"><p class="note">Carregando…</p></div>'+
+   '<button class="btn sm" id="exportBtn">Baixar backup completo</button>';
+  A().innerHTML=h; $("logout").onclick=async()=>{ await sb.auth.signOut(); renderLogin(); };
+  $("exportBtn").onclick=exportAll;
+  A().querySelector(".tabs").onclick=e=>{ const b=e.target.closest("[data-at]"); if(!b) return; admTab=b.dataset.at; delArm=null; renderAdmin(); };
+  renderAdmBody();
+}
+async function renderAdmBody(){ const B=$("admBody");
+  if(["pending","approved","hidden"].includes(admTab)){
+    let q=sb.from("tributes").select("*").eq("status",admTab).order("created_at",{ascending:admTab==="pending"}).limit(500);
+    const {data}=await q; let rows=data||[];
+    const search='<input type="search" id="aq" placeholder="Procurar por nome ou data (ex.: 19/10)" value="'+esc(admQ)+'" aria-label="Procurar">';
+    if(admQ){ const s=plain(admQ).toLowerCase(); rows=rows.filter(r=>plain(r.name).toLowerCase().includes(s)||fullDate(r.created_at).includes(admQ)); }
+    B.innerHTML=search+(rows.length?rows.map(tributeRow).join(""):'<div class="empty">'+(admTab==="pending"?"Nenhuma homenagem esperando. 🎉":"Nada aqui.")+'</div>');
+    const i=$("aq"); i.oninput=()=>{ admQ=i.value; clearTimeout(i.t); i.t=setTimeout(async()=>{ await renderAdmBody(); const n=$("aq"); n.focus(); n.setSelectionRange(n.value.length,n.value.length); },300); };
+  } else if(admTab==="physical"){
+    const {data}=await sb.from("physical_gifts").select("*, wishlist_items(title)").order("created_at",{ascending:false});
+    B.innerHTML=(data||[]).length?data.map(g=>'<div class="ar"><div><strong>'+esc(g.name)+'</strong> comprou <strong>'+esc(g.wishlist_items?.title||"um item")+'</strong>'+
+      '<span class="pill '+(g.status==="confirmed"?"ok":g.status==="rejected"?"bad":"warn")+'">'+({pending:"a conferir",confirmed:"recebido",rejected:"recusado"}[g.status])+'</span></div>'+
+      (g.message?'<p class="msg">'+esc(g.message)+'</p>':'')+(g.order_note?'<p class="note">Pedido: '+esc(g.order_note)+'</p>':'')+'<p class="note">'+fullDate(g.created_at)+'</p>'+
+      '<div class="acts">'+(g.status!=="confirmed"?'<button class="btn sm okb" data-pg="'+g.id+'" data-s="confirmed">Chegou / confirmar</button>':'')+(g.status!=="rejected"?'<button class="btn sm" data-pg="'+g.id+'" data-s="rejected">Recusar</button>':'')+'</div></div>').join(""):'<div class="empty">Nenhum aviso de compra ainda.</div>';
+  } else if(admTab==="wish"){
+    const {data}=await sb.from("wishlist_items").select("*").order("created_at");
+    B.innerHTML='<form class="ar" id="wForm"><strong>Adicionar produto</strong><label class="f" for="wT">Nome do produto<input type="text" id="wT" required></label>'+
+     '<label class="f" for="wU">Link do Mercado Livre<input type="url" id="wU" placeholder="https://…" required></label>'+
+     '<label class="f" for="wD">Descrição curta<input type="text" id="wD" maxlength="140"></label>'+
+     '<div class="row2"><label class="f" for="wP">Preço de referência (R$)<input type="number" id="wP" min="0" step="0.01"></label><label class="f" for="wI">Foto<input type="file" id="wI" accept="image/*"></label></div>'+
+     '<button class="btn gold sm" type="submit">Adicionar</button></form>'+
+     (data||[]).map(i=>'<div class="ar"><div><strong>'+esc(i.title)+'</strong><span class="pill '+(i.status==="received"?"ok":i.active?"warn":"bad")+'">'+(i.status==="received"?"recebido":i.active?"na lista":"oculto")+'</span></div>'+
+      '<div class="acts"><button class="btn sm" data-wst="'+i.id+'" data-v="'+(i.status==="received"?"available":"received")+'">'+(i.status==="received"?"Voltar para a lista":"Marcar recebido")+'</button>'+
+      '<button class="btn sm" data-wact="'+i.id+'" data-v="'+(!i.active)+'">'+(i.active?"Ocultar":"Mostrar")+'</button>'+
+      '<button class="btn sm danger" data-wdel="'+i.id+'">'+(delArm===i.id?"Toque de novo para excluir":"Excluir")+'</button></div></div>').join("");
+    $("wForm").onsubmit=async e=>{ e.preventDefault(); const url=$("wU").value.trim(); if(!/^https:\/\//.test(url)) return toast("O link precisa começar com https://");
+      let image_url=""; const f=$("wI").files[0];
+      if(f){ try{ const b=await resizeImage(f,800,.82); const p="w/"+crypto.randomUUID()+".jpg"; const up=await sb.storage.from("fotos").upload(p,b,{contentType:"image/jpeg"}); if(!up.error) image_url=photoUrl(p); }catch(x){} }
+      const {error}=await sb.from("wishlist_items").insert({title:$("wT").value.trim(),product_url:url,description:$("wD").value.trim(),reference_price_cents:Math.round((+$("wP").value||0)*100),image_url});
+      if(error) return toast("Não salvou: confira o link."); toast("Produto adicionado"); renderAdmBody(); };
+  } else if(admTab==="settings"){
+    const {data}=await sb.from("site_settings").select("*"); const s={}; (data||[]).forEach(r=>s[r.key]=r.value);
+    B.innerHTML='<form class="ar" id="sForm"><label class="f" for="sKey">Sua chave Pix <small>CPF, e-mail, celular (+5511999999999) ou chave aleatória</small><input type="text" id="sKey" value="'+esc(s.pix_key||"")+'"></label>'+
+     '<div class="row2"><label class="f" for="sName">Nome do recebedor<input type="text" id="sName" maxlength="25" value="'+esc(s.pix_name||"")+'"></label><label class="f" for="sCity">Cidade<input type="text" id="sCity" maxlength="15" value="'+esc(s.pix_city||"")+'"></label></div>'+
+     '<label class="f" for="sPhoto">Foto principal do site<input type="file" id="sPhoto" accept="image/*"></label>'+
+     '<label class="tg" for="sTotal">Mostrar total arrecadado no site<input type="checkbox" id="sTotal" '+(s.show_total!==false?"checked":"")+'></label>'+
+     '<button class="btn gold sm" type="submit">Salvar configurações</button><p class="note">Depois de salvar, faça um Pix de teste de R$ 1 pelo site para conferir se chega na sua conta.</p></form>';
+    $("sForm").onsubmit=async e=>{ e.preventDefault(); const rows=[{key:"pix_key",value:$("sKey").value.trim()},{key:"pix_name",value:$("sName").value.trim()},{key:"pix_city",value:$("sCity").value.trim()},{key:"show_total",value:$("sTotal").checked}];
+      const f=$("sPhoto").files[0]; if(f){ try{ const b=await resizeImage(f,1200,.85); const p="site/hero-"+Date.now()+".jpg"; const up=await sb.storage.from("fotos").upload(p,b,{contentType:"image/jpeg"}); if(!up.error) rows.push({key:"hero_photo",value:photoUrl(p)}); }catch(x){ toast("Não consegui abrir a foto"); } }
+      const {error}=await sb.from("site_settings").upsert(rows); toast(error?"Não salvou. Tente de novo.":"Configurações salvas"); };
+  }
+}
+function tributeRow(r){ const ph=photoUrl(r.photo_path);
+  const giftLine = r.gift_cents>0 ? '<p>🎁 <strong>'+brl(r.gift_cents)+'</strong> · código <code>'+esc(r.gift_ref||"")+'</code><span class="pill '+({pending:"warn",confirmed:"ok",not_received:"bad"}[r.gift_status]||"warn")+'">'+({pending:"conferir no banco",confirmed:"Pix recebido",not_received:"não chegou"}[r.gift_status]||r.gift_status)+'</span></p>' : '';
+  const hiddenBits=[!r.show_name&&"nome",!r.show_instagram&&"Instagram",!r.show_photo&&"foto",!r.show_gift_amount&&"valor"].filter(Boolean);
+  let acts="";
+  if(r.status==="pending"){
+    if(r.gift_cents>0) acts+='<button class="btn sm okb" data-act="approve_paid" data-id="'+r.id+'">Aprovar + Pix recebido</button><button class="btn sm" data-act="approve_nopay" data-id="'+r.id+'">Aprovar só a mensagem</button>';
+    else acts+='<button class="btn sm okb" data-act="approve" data-id="'+r.id+'">Aprovar</button>';
+    acts+='<button class="btn sm" data-act="hide" data-id="'+r.id+'">Ocultar</button>';
+  } else if(r.status==="approved"){
+    if(r.gift_cents>0&&r.gift_status!=="confirmed") acts+='<button class="btn sm okb" data-act="paid" data-id="'+r.id+'">Pix recebido</button>';
+    acts+='<button class="btn sm" data-act="hide" data-id="'+r.id+'">Ocultar do mural</button>';
+  } else acts+='<button class="btn sm okb" data-act="approve" data-id="'+r.id+'">Publicar</button>';
+  acts+='<button class="btn sm danger" data-act="del" data-id="'+r.id+'">'+(delArm===r.id?"Toque de novo para excluir":"Excluir")+'</button>';
+  return '<div class="ar"><div class="top2">'+(ph?'<a href="'+esc(ph)+'" target="_blank" rel="noopener"><img alt="" src="'+esc(ph)+'"></a>':'')+'<div><strong>'+esc(r.name)+'</strong>'+(r.instagram?' <span class="note">@'+esc(r.instagram)+'</span>':'')+
+    '<p class="note">'+fullDate(r.created_at)+(hiddenBits.length?' · não mostrar: '+hiddenBits.join(", "):'')+'</p></div></div><p class="msg">'+esc(r.message)+'</p>'+giftLine+'<div class="acts">'+acts+'</div></div>'; }
+
+document.addEventListener("click",async e=>{ if($("admin").hidden) return; const b=e.target.closest("button"); if(!b) return; const d=b.dataset; const now=new Date().toISOString();
+  if(d.act){ const id=d.id; let patch=null;
+    if(d.act==="approve") patch={status:"approved",approved_at:now};
+    if(d.act==="approve_paid") patch={status:"approved",approved_at:now,gift_status:"confirmed",gift_confirmed_at:now};
+    if(d.act==="approve_nopay") patch={status:"approved",approved_at:now,gift_status:"not_received"};
+    if(d.act==="paid") patch={gift_status:"confirmed",gift_confirmed_at:now};
+    if(d.act==="hide") patch={status:"hidden"};
+    if(d.act==="del"){ if(delArm!==id){ delArm=id; return renderAdmBody(); }
+      const {data}=await sb.from("tributes").select("photo_path").eq("id",id).single(); if(data?.photo_path) await sb.storage.from("fotos").remove([data.photo_path]);
+      await sb.from("tributes").delete().eq("id",id); delArm=null; toast("Excluída"); return renderAdmin(); }
+    b.disabled=true; const {error}=await sb.from("tributes").update(patch).eq("id",id);
+    toast(error?"Não deu certo. Tente de novo.":(patch.status==="approved"?"Publicada no mural ✨":"Atualizado")); return renderAdmin(); }
+  if(d.pg){ await sb.from("physical_gifts").update({status:d.s}).eq("id",d.pg); toast("Atualizado"); return renderAdmBody(); }
+  if(d.wst){ await sb.from("wishlist_items").update({status:d.v}).eq("id",d.wst); return renderAdmBody(); }
+  if(d.wact){ await sb.from("wishlist_items").update({active:d.v==="true"}).eq("id",d.wact); return renderAdmBody(); }
+  if(d.wdel){ if(delArm!==d.wdel){ delArm=d.wdel; return renderAdmBody(); } await sb.from("wishlist_items").delete().eq("id",d.wdel); delArm=null; return renderAdmBody(); }
+});
+async function exportAll(){ const [t,p,w,s]=await Promise.all([sb.from("tributes").select("*").order("created_at"),sb.from("physical_gifts").select("*").order("created_at"),sb.from("wishlist_items").select("*"),sb.from("site_settings").select("*")]);
+  const tributes=(t.data||[]).map(r=>({...r,photo_url:photoUrl(r.photo_path)}));
+  const backup={exported_at:new Date().toISOString(),tributes,physical_gifts:p.data,wishlist_items:w.data,site_settings:s.data};
+  const csv=["data;nome;instagram;mensagem;presente;status_presente;status;foto"].concat(tributes.map(r=>[fullDate(r.created_at),r.name,r.instagram,r.message,r.gift_cents?(r.gift_cents/100).toFixed(2).replace(".",","):"",r.gift_status,r.status,r.photo_url].map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(";"))).join("\n");
+  const dl=(name,content,type)=>{ const a=document.createElement("a"); a.href=URL.createObjectURL(new Blob([content],{type})); a.download=name; document.body.appendChild(a); a.click(); setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove();},500); };
+  dl("aniversario-buda-backup.json",JSON.stringify(backup,null,2),"application/json"); dl("aniversario-buda-mensagens.csv","﻿"+csv,"text/csv"); toast("Backup baixado (JSON + planilha)"); }
+
+/* ---------- início ---------- */
+async function startSite(){ if(!configured) $("setupWarn").hidden=false;
+  await loadSettings(); loadStats(); loadWall(); loadWish();
+  setInterval(()=>{ if(document.hidden) return; loadStats(); loadWall(); loadLiveOnly(); },20000); }
+let started=false;
+function route(){ if(location.hash==="#painel") return adminView();
+  $("admin").hidden=true; $("site").hidden=false; document.title="Aniversário do Buda · 19.10.2026"; if(!started){ started=true; startSite(); } }
+window.addEventListener("hashchange",route);
+route();
+</script>
+</body>
+</html>
