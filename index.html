@@ -260,6 +260,10 @@ details.priv summary{cursor:pointer;padding:10px 0;font-weight:600;font-size:.9r
 .who-meta{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .post.gift .av{border-color:var(--gold)}
 .post .msg.clamp{display:-webkit-box;-webkit-line-clamp:6;-webkit-box-orient:vertical;overflow:hidden}
+.storybtn .ig{width:16px;height:16px}
+.storybtn{align-self:stretch;justify-content:center;text-align:center;display:inline-flex;align-items:center;gap:6px;min-height:38px;padding:7px 14px;border-radius:999px;border:1.5px solid var(--line);background:var(--bg);color:var(--gold-2);font:700 .88rem var(--body);cursor:pointer}
+.storybtn:hover{border-color:var(--gold-deep)}
+.story-prev{width:100%;max-width:260px;aspect-ratio:9/16;align-self:center;border-radius:14px;border:1px solid var(--line);background:var(--bg);object-fit:contain}
 .readmore{align-self:flex-start;margin-top:-6px;background:none;border:0;padding:0;color:var(--gold-2);font:700 .9rem var(--body);cursor:pointer}
 .who strong{display:block;overflow-wrap:anywhere;line-height:1.2;font-size:1.08rem}
 .who a{font-size:.85rem;text-decoration:none;color:var(--muted)}
@@ -605,7 +609,8 @@ function renderLive(rows,mode){
 let wallFilter="all", wallLimit=24, seen=new Set(), firstLoad=true;
 const IGICON='<svg class="ig" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="12" cy="12" r="4" fill="none" stroke="currentColor" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.3" fill="currentColor"/></svg>';
 const VBADGE='<svg class="vbadge" viewBox="0 0 24 24" role="img" aria-label="Verificado"><path fill="#3897f0" d="M12 1.5l2.4 1.8 3-.2 1 2.8 2.6 1.6-.7 2.9 1.2 2.7-2.2 2 .1 3-2.9.8-1.6 2.6-2.9-.8-2.7 1.4-2.1-2.2-3-.2-.6-2.9-2.4-1.8 1-2.8-1-2.8 2.4-1.8.6-2.9 3-.2L9.6 1.4z"/><path fill="#fff" d="M10.6 15.6l-3.2-3.2 1.4-1.4 1.8 1.8 4.8-4.8 1.4 1.4z"/></svg>';
-function postHTML(r,isNew){ const name=r.name||"Alguém especial", ph=photoUrl(r.photo_path), h=r.instagram, long=String(r.message||"").length>280;
+const POSTS={};
+function postHTML(r,isNew){ POSTS[r.id]=r; const name=r.name||"Alguém especial", ph=photoUrl(r.photo_path), h=r.instagram, long=String(r.message||"").length>280;
   return '<article class="post'+(r.has_gift?' gift':'')+(isNew?' new':'')+'">'+
    (r.has_gift?'<div class="gbar"><span>🎁 Presenteou o Buda</span><b>'+(r.gift_cents?brl(r.gift_cents):'Enviado')+'</b></div>':'')+
    '<div class="in">'+
@@ -616,8 +621,93 @@ function postHTML(r,isNew){ const name=r.name||"Alguém especial", ph=photoUrl(r
      (ph?'<a class="ph" href="'+esc(ph)+'" target="_blank" rel="noopener" aria-label="Ver foto de '+esc(name)+'"><img loading="lazy" alt="Foto enviada por '+esc(name)+'" src="'+esc(ph)+'"></a>':'')+
      '<p class="msg'+(long?' clamp':'')+'">'+esc(r.message)+'</p>'+(long?'<button type="button" class="readmore">Ler mais</button>':'')+
      (r.reply?'<div class="reply"><div class="reply-h"><span class="reply-av">B</span><b>Buda respondeu</b>'+(r.reply_at?'<span>'+shortTime(r.reply_at)+'</span>':'')+'</div><p>'+esc(r.reply)+'</p></div>':'')+
+   '<button type="button" class="storybtn" data-story="'+esc(r.id)+'">'+IGICON+' Compartilhe no seu Instagram e marque o Buda</button>'+
    '</div></article>'; }
 document.addEventListener("click",e=>{ const b=e.target.closest(".readmore"); if(!b) return; const p=b.previousElementSibling; const open=p.classList.toggle("clamp"); b.textContent=open?"Ler mais":"Ler menos"; });
+/* ---------- imagem para Stories ---------- */
+const BUDA_IG="";
+function loadImg(src){ return new Promise(res=>{ if(!src) return res(null); const i=new Image(); i.crossOrigin="anonymous"; i.onload=()=>res(i); i.onerror=()=>res(null); i.src=/^https?:/.test(src)?src+(src.includes("?")?"&":"?")+"cors=1":src; }); }
+function rr(ctx,x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
+function wrap(ctx,text,maxW){ const out=[]; String(text||"").split(/\n/).forEach(par=>{ const words=par.split(/\s+/).filter(Boolean); let line="";
+  if(!words.length){ out.push(""); return; }
+  words.forEach(w=>{ const t=line?line+" "+w:w; if(ctx.measureText(t).width<=maxW) line=t; else { if(line) out.push(line); line=w; while(ctx.measureText(line).width>maxW && line.length>1){ let k=line.length-1; while(k>1&&ctx.measureText(line.slice(0,k)).width>maxW) k--; out.push(line.slice(0,k)); line=line.slice(k); } } });
+  out.push(line); }); while(out.length&&out[out.length-1]==="") out.pop(); return out; }
+function clampLines(ctx,lines,max,maxW){ if(lines.length<=max) return lines; const l=lines.slice(0,max); let last=l[max-1]; while(last.length&&ctx.measureText(last+"…").width>maxW) last=last.slice(0,-1); l[max-1]=last.trimEnd()+"…"; return l; }
+async function makeStory(r){
+  try{ await document.fonts.ready; }catch(e){}
+  const W=1080,H=1920,P=80, c=document.createElement("canvas"); c.width=W; c.height=H; const x=c.getContext("2d");
+  const D='"Bricolage Grotesque", "Arial Narrow", system-ui, sans-serif', B='Figtree, system-ui, -apple-system, sans-serif';
+  const gold="#f2c14e", white="#fbf8f1", muted="#a8a08b";
+  x.fillStyle="#0a0907"; x.fillRect(0,0,W,H);
+  const g=x.createRadialGradient(W*0.85,120,10,W*0.85,120,900); g.addColorStop(0,"rgba(242,193,78,.35)"); g.addColorStop(1,"rgba(242,193,78,0)"); x.fillStyle=g; x.fillRect(0,0,W,H);
+  const g2=x.createRadialGradient(0,H,10,0,H,900); g2.addColorStop(0,"rgba(242,193,78,.18)"); g2.addColorStop(1,"rgba(242,193,78,0)"); x.fillStyle=g2; x.fillRect(0,0,W,H);
+  x.textBaseline="top"; x.fillStyle=gold; x.font="700 30px "+B; x.letterSpacing="6px";
+  x.fillText("ANIVERSÁRIO DO BUDA · 19.10.26",P,110); x.letterSpacing="0px";
+  x.fillStyle=white; x.font="800 74px "+D; x.fillText("Minha homenagem",P,165); x.fillStyle=gold; x.fillText("para o Buda 💛",P,248);
+  // cartão
+  const cx=P-20, cw=W-2*(P-20), top0=380, bottomLimit=H-360; let cy=top0;
+  const name=r.name||"Alguém especial", ph=photoUrl(r.photo_path), img=await loadImg(ph);
+  x.font="400 40px "+B; const msgW=cw-80; let msg=wrap(x,r.message,msgW);
+  x.font="400 36px "+B; let rep=r.reply?wrap(x,r.reply,msgW-40):[];
+  let photoH=img?560:0; const gbar=r.has_gift?96:0;
+  const fixed=()=>gbar+50+110+30+(img?photoH+40:0)+(rep.length?40+60+rep.length*50+30:0)+50;
+  const avail=bottomLimit-top0; x.font="400 36px "+B; if(rep.length>6) rep=clampLines(x,rep,6,msgW-40);
+  x.font="400 40px "+B; let maxMsg=msg.length;
+  const need=()=>fixed()+Math.min(msg.length,maxMsg)*56;
+  while(need()>avail){
+    if(img&&photoH>300){ photoH-=20; continue; }
+    if(maxMsg>4){ maxMsg--; continue; }
+    if(rep.length>2){ x.font="400 36px "+B; rep=clampLines(x,rep,rep.length-1,msgW-40); x.font="400 40px "+B; continue; }
+    if(img&&photoH>200){ photoH-=20; continue; }
+    if(maxMsg>2){ maxMsg--; continue; }
+    break; }
+  x.font="400 40px "+B; msg=clampLines(x,msg,maxMsg,msgW);
+  const ch=Math.min(avail, fixed()+msg.length*56); cy=top0+Math.max(0,(avail-ch)/2);
+  x.save(); rr(x,cx,cy,cw,ch,40); x.fillStyle="#14120d"; x.fill(); x.lineWidth=r.has_gift?5:3; x.strokeStyle=r.has_gift?gold:"#302b1f"; x.stroke(); x.clip();
+  let y=cy;
+  if(r.has_gift){ const gg=x.createLinearGradient(cx,0,cx+cw,0); gg.addColorStop(0,"#b98a26"); gg.addColorStop(.45,gold); gg.addColorStop(1,"#ffe08a"); x.fillStyle=gg; x.fillRect(cx,y,cw,gbar);
+    x.fillStyle="#1a1405"; x.font="800 32px "+B; x.fillText("🎁 PRESENTEOU O BUDA",cx+40,y+30);
+    if(r.gift_cents){ x.font="800 50px "+D; const t=brl(r.gift_cents); x.fillText(t,cx+cw-40-x.measureText(t).width,y+22); }
+    y+=gbar; }
+  x.restore();
+  y+=50; const ix=cx+40;
+  // avatar
+  x.save(); x.beginPath(); x.arc(ix+55,y+55,55,0,Math.PI*2); x.closePath(); x.fillStyle="#1e1b13"; x.fill(); x.clip();
+  if(img){ const s=Math.max(110/img.width,110/img.height); x.drawImage(img,ix+55-img.width*s/2,y+55-img.height*s/2,img.width*s,img.height*s); }
+  else { x.fillStyle=gold; x.font="800 52px "+D; x.textAlign="center"; x.fillText((name.trim()[0]||"?").toUpperCase(),ix+55,y+26); x.textAlign="left"; }
+  x.restore(); x.lineWidth=4; x.strokeStyle=gold; x.beginPath(); x.arc(ix+55,y+55,55,0,Math.PI*2); x.stroke();
+  x.fillStyle=white; x.font="800 46px "+D; let nm=name; while(x.measureText(nm).width>cw-220&&nm.length>3) nm=nm.slice(0,-1); x.fillText(nm+(nm!==name?"…":"")+(r.ig_verified?"  ✔︎":""),ix+135,y+8);
+  if(r.instagram){ x.fillStyle=gold; x.font="600 34px "+B; x.fillText("@"+r.instagram,ix+135,y+66); }
+  y+=110+30;
+  if(img){ x.save(); rr(x,ix,y,cw-80,photoH,26); x.clip(); const pw=cw-80, s=Math.max(pw/img.width,photoH/img.height); x.drawImage(img,ix+pw/2-img.width*s/2,y+photoH/2-img.height*s/2,img.width*s,img.height*s); x.restore(); y+=photoH+40; }
+  x.fillStyle="#ece5d4"; x.font="400 40px "+B; msg.forEach(l=>{ x.fillText(l,ix,y); y+=56; });
+  if(rep.length){ y+=40; const rh=60+rep.length*50+30; rr(x,ix,y,cw-80,rh,22); x.fillStyle="#0a0907"; x.fill(); x.fillStyle=gold; x.fillRect(ix,y,6,rh);
+    x.font="800 34px "+B; x.fillStyle=gold; x.fillText("💬 Buda respondeu",ix+36,y+26);
+    x.fillStyle="#ece5d4"; x.font="400 36px "+B; let yy=y+80; rep.forEach(l=>{ x.fillText(l,ix+36,yy); yy+=50; }); }
+  // rodapé
+  x.fillStyle=gold; x.font="700 36px "+B; x.fillText(BUDA_IG?"Marque @"+BUDA_IG.replace(/^@/,"")+" 💛":"Marque o Buda 💛",P,H-310);
+  const fy=H-230; x.fillStyle=white; x.font="700 40px "+B; x.fillText("Deixe a sua também 👇",P,fy);
+  const link=(location.host+location.pathname).replace(/\/$/,""); x.font="800 40px "+D;
+  const lw=Math.min(W-2*P,x.measureText(link).width+80); rr(x,P,fy+70,lw,90,45); x.fillStyle=gold; x.fill();
+  x.fillStyle="#1a1405"; x.fillText(link,P+40,fy+92);
+  return await new Promise(res=>c.toBlob(b=>res(b),"image/png"));
+}
+function closeModal(){ $("modalHost").innerHTML=""; }
+document.addEventListener("click",async e=>{ const b=e.target.closest("[data-story]"); if(!b) return; const r=POSTS[b.dataset.story]; if(!r) return;
+  const old=b.textContent; b.disabled=true; b.textContent="Gerando imagem…";
+  let blob=null; try{ blob=await makeStory(r); }catch(err){ console.error(err); }
+  b.disabled=false; b.textContent=old; if(!blob){ toast("Não consegui gerar a imagem. Tente de novo."); return; }
+  const url=URL.createObjectURL(blob), file=new File([blob],"homenagem-buda.png",{type:"image/png"});
+  const canFile=!!(navigator.canShare&&navigator.canShare({files:[file]}));
+  $("modalHost").innerHTML='<div class="modal" id="mdl"><div class="sheet"><h3 style="font-size:1.5rem">Compartilhe no seu Instagram 💛</h3>'+
+    '<img class="story-prev" alt="Prévia da imagem para o Stories" src="'+url+'">'+
+    (canFile?'<button type="button" class="btn gold" id="doShare">Compartilhar no Instagram</button><p class="note">No menu que abrir, escolha <b>Instagram</b> e depois <b>Stories</b>.</p>'
+            :'<p class="note"><b>Toque e segure na imagem</b> e escolha <b>Salvar</b> ou <b>Adicionar às Fotos</b>. Depois poste no Stories pelo Instagram.</p>')+
+    '<p class="note"><b>Marque o Buda'+(BUDA_IG?' (@'+esc(BUDA_IG.replace(/^@/,""))+')':'')+'</b> no Stories para ele ver e repostar!</p><p class="note">Dica: adicione a <b>figurinha de Link</b> com <b>'+esc(location.host+location.pathname)+'</b> para os amigos deixarem a mensagem deles também 💛</p>'+
+    '<button type="button" class="btn sm" id="mdlClose">Fechar</button></div></div>';
+  $("mdlClose").onclick=closeModal; $("mdl").onclick=ev=>{ if(ev.target.id==="mdl") closeModal(); };
+  if(canFile) $("doShare").onclick=async()=>{ try{ await navigator.share({files:[file],title:"Minha homenagem para o Buda",text:"Deixe a sua também: "+location.host+location.pathname}); }catch(err){ if(err&&err.name!=="AbortError") toast("Não deu para compartilhar. Segure na imagem e salve."); } };
+});
 const WALL_TABS={
   all:{sub:'Todas as homenagens · as mais recentes primeiro · <b class="legend">em dourado, quem enviou presente 🎁</b>',empty:"As homenagens aprovadas aparecem aqui. Seja a primeira pessoa a deixar a sua!"},
   msg:{sub:"Mensagens de carinho · as mais recentes primeiro",empty:"As mensagens aprovadas aparecem aqui. Deixe a sua!"},
