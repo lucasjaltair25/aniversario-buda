@@ -72,22 +72,43 @@ section{padding-block:64px}
 .hero .lede{font-size:1.08rem;color:#e7e0cf;max-width:34em;display:flex;flex-direction:column;gap:12px}
 .hero .ctas{display:flex;flex-wrap:wrap;gap:10px}
 .hero-txt{display:flex;flex-direction:column;gap:22px;min-width:0}
-.photo{position:relative;justify-self:center;width:min(360px,78vw);aspect-ratio:1;max-width:100%}
-.photo .ring{position:absolute;inset:0;border-radius:50%;background:conic-gradient(from 200deg,var(--gold),var(--gold-deep),var(--gold-2),var(--gold));animation:spin 14s linear infinite}
-.photo .pic{position:absolute;inset:7px;border-radius:50%;overflow:hidden;background:radial-gradient(circle at 40% 35%,var(--bg-3),var(--bg));display:grid;place-items:center;border:5px solid var(--bg)}
-.photo .pic img{width:100%;height:100%;object-fit:cover}
-.photo .pic b{font-family:var(--display);font-size:8rem;color:var(--gold)}
-.photo .date{position:absolute;right:-4px;bottom:8%;background:var(--white);color:#15110a;font:800 1rem var(--display);padding:10px 16px;border-radius:999px;transform:rotate(-6deg);box-shadow:0 10px 30px rgba(0,0,0,.4)}
-@keyframes spin{to{transform:rotate(360deg)}}
+.gallery{position:relative;justify-self:center;width:min(380px,100%)}
+@media(max-width:859px){.gallery{order:-1;width:min(330px,84vw)}}
+.gal-frame{position:relative;border-radius:28px;padding:3px;background:linear-gradient(135deg,var(--gold-2),var(--gold-deep) 50%,var(--gold));box-shadow:0 24px 60px rgba(0,0,0,.55)}
+.gal-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;border-radius:25px;aspect-ratio:4/5;max-width:100%;background:radial-gradient(circle at 40% 35%,var(--bg-3),var(--bg));scrollbar-width:none;-webkit-overflow-scrolling:touch}
+.gal-track::-webkit-scrollbar{display:none}
+.gal-track img{flex:0 0 100%;width:100%;height:100%;object-fit:cover;scroll-snap-align:center;display:block}
+.gal-empty{flex:0 0 100%;display:grid;place-items:center;font:800 8rem var(--display);color:var(--gold)}
+.gal-count{position:absolute;top:14px;right:14px;background:rgba(0,0,0,.55);color:#fff;font:700 .75rem var(--body);padding:4px 10px;border-radius:99px;backdrop-filter:blur(6px)}
+.gal-dots{display:flex;justify-content:center;gap:6px;margin-top:14px;min-height:7px}
+.gal-dots button{width:7px;height:7px;border-radius:99px;border:0;background:var(--line);padding:0;cursor:pointer;transition:width .3s,background .3s}
+.gal-dots button[aria-current="true"]{width:22px;background:var(--gold)}
+.gal-date{position:absolute;left:-8px;bottom:52px;background:var(--white);color:#15110a;font:800 1rem var(--display);padding:10px 16px;border-radius:999px;transform:rotate(-6deg);box-shadow:0 10px 30px rgba(0,0,0,.45)}
 
 /* Ao vivo */
-.live{border-block:1px solid var(--line);background:var(--bg-2);overflow:hidden;white-space:nowrap;display:flex;align-items:center}
-.live .tag{flex:none;display:flex;align-items:center;gap:8px;padding:12px max(18px,env(safe-area-inset-left,0px));font:800 .74rem var(--body);letter-spacing:.16em;color:var(--gold);background:var(--bg-2);z-index:1;border-right:1px solid var(--line)}
+.live{display:flex;align-items:center;gap:12px;margin-top:28px;padding:12px 14px;border:1.5px solid var(--gold-deep);border-radius:20px;background:linear-gradient(100deg,#221b0c,var(--bg-2) 70%);text-decoration:none;color:var(--white);transition:border-color .2s,transform .15s}
+.live:hover{border-color:var(--gold)}.live:active{transform:scale(.99)}
+.live-tag{flex:none;display:flex;flex-direction:column;align-items:flex-start;gap:2px;padding-right:12px;border-right:1px solid var(--line)}
+.live-tag b{display:flex;align-items:center;gap:7px;font:800 .72rem var(--body);letter-spacing:.16em;color:#ff6b5f}
+.live-tag small{font-size:.7rem;color:var(--muted);letter-spacing:.04em}
 .live .dot{width:8px;height:8px;border-radius:50%;background:#ff5a4f;box-shadow:0 0 0 0 #ff5a4f;animation:pulse 1.6s infinite}
-.live .track{display:inline-flex;gap:36px;padding-left:24px;animation:marq 40s linear infinite}
-.live .track span{font-size:.95rem;color:#e7e0cf}
-.live .track b{color:var(--gold-2)}
-@keyframes marq{to{transform:translateX(-50%)}}
+.live-stage{position:relative;flex:1;min-width:0;height:46px;overflow:hidden}
+.li{position:absolute;inset:0;display:flex;align-items:center;gap:10px;opacity:0;transform:translateY(100%);transition:transform .55s ease,opacity .55s ease}
+.li.on{opacity:1;transform:none}.li.off{opacity:0;transform:translateY(-100%)}
+.li-av{width:36px;height:36px;border-radius:50%;flex:none;display:grid;place-items:center;background:var(--gold);color:#1a1405;font:800 1rem var(--display)}
+.li-txt{min-width:0;display:flex;flex-direction:column;line-height:1.25}
+.li-l1{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-size:.95rem}
+.li-l1 em{font-style:normal;font-weight:800;color:var(--gold)}
+.li-l2{font-size:.76rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.li-amt{margin-left:auto;flex:none;font:800 1.25rem/1 var(--display);color:var(--gold);font-variant-numeric:tabular-nums}
+@media(max-width:420px){.live-tag small{display:none}.live-tag{padding-right:10px}}
+.live-cta{flex:none;font-weight:700;font-size:.85rem;color:var(--gold-2);white-space:nowrap}
+@media(max-width:420px){.live-cta{display:none}}
+.gal-admin{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:10px}
+.gal-admin figure{margin:0;display:flex;flex-direction:column;gap:6px}
+.gal-admin img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:10px;border:1px solid var(--line)}
+.gal-admin figure div{display:flex;gap:4px}
+.gal-admin button{flex:1;min-height:32px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--white);font:700 .8rem var(--body);cursor:pointer}
 @keyframes pulse{70%{box-shadow:0 0 0 8px transparent}100%{box-shadow:0 0 0 0 transparent}}
 
 /* Números */
@@ -151,6 +172,7 @@ details.priv summary{cursor:pointer;padding:10px 0;font-weight:600;font-size:.9r
 .wgroup-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:10px}
 .wgroup-h h3{font-size:1.5rem;font-weight:800}
 .wgroup-h span{font-size:.85rem;color:var(--muted)}
+.wgroup-h .legend{color:var(--gold);font-weight:700}
 .wcol{columns:1;column-gap:14px}
 @media(min-width:700px){.wcol{columns:2}}
 @media(min-width:1000px){.wcol{columns:3}}
@@ -247,17 +269,21 @@ footer{border-top:1px solid var(--line);padding-block:24px calc(24px + env(safe-
         <a class="btn" href="#mural">Ver mural de carinho</a>
       </div>
     </div>
-    <div class="photo" aria-hidden="true">
-      <div class="ring"></div>
-      <div class="pic" id="heroPic"><b>B</b></div>
-      <div class="date">19 · 10 · 26</div>
+    <div class="gallery">
+      <div class="gal-frame"><div class="gal-track" id="galTrack" aria-label="Fotos do Buda"><div class="gal-empty">B</div></div><span class="gal-count" id="galCount" hidden></span></div>
+      <div class="gal-dots" id="galDots"></div>
+      <div class="gal-date" aria-hidden="true">19 · 10 · 26</div>
     </div>
   </div>
 </div>
 
-<div class="live" id="live" hidden><div class="tag"><span class="dot"></span>AO VIVO</div><div class="track" id="liveTrack"></div></div>
 
 <div class="wrap">
+  <a class="live" id="live" href="#mural" hidden>
+    <span class="live-tag"><b><span class="dot"></span>AO VIVO</b><small id="liveLabel">últimos presentes</small></span>
+    <span class="live-stage" id="liveStage" aria-live="polite"></span>
+    <span class="live-cta">Ver mural ›</span>
+  </a>
   <div class="stats">
     <div class="stat"><b id="sMsg">0</b><span>mensagens de carinho</span></div>
     <div class="stat"><b id="sGift">0</b><span>presentes recebidos</span></div>
@@ -328,9 +354,9 @@ footer{border-top:1px solid var(--line);padding-block:24px calc(24px + env(safe-
       <h2>Quem esteve comigo</h2>
     </div>
     <div class="tabs" role="tablist">
-      <button class="tab" role="tab" aria-selected="true" data-f="gift">🎁 Presentes</button>
+      <button class="tab" role="tab" aria-selected="true" data-f="all">Todas</button>
       <button class="tab" role="tab" aria-selected="false" data-f="msg">💛 Mensagens</button>
-      <button class="tab" role="tab" aria-selected="false" data-f="photo">📸 Com foto</button>
+      <button class="tab" role="tab" aria-selected="false" data-f="gift">🎁 Presentes</button>
     </div>
     <div class="wall" id="wall"></div>
     <div class="more"><button class="btn sm" id="moreBtn" hidden>Carregar mais</button></div>
@@ -413,7 +439,7 @@ const photoUrl = p => p && sb ? sb.storage.from("fotos").getPublicUrl(p).data.pu
 let SETTINGS = {pix_key:"",pix_name:"BUDA",pix_city:"SAO PAULO",show_total:true,hero_photo:""};
 
 async function loadSettings(){ if(!sb) return; const {data}=await sb.from("public_settings").select("*"); (data||[]).forEach(r=>SETTINGS[r.key]=r.value);
-  $("heroPic").innerHTML = SETTINGS.hero_photo ? '<img alt="Foto do Buda" src="'+esc(SETTINGS.hero_photo)+'">' : "<b>B</b>";
+  renderGallery(heroList(SETTINGS.hero_photo));
   $("sTotalBox").hidden = SETTINGS.show_total===false; document.querySelector(".stats").style.gridTemplateColumns = SETTINGS.show_total===false?"repeat(2,1fr)":"";
   const hasPix=!!String(SETTINGS.pix_key||"").trim(); $("presente").hidden=!hasPix; }
 
@@ -422,12 +448,44 @@ async function loadStats(){ if(!sb) return; const {data}=await sb.from("public_s
   animateNum($("sMsg"),data.messages,n=>n.toLocaleString("pt-BR"));
   animateNum($("sGift"),data.pix_gifts+data.physical_gifts,n=>n.toLocaleString("pt-BR"));
   if(data.total_cents!=null) animateNum($("sTotal"),Number(data.total_cents),brl); }
-function renderLive(rows){ const items=rows.slice(0,12).map(r=> r.has_gift ? '<span><b>'+esc(r.name)+'</b> enviou '+(r.gift_cents?'<b>'+brl(r.gift_cents)+'</b>':'um presente')+' 🎁 · '+ago(r.published_at)+'</span>'
-    : '<span><b>'+esc(r.name)+'</b> deixou uma mensagem 💛 · '+ago(r.published_at)+'</span>');
-  if(!items.length){ $("live").hidden=true; return; } $("live").hidden=false; const html=items.join(""); $("liveTrack").innerHTML=html+html; }
+const heroList=v=>Array.isArray(v)?v.filter(Boolean):(v?[v]:[]);
+let galTimer=null;
+function renderGallery(list){
+  const track=$("galTrack"), dots=$("galDots"), count=$("galCount"); clearInterval(galTimer);
+  if(!list.length){ track.innerHTML='<div class="gal-empty">B</div>'; dots.innerHTML=""; count.hidden=true; return; }
+  const n=list.length; let cur=0;
+  track.innerHTML=list.map((u,i)=>'<img alt="Foto do Buda '+(i+1)+'" src="'+esc(u)+'"'+(i?' loading="lazy"':'')+'>').join("");
+  dots.innerHTML=n>1?list.map((_,i)=>'<button type="button" aria-label="Ver foto '+(i+1)+'" data-i="'+i+'"></button>').join(""):"";
+  count.hidden=n<2;
+  const mark=()=>{ dots.querySelectorAll("button").forEach((b,i)=>b.setAttribute("aria-current",String(i===cur))); count.textContent=(cur+1)+"/"+n; };
+  const go=i=>{ cur=(i+n)%n; track.scrollTo({left:cur*track.clientWidth,behavior:"smooth"}); mark(); };
+  const restart=()=>{ clearInterval(galTimer); if(n>1 && !matchMedia("(prefers-reduced-motion: reduce)").matches) galTimer=setInterval(()=>{ if(!document.hidden) go(cur+1); },4000); };
+  track.onscroll=()=>{ const i=Math.round(track.scrollLeft/Math.max(1,track.clientWidth)); if(i!==cur){ cur=i; mark(); } };
+  dots.onclick=e=>{ const b=e.target.closest("button"); if(b){ go(+b.dataset.i); restart(); } };
+  track.ontouchstart=()=>clearInterval(galTimer); track.ontouchend=()=>restart();
+  mark(); restart();
+}
+let liveItems=[], liveIdx=0, liveTimer=null, liveMode="gift", liveKey="";
+function liveItemHTML(r){ const nm=r.name||"Alguém especial";
+  return '<span class="li-av">'+esc(nm.trim().charAt(0).toUpperCase()||"?")+'</span><span class="li-txt"><span class="li-l1"><b>'+esc(nm)+'</b> '+
+    '</span><span class="li-l2">'+(r.has_gift?'🎁 presente · ':'💛 mensagem · ')+ago(r.published_at)+'</span></span>'+
+    (r.has_gift?'<span class="li-amt">'+(r.gift_cents?brl(r.gift_cents):'🎁')+'</span>':''); }
+function renderLive(rows,mode){
+  const key=mode+rows.map(r=>r.id).join(",");
+  if(!rows.length){ $("live").hidden=true; return; } $("live").hidden=false;
+  if(key===liveKey) return;
+  liveKey=key; liveItems=rows.slice(0,3); liveMode=mode; liveIdx=0;
+  $("liveLabel").textContent=mode==="gift"?"últimos presentes":"últimas mensagens";
+  $("liveStage").innerHTML=liveItems.map((r,i)=>'<span class="li'+(i===0?' on':'')+'">'+liveItemHTML(r)+'</span>').join("");
+  clearInterval(liveTimer);
+  if(liveItems.length>1) liveTimer=setInterval(()=>{ if(document.hidden) return; const els=$("liveStage").children; if(!els.length) return;
+    const prev=liveIdx; els[prev].classList.remove("on"); els[prev].classList.add("off");
+    liveIdx=(liveIdx+1)%els.length; els[liveIdx].classList.remove("off"); els[liveIdx].classList.add("on");
+    setTimeout(()=>{ if(els[prev]&&prev!==liveIdx) els[prev].classList.remove("off"); },600); },3200);
+}
 
 /* ---------- mural ---------- */
-let wallFilter="gift", wallLimit=24, seen=new Set(), firstLoad=true;
+let wallFilter="all", wallLimit=24, seen=new Set(), firstLoad=true;
 function postHTML(r,isNew){ const name=r.name||"Alguém especial", ph=photoUrl(r.photo_path), h=r.instagram;
   return '<article class="post'+(r.has_gift?' gift':'')+(isNew?' new':'')+'">'+
    (r.has_gift?'<div class="gbar"><span>🎁 Presente</span><b>'+(r.gift_cents?brl(r.gift_cents):'Enviado')+'</b></div>':'')+
@@ -436,24 +494,29 @@ function postHTML(r,isNew){ const name=r.name||"Alguém especial", ph=photoUrl(r
    (h?'<a href="https://instagram.com/'+esc(h)+'" target="_blank" rel="noopener">@'+esc(h)+'</a>':'')+'</div></div>'+
    '<p class="msg">'+esc(r.message)+'</p><span class="when" title="'+esc(fullDate(r.published_at))+'">'+ago(r.published_at)+'</span></div></article>'; }
 const WALL_TABS={
-  gift:{sub:"Quem presenteou o Buda · maiores valores primeiro",empty:"Os presentes confirmados aparecem aqui. Que tal ser o primeiro?"},
+  all:{sub:'Todas as homenagens · as mais recentes primeiro · <b class="legend">em dourado, quem enviou presente 🎁</b>',empty:"As homenagens aprovadas aparecem aqui. Seja a primeira pessoa a deixar a sua!"},
   msg:{sub:"Mensagens de carinho · as mais recentes primeiro",empty:"As mensagens aprovadas aparecem aqui. Deixe a sua!"},
-  photo:{sub:"Homenagens com foto · as mais recentes primeiro",empty:"As homenagens com foto aparecem aqui."}
+  gift:{sub:"Quem presenteou o Buda · com ou sem foto · maiores valores primeiro",empty:"Os presentes confirmados aparecem aqui. Que tal ser o primeiro?"}
 };
 async function loadWall(){ if(!sb){ $("wall").innerHTML='<div class="empty">O mural aparece aqui assim que o site for conectado.</div>'; return; }
-  const tab=WALL_TABS[wallFilter]||WALL_TABS.gift;
+  const tab=WALL_TABS[wallFilter]||WALL_TABS.all;
   let q=sb.from("public_wall").select("*");
   if(wallFilter==="gift") q=q.eq("has_gift",true).order("gift_cents",{ascending:false,nullsFirst:false}).order("published_at",{ascending:false});
   else if(wallFilter==="msg") q=q.eq("has_gift",false).order("published_at",{ascending:false});
-  else q=q.not("photo_path","is",null).order("published_at",{ascending:false});
+  else q=q.order("published_at",{ascending:false});
   const {data,error}=await q.limit(wallLimit+1); if(error){ return; }
   const rows=data.slice(0,wallLimit);
   if(!rows.length) $("wall").innerHTML='<div class="empty">'+tab.empty+'</div>';
   else $("wall").innerHTML='<div class="wgroup"><div class="wgroup-h"><span>'+tab.sub+'</span></div><div class="wcol">'+
     rows.map(r=>{ const isNew=!firstLoad&&!seen.has(r.id); seen.add(r.id); return postHTML(r,isNew); }).join("")+'</div></div>';
   firstLoad=false; $("moreBtn").hidden=data.length<=wallLimit; }
-async function loadLiveOnly(){ if(!sb) return; const {data}=await sb.from("public_wall").select("*").order("published_at",{ascending:false}).limit(12); renderLive(data||[]); }
-document.querySelector(".tabs").addEventListener("click",e=>{ const b=e.target.closest(".tab"); if(!b) return; document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",t===b)); wallFilter=b.dataset.f; wallLimit=24; firstLoad=true; loadWall(); });
+async function loadLiveOnly(){ if(!sb) return;
+  let {data}=await sb.from("public_wall").select("*").eq("has_gift",true).order("published_at",{ascending:false}).limit(3); let mode="gift";
+  if(!data||!data.length){ const r=await sb.from("public_wall").select("*").order("published_at",{ascending:false}).limit(3); data=r.data; mode="msg"; }
+  renderLive(data||[],mode); }
+function selectTab(f){ document.querySelectorAll(".tabs .tab").forEach(t=>t.setAttribute("aria-selected",String(t.dataset.f===f))); wallFilter=f; wallLimit=24; firstLoad=true; loadWall(); }
+document.querySelector(".tabs").addEventListener("click",e=>{ const b=e.target.closest(".tab"); if(b) selectTab(b.dataset.f); });
+$("live").addEventListener("click",e=>{ e.preventDefault(); selectTab(liveMode); $("mural").scrollIntoView({behavior:"smooth",block:"start"}); });
 $("moreBtn").addEventListener("click",()=>{ wallLimit+=24; loadWall(); });
 
 /* ---------- lista de desejos ---------- */
@@ -621,15 +684,25 @@ async function renderAdmBody(){ const B=$("admBody");
       if(error) return toast("Não salvou: confira o link."); toast("Produto adicionado"); renderAdmBody(); };
   } else if(admTab==="settings"){
     const {data}=await sb.from("site_settings").select("*"); const s={}; (data||[]).forEach(r=>s[r.key]=r.value);
-    B.innerHTML='<form class="ar" id="sForm"><label class="f" for="sKey">Sua chave Pix <small>CPF, e-mail, celular (+5511999999999) ou chave aleatória</small><input type="text" id="sKey" value="'+esc(s.pix_key||"")+'"></label>'+
+    let hero=heroList(s.hero_photo);
+    B.innerHTML='<div class="ar"><strong>Fotos do topo (carrossel)</strong><p class="note">Passam sozinhas no topo do site e dá para arrastar para o lado, como no Instagram. A primeira é a capa.</p><div class="gal-admin" id="galAdmin"></div><label class="btn gold sm" for="gAdd">+ Adicionar fotos<input type="file" id="gAdd" accept="image/*" multiple hidden></label></div>'+
+     '<form class="ar" id="sForm"><label class="f" for="sKey">Sua chave Pix <small>CPF, e-mail, celular (+5511999999999) ou chave aleatória</small><input type="text" id="sKey" value="'+esc(s.pix_key||"")+'"></label>'+
      '<div class="row2"><label class="f" for="sName">Nome do recebedor<input type="text" id="sName" maxlength="25" value="'+esc(s.pix_name||"")+'"></label><label class="f" for="sCity">Cidade<input type="text" id="sCity" maxlength="15" value="'+esc(s.pix_city||"")+'"></label></div>'+
-     '<label class="f" for="sPhoto">Foto principal do site<input type="file" id="sPhoto" accept="image/*"></label>'+
      '<label class="tg" for="sTotal">Mostrar total arrecadado no site<input type="checkbox" id="sTotal" '+(s.show_total!==false?"checked":"")+'></label>'+
      '<button class="btn gold sm" type="submit">Salvar configurações</button><p class="note">Depois de salvar, faça um Pix de teste de R$ 1 pelo site para conferir se chega na sua conta.</p></form>';
     $("sForm").onsubmit=async e=>{ e.preventDefault(); const rows=[{key:"pix_key",value:$("sKey").value.trim()},{key:"pix_name",value:$("sName").value.trim()},{key:"pix_city",value:$("sCity").value.trim()},{key:"show_total",value:$("sTotal").checked}];
-      const f=$("sPhoto").files[0]; if(f){ try{ const b=await resizeImage(f,1200,.85); const p="site/hero-"+Date.now()+".jpg"; const up=await sb.storage.from("fotos").upload(p,b,{contentType:"image/jpeg"}); if(!up.error) rows.push({key:"hero_photo",value:photoUrl(p)}); else { toast("Foto não subiu: "+(up.error.message||"erro")); return; } }catch(x){ toast("Não consegui abrir a foto"); return; } }
       let fail=null; for(const r of rows){ const {error}=await sb.from("site_settings").update({value:r.value}).eq("key",r.key); if(error){ fail=error; break; } }
       if(fail){ console.error(fail); toast("Não salvou: "+(fail.message||fail.code||"erro")); } else toast("Configurações salvas"); };
+    const drawHero=()=>{ $("galAdmin").innerHTML=hero.length?hero.map((u,i)=>'<figure><img alt="" src="'+esc(u)+'"><div>'+(i?'<button type="button" data-gl="'+i+'" aria-label="Mover para a esquerda">←</button>':'')+'<button type="button" data-gx="'+i+'" aria-label="Remover">✕</button></div></figure>').join(""):'<p class="note">Nenhuma foto ainda.</p>'; };
+    const saveHero=async()=>{ const {error}=await sb.from("site_settings").update({value:hero}).eq("key","hero_photo"); if(error){ toast("Não salvou: "+(error.message||error.code)); return false; } drawHero(); renderGallery(hero); return true; };
+    drawHero();
+    $("galAdmin").onclick=async e=>{ const b=e.target.closest("button"); if(!b) return;
+      if(b.dataset.gl){ const i=+b.dataset.gl; [hero[i-1],hero[i]]=[hero[i],hero[i-1]]; }
+      if(b.dataset.gx){ hero.splice(+b.dataset.gx,1); }
+      if(await saveHero()) toast("Fotos atualizadas"); };
+    $("gAdd").onchange=async()=>{ const files=[...$("gAdd").files]; if(!files.length) return; toast("Enviando "+files.length+" foto(s)…");
+      let ok=0; for(const [i,f] of files.entries()){ try{ const b=await resizeImage(f,1200,.85); const p="site/hero-"+Date.now()+"-"+i+".jpg"; const up=await sb.storage.from("fotos").upload(p,b,{contentType:"image/jpeg"}); if(up.error){ toast("Foto não subiu: "+(up.error.message||"erro")); continue; } hero.push(photoUrl(p)); ok++; }catch(x){ toast("Não consegui abrir uma das fotos"); } }
+      $("gAdd").value=""; if(ok && await saveHero()) toast(ok+" foto(s) adicionada(s) ✨"); };
   }
 }
 function tributeRow(r){ const ph=photoUrl(r.photo_path);
