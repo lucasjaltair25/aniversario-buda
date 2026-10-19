@@ -628,7 +628,7 @@ function postHTML(r,isNew){ POSTS[r.id]=r; const name=r.name||"Alguém especial"
    '</div></article>'; }
 document.addEventListener("click",e=>{ const b=e.target.closest(".readmore"); if(!b) return; const p=b.previousElementSibling; const open=p.classList.toggle("clamp"); b.textContent=open?"Ler mais":"Ler menos"; });
 /* ---------- imagem para Stories ---------- */
-const BUDA_IG="";
+const BUDA_IG="velhobuda";
 function loadImg(src){ return new Promise(res=>{ if(!src) return res(null); const i=new Image(); i.crossOrigin="anonymous"; i.onload=()=>res(i); i.onerror=()=>res(null); i.src=/^https?:/.test(src)?src+(src.includes("?")?"&":"?")+"cors=1":src; }); }
 function rr(ctx,x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
 function wrap(ctx,text,maxW){ const out=[]; String(text||"").split(/\n/).forEach(par=>{ const words=par.split(/\s+/).filter(Boolean); let line="";
@@ -655,13 +655,15 @@ async function makeStory(r,owner){
   const name=r.name||"Alguém especial", ph=photoUrl(r.photo_path), img=await loadImg(ph);
   x.font="400 40px "+B; const msgW=cw-80; let msg=wrap(x,r.message,msgW);
   x.font="400 36px "+B; let rep=r.reply?wrap(x,r.reply,msgW-40):[];
-  let photoH=img?560:0; const gbar=r.has_gift?96:0;
+  const pw=cw-80; let photoH=img?Math.max(300,Math.min(720,Math.round(pw*img.height/img.width))):0; const gbar=r.has_gift?96:0;
   const fixed=()=>gbar+50+110+30+(img?photoH+40:0)+(rep.length?40+60+rep.length*50+30:0)+50;
   const avail=bottomLimit-top0; x.font="400 36px "+B; if(rep.length>6) rep=clampLines(x,rep,6,msgW-40);
   x.font="400 40px "+B; let maxMsg=msg.length;
   const need=()=>fixed()+Math.min(msg.length,maxMsg)*56;
   while(need()>avail){
-    if(img&&photoH>300){ photoH-=20; continue; }
+    if(img&&photoH>560){ photoH-=20; continue; }
+    if(maxMsg>5){ maxMsg--; continue; }
+    if(img&&photoH>440){ photoH-=20; continue; }
     if(maxMsg>4){ maxMsg--; continue; }
     if(rep.length>2){ x.font="400 36px "+B; rep=clampLines(x,rep,rep.length-1,msgW-40); x.font="400 40px "+B; continue; }
     if(img&&photoH>200){ photoH-=20; continue; }
@@ -685,7 +687,13 @@ async function makeStory(r,owner){
   x.fillStyle=white; x.font="800 46px "+D; let nm=name; while(x.measureText(nm).width>cw-220&&nm.length>3) nm=nm.slice(0,-1); x.fillText(nm+(nm!==name?"…":"")+(r.ig_verified?"  ✔︎":""),ix+135,y+8);
   if(r.instagram){ x.fillStyle=gold; x.font="600 34px "+B; x.fillText("@"+r.instagram,ix+135,y+66); }
   y+=110+30;
-  if(img){ x.save(); rr(x,ix,y,cw-80,photoH,26); x.clip(); const pw=cw-80, s=Math.max(pw/img.width,photoH/img.height); x.drawImage(img,ix+pw/2-img.width*s/2,y+photoH/2-img.height*s/2,img.width*s,img.height*s); x.restore(); y+=photoH+40; }
+  if(img){ x.save(); rr(x,ix,y,pw,photoH,26); x.clip();
+    // fundo desfocado (mesma foto, ampliada) + foto inteira por cima, sem cortar
+    const sm=document.createElement("canvas"); sm.width=24; sm.height=Math.max(1,Math.round(24*photoH/pw)); const sx=sm.getContext("2d");
+    const sc=Math.max(sm.width/img.width,sm.height/img.height); sx.drawImage(img,sm.width/2-img.width*sc/2,sm.height/2-img.height*sc/2,img.width*sc,img.height*sc);
+    x.imageSmoothingEnabled=true; x.imageSmoothingQuality="high"; x.drawImage(sm,ix,y,pw,photoH); x.fillStyle="rgba(10,9,7,.45)"; x.fillRect(ix,y,pw,photoH);
+    const s=Math.min(pw/img.width,photoH/img.height), dw=img.width*s, dh=img.height*s; x.drawImage(img,ix+(pw-dw)/2,y+(photoH-dh)/2,dw,dh);
+    x.restore(); y+=photoH+40; }
   x.fillStyle="#ece5d4"; x.font="400 40px "+B; msg.forEach(l=>{ x.fillText(l,ix,y); y+=56; });
   if(rep.length){ y+=40; const rh=60+rep.length*50+30; rr(x,ix,y,cw-80,rh,22); x.fillStyle="#0a0907"; x.fill(); x.fillStyle=gold; x.fillRect(ix,y,6,rh);
     x.font="800 34px "+B; x.fillStyle=gold; x.fillText("💬 Buda respondeu",ix+36,y+26);
