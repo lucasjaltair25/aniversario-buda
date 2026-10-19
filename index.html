@@ -104,9 +104,15 @@ section{padding-block:64px}
 .li-l1 em{font-style:normal;font-weight:800;color:var(--gold)}
 .li-l2{font-size:.76rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .li-amt{margin-left:auto;flex:none;font:800 1.25rem/1 var(--display);color:var(--gold);font-variant-numeric:tabular-nums}
-@media(max-width:420px){.live-tag small{display:none}.live-tag{padding-right:10px}}
-.live-cta{flex:none;font-weight:700;font-size:.85rem;color:var(--gold-2);white-space:nowrap}
-@media(max-width:420px){.live-cta{display:none}}
+
+.live{flex-direction:column;align-items:stretch!important;gap:12px!important;padding:14px 16px!important}
+.live-top{display:flex;align-items:center;gap:10px}
+.live-top .live-tag{border-right:1px solid var(--line);padding-right:10px}
+.live-title{font-weight:800;font-family:var(--display);font-size:1.05rem;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.live-all{color:var(--gold-2);font-weight:700;font-size:.85rem;text-decoration:none;white-space:nowrap}
+button.live-stage{flex:none;appearance:none;border:0;background:var(--bg);border-radius:14px;padding:0 12px;height:62px;width:100%;cursor:pointer;color:var(--white);text-align:left;font:inherit}
+.live-go{min-height:46px!important;width:100%}
+
 .gal-admin{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:10px}
 .gal-admin figure{margin:0;display:flex;flex-direction:column;gap:6px}
 .gal-admin img{width:100%;aspect-ratio:4/5;object-fit:cover;border-radius:10px;border:1px solid var(--line)}
@@ -142,6 +148,8 @@ textarea{min-height:130px;resize:vertical}
 .chips{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .chip.wide{grid-column:1/-1}
 .chip.free{padding:16px 12px}
+.step-h .opt{font:600 .75rem var(--body);color:var(--muted);border:1px solid var(--line);border-radius:99px;padding:2px 8px}
+#freeNote{color:#e7e0cf}
 .chip{appearance:none;border:1.5px solid var(--line);background:var(--bg);color:var(--white);border-radius:14px;padding:14px 6px;font:800 1.05rem var(--display);cursor:pointer;font-variant-numeric:tabular-nums}
 .chip small{display:block;font:500 .78rem var(--body);color:var(--muted);margin-top:2px}
 .chip[aria-pressed=true]{background:var(--gold);border-color:var(--gold);color:#1a1405}
@@ -185,6 +193,8 @@ details.priv summary{cursor:pointer;padding:10px 0;font-weight:600;font-size:.9r
 .cta-block{padding-block:44px 8px}
 .cta-card{border:1.5px solid var(--gold-deep);border-radius:24px;padding:24px;background:linear-gradient(160deg,#221b0c,var(--bg-2) 60%);display:flex;flex-direction:column;gap:12px;align-items:flex-start}
 .cta-card h2{font-size:clamp(1.7rem,6.5vw,2.4rem)}
+.cta-btns{display:flex;flex-direction:column;gap:10px;width:100%}
+@media(min-width:560px){.cta-btns{flex-direction:row}}
 .sheetpage{position:fixed;inset:0;z-index:30;background:var(--bg);overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding-block:0 calc(48px + env(safe-area-inset-bottom,0px));animation:sheetIn .35s ease}
 .sheetpage[hidden]{display:none}
 .sheet-bar{position:sticky;top:0;z-index:2;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
@@ -218,6 +228,10 @@ details.priv summary{cursor:pointer;padding:10px 0;font-weight:600;font-size:.9r
 .wgroup{display:flex;flex-direction:column;gap:14px}
 .wgroup-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:10px}
 .wgroup-h h3{font-size:1.5rem;font-weight:800}
+.wgroup-h.gh{border-bottom:2px solid var(--gold)}
+.wgroup-h.gh h3{color:var(--gold)}
+.wgroup+.wgroup{margin-top:12px}
+.empty.invite{border-color:var(--gold-deep);color:#e7e0cf;background:#1a1509}
 .wgroup-h span{font-size:.85rem;color:var(--muted)}
 .wgroup-h .legend{color:var(--gold);font-weight:700}
 .wcol{columns:1;column-gap:14px}
@@ -225,7 +239,8 @@ details.priv summary{cursor:pointer;padding:10px 0;font-weight:600;font-size:.9r
 @media(min-width:1000px){.wcol{columns:3}}
 .post{break-inside:avoid;margin-bottom:14px;background:var(--bg-2);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column}
 .post.gift{border-color:var(--gold-deep);background:linear-gradient(180deg,#221b0c,var(--bg-2) 140px)}
-.post .gbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:9px 16px;background:var(--gold);color:#1a1405}
+.post .gbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 16px;background:linear-gradient(100deg,var(--gold-deep),var(--gold) 45%,var(--gold-2));color:#1a1405}
+.post.gift{box-shadow:0 0 0 1px var(--gold-deep),0 12px 30px rgba(242,193,78,.12)}
 .post .gbar b{font:800 1.3rem/1 var(--display);font-variant-numeric:tabular-nums}
 .post .gbar span{font-weight:700;font-size:.8rem;letter-spacing:.06em;text-transform:uppercase}
 .post .ph{display:block;border-radius:14px;overflow:hidden;border:1px solid var(--line);background:var(--bg-3);aspect-ratio:4/3;max-width:100%}
@@ -333,15 +348,15 @@ footer{border-top:1px solid var(--line);padding-block:24px calc(24px + env(safe-
 
 
 <div class="wrap">
-  <a class="live" id="live" href="#mural" hidden>
-    <span class="live-tag"><b><span class="dot"></span>AO VIVO</b><small id="liveLabel">últimos presentes</small></span>
-    <span class="live-stage" id="liveStage" aria-live="polite"></span>
-    <span class="live-cta">Ver mural ›</span>
-  </a>
+  <div class="live" id="live" hidden>
+    <div class="live-top"><span class="live-tag"><b><span class="dot"></span>AO VIVO</b></span><span class="live-title" id="liveLabel">🎁 Presentes</span><a class="live-all" href="#mural" id="liveAll">ver todos ›</a></div>
+    <button type="button" class="live-stage" id="liveStage" aria-live="polite" aria-label="Ver no mural"></button>
+    <a class="btn gold live-go" href="#homenagem">🎁 Presentear também</a>
+  </div>
   <div class="stats">
     <div class="stat"><b id="sMsg">0</b><span>mensagens de carinho</span></div>
     <div class="stat"><b id="sGift">0</b><span>presentes recebidos</span></div>
-    <div class="stat money" id="sTotalBox"><b id="sTotal">R$ 0</b><span>em presentes Pix</span></div>
+    <div class="stat money" id="sTotalBox"><b id="sTotal">R$ 0</b><span>em presentes</span></div>
   </div>
 </div>
 
@@ -389,6 +404,7 @@ footer{border-top:1px solid var(--line);padding-block:24px calc(24px + env(safe-
       <div class="step" id="presente">
         <div class="step-h"><i>2</i>Escolha seu presente</div>
         <div class="chips" id="chips">
+          <button type="button" class="chip wide free" data-v="0" aria-pressed="false">💛 Só mensagem · grátis<small>sem presente, sua mensagem já vale muito</small></button>
           <button type="button" class="chip" data-v="1000" aria-pressed="true">R$ 10<small>presente</small></button>
           <button type="button" class="chip" data-v="5000" aria-pressed="false">R$ 50<small>presente</small></button>
           <button type="button" class="chip" data-v="10000" aria-pressed="false">R$ 100<small>presente</small></button>
@@ -403,6 +419,7 @@ footer{border-top:1px solid var(--line);padding-block:24px calc(24px + env(safe-
             <button type="button" class="mchip" data-m="crypto" aria-pressed="false" hidden><b>₿ Cripto</b><small>USDT · BTC · ETH</small></button>
           </div>
         </div>
+        <p class="note" id="freeNote" hidden>Sem problema! Sua mensagem aparece no mural assim que o Buda aprovar 💛</p>
         <p class="note" id="pixNote">Depois de enviar, aparecem as instruções de pagamento. Sua mensagem e seu presente entram juntos no mural quando o Buda confirmar o recebimento, com destaque para quem presenteou 🎁</p>
       </div>
 
@@ -435,8 +452,8 @@ footer{border-top:1px solid var(--line);padding-block:24px calc(24px + env(safe-
     </div>
     <div class="tabs" role="tablist">
       <button class="tab" role="tab" aria-selected="true" data-f="all">Todas</button>
-      <button class="tab" role="tab" aria-selected="false" data-f="msg">💛 Mensagens</button>
       <button class="tab" role="tab" aria-selected="false" data-f="gift">🎁 Presentes</button>
+      <button class="tab" role="tab" aria-selected="false" data-f="msg">💛 Mensagens gratuitas</button>
     </div>
     <div class="wall" id="wall"></div>
     <div class="more"><button class="btn sm" id="moreBtn" hidden>Carregar mais</button></div>
@@ -531,7 +548,7 @@ async function loadSettings(){ if(!sb) return; const {data}=await sb.from("publi
   document.querySelector('.mchip[data-m="pix"]').hidden=!hasPix;
   document.querySelector('.mchip[data-m="card"]').hidden=!hasCard;
   document.querySelector('.mchip[data-m="crypto"]').hidden=!hasCrypto;
-  $("payBox").hidden=[hasPix,hasCard,hasCrypto].filter(Boolean).length<2;
+  $("payBox").dataset.single=[hasPix,hasCard,hasCrypto].filter(Boolean).length<2?"1":""; payUI();
   if(!hasPix) setMethod(hasCard?"card":"crypto"); }
 let payMethod="pix";
 function setMethod(m){ payMethod=m; document.querySelectorAll(".mchip").forEach(c=>c.setAttribute("aria-pressed",String(c.dataset.m===m))); }
@@ -562,14 +579,14 @@ function renderGallery(list){
 let liveItems=[], liveIdx=0, liveTimer=null, liveMode="gift", liveKey="";
 function liveItemHTML(r){ const nm=r.name||"Alguém especial";
   return '<span class="li-av">'+esc(nm.trim().charAt(0).toUpperCase()||"?")+'</span><span class="li-txt"><span class="li-l1"><b>'+esc(nm)+'</b> '+
-    '</span><span class="li-l2">'+(r.has_gift?'🎁 presente · ':'💛 mensagem · ')+shortTime(r.published_at)+'</span></span>'+
+    '</span><span class="li-l2">'+(r.has_gift?'presenteou o Buda · ':'deixou uma mensagem · ')+shortTime(r.published_at)+'</span></span>'+
     (r.has_gift?'<span class="li-amt">'+(r.gift_cents?brl(r.gift_cents):'🎁')+'</span>':''); }
 function renderLive(rows,mode){
   const key=mode+rows.map(r=>r.id).join(",");
   if(!rows.length){ $("live").hidden=true; return; } $("live").hidden=false;
   if(key===liveKey) return;
   liveKey=key; liveItems=rows.slice(0,3); liveMode=mode; liveIdx=0;
-  $("liveLabel").textContent=mode==="gift"?"últimos presentes":"últimas mensagens";
+  $("liveLabel").textContent=mode==="gift"?"🎁 Presentes":"💛 Mensagens gratuitas";
   $("liveStage").innerHTML=liveItems.map((r,i)=>'<span class="li'+(i===0?' on':'')+'">'+liveItemHTML(r)+'</span>').join("");
   clearInterval(liveTimer);
   if(liveItems.length>1) liveTimer=setInterval(()=>{ if(document.hidden) return; const els=$("liveStage").children; if(!els.length) return;
@@ -584,7 +601,7 @@ const IGICON='<svg class="ig" viewBox="0 0 24 24" aria-hidden="true"><rect x="3"
 const VBADGE='<svg class="vbadge" viewBox="0 0 24 24" role="img" aria-label="Verificado"><path fill="#3897f0" d="M12 1.5l2.4 1.8 3-.2 1 2.8 2.6 1.6-.7 2.9 1.2 2.7-2.2 2 .1 3-2.9.8-1.6 2.6-2.9-.8-2.7 1.4-2.1-2.2-3-.2-.6-2.9-2.4-1.8 1-2.8-1-2.8 2.4-1.8.6-2.9 3-.2L9.6 1.4z"/><path fill="#fff" d="M10.6 15.6l-3.2-3.2 1.4-1.4 1.8 1.8 4.8-4.8 1.4 1.4z"/></svg>';
 function postHTML(r,isNew){ const name=r.name||"Alguém especial", ph=photoUrl(r.photo_path), h=r.instagram, long=String(r.message||"").length>280;
   return '<article class="post'+(r.has_gift?' gift':'')+(isNew?' new':'')+'">'+
-   (r.has_gift?'<div class="gbar"><span>🎁 Presente</span><b>'+(r.gift_cents?brl(r.gift_cents):'Enviado')+'</b></div>':'')+
+   (r.has_gift?'<div class="gbar"><span>🎁 Presenteou o Buda</span><b>'+(r.gift_cents?brl(r.gift_cents):'Enviado')+'</b></div>':'')+
    '<div class="in">'+
      '<header class="who"><div class="av">'+(ph?'<img alt="" loading="lazy" src="'+esc(ph)+'">':esc(name.trim().charAt(0).toUpperCase()||"?"))+'</div>'+
        '<div class="who-txt"><strong>'+esc(name)+(r.ig_verified?VBADGE:'')+'</strong>'+
@@ -600,25 +617,36 @@ const WALL_TABS={
   msg:{sub:"Mensagens de carinho · as mais recentes primeiro",empty:"As mensagens aprovadas aparecem aqui. Deixe a sua!"},
   gift:{sub:"Quem presenteou o Buda · com ou sem foto · maiores valores primeiro",empty:"Os presentes confirmados aparecem aqui. Que tal ser o primeiro?"}
 };
+let grpLimit={gift:12,msg:12};
+function card(r){ const isNew=!firstLoad&&!seen.has(r.id); seen.add(r.id); return postHTML(r,isNew); }
+function giftQ(n){ return sb.from("public_wall").select("*").eq("has_gift",true).order("gift_cents",{ascending:false,nullsFirst:false}).order("published_at",{ascending:false}).limit(n); }
+function msgQ(n){ return sb.from("public_wall").select("*").eq("has_gift",false).order("published_at",{ascending:false}).limit(n); }
+function groupHTML(kind,rows,hasMore){
+  const g=kind==="gift";
+  const head='<div class="wgroup-h '+(g?'gh':'mh')+'"><h3>'+(g?'🎁 Presentes':'💛 Mensagens gratuitas')+'</h3><span>'+(g?'quem presenteou o Buda · maiores valores primeiro':'mensagens de carinho · as mais recentes primeiro')+'</span></div>';
+  const body=rows.length?'<div class="wcol">'+rows.map(card).join("")+'</div>':
+    (g?'<div class="empty invite">Ninguém presenteou ainda. Que tal ser o primeiro e aparecer aqui em destaque? 🎁<br><a class="btn gold sm" href="#homenagem" style="margin-top:12px">🎁 Presentear</a></div>':'<div class="empty">As mensagens aprovadas aparecem aqui. Deixe a sua! 💛</div>');
+  return '<div class="wgroup">'+head+body+(hasMore?'<div class="more"><button type="button" class="btn sm" data-gmore="'+kind+'">'+(g?'Ver mais presentes':'Ver mais mensagens')+'</button></div>':'')+'</div>'; }
 async function loadWall(){ if(!sb){ $("wall").innerHTML='<div class="empty">O mural aparece aqui assim que o site for conectado.</div>'; return; }
-  const tab=WALL_TABS[wallFilter]||WALL_TABS.all;
-  let q=sb.from("public_wall").select("*");
-  if(wallFilter==="gift") q=q.eq("has_gift",true).order("gift_cents",{ascending:false,nullsFirst:false}).order("published_at",{ascending:false});
-  else if(wallFilter==="msg") q=q.eq("has_gift",false).order("published_at",{ascending:false});
-  else q=q.order("published_at",{ascending:false});
-  const {data,error}=await q.limit(wallLimit+1); if(error){ return; }
-  const rows=data.slice(0,wallLimit);
-  if(!rows.length) $("wall").innerHTML='<div class="empty">'+tab.empty+'</div>';
-  else $("wall").innerHTML='<div class="wgroup"><div class="wgroup-h"><span>'+tab.sub+'</span></div><div class="wcol">'+
-    rows.map(r=>{ const isNew=!firstLoad&&!seen.has(r.id); seen.add(r.id); return postHTML(r,isNew); }).join("")+'</div></div>';
-  firstLoad=false; $("moreBtn").hidden=data.length<=wallLimit; }
+  $("moreBtn").hidden=true;
+  if(wallFilter==="all"){
+    const [g,m]=await Promise.all([giftQ(grpLimit.gift+1),msgQ(grpLimit.msg+1)]); if(g.error||m.error) return;
+    $("wall").innerHTML=groupHTML("gift",g.data.slice(0,grpLimit.gift),g.data.length>grpLimit.gift)+groupHTML("msg",m.data.slice(0,grpLimit.msg),m.data.length>grpLimit.msg);
+  } else {
+    const kind=wallFilter==="gift"?"gift":"msg"; const lim=Math.max(wallLimit,grpLimit[kind]);
+    const r=await (kind==="gift"?giftQ(lim+1):msgQ(lim+1)); if(r.error) return;
+    $("wall").innerHTML=groupHTML(kind,r.data.slice(0,lim),false); $("moreBtn").hidden=r.data.length<=lim;
+  }
+  firstLoad=false; }
+document.addEventListener("click",e=>{ const b=e.target.closest("[data-gmore]"); if(!b) return; grpLimit[b.dataset.gmore]+=12; loadWall(); });
 async function loadLiveOnly(){ if(!sb) return;
   let {data}=await sb.from("public_wall").select("*").eq("has_gift",true).order("published_at",{ascending:false}).limit(3); let mode="gift";
   if(!data||!data.length){ const r=await sb.from("public_wall").select("*").order("published_at",{ascending:false}).limit(3); data=r.data; mode="msg"; }
   renderLive(data||[],mode); }
 function selectTab(f){ document.querySelectorAll(".tabs .tab").forEach(t=>t.setAttribute("aria-selected",String(t.dataset.f===f))); wallFilter=f; wallLimit=24; firstLoad=true; loadWall(); }
 document.querySelector(".tabs").addEventListener("click",e=>{ const b=e.target.closest(".tab"); if(b) selectTab(b.dataset.f); });
-$("live").addEventListener("click",e=>{ e.preventDefault(); selectTab(liveMode); $("mural").scrollIntoView({behavior:"smooth",block:"start"}); });
+$("liveStage").addEventListener("click",()=>{ selectTab(liveMode); $("mural").scrollIntoView({behavior:"smooth",block:"start"}); });
+$("liveAll").addEventListener("click",e=>{ e.preventDefault(); selectTab(liveMode); $("mural").scrollIntoView({behavior:"smooth",block:"start"}); });
 $("moreBtn").addEventListener("click",()=>{ wallLimit+=24; loadWall(); });
 
 /* ---------- lista de desejos ---------- */
@@ -644,11 +672,16 @@ $("wish").addEventListener("click",e=>{ const b=e.target.closest("[data-claim]")
 
 /* ---------- formulário ---------- */
 let gift=1000, photoBlob=null;
-$("chips").addEventListener("click",e=>{ const b=e.target.closest(".chip"); if(!b) return;
-  document.querySelectorAll(".chip").forEach(c=>c.setAttribute("aria-pressed",c===b));
-  const other=b.dataset.v==="outro"; $("otherBox").hidden=!other;
-  gift = other ? Math.max(0,Math.round((+$("fOther").value||0)*100)) : +b.dataset.v;
-  if(other) $("fOther").focus(); });
+function pickAmount(v){ const btn=document.querySelector('.chip[data-v="'+v+'"]'); if(!btn) return;
+  document.querySelectorAll("#chips .chip").forEach(c=>c.setAttribute("aria-pressed",String(c===btn)));
+  const other=v==="outro"; $("otherBox").hidden=!other;
+  gift = other ? Math.max(0,Math.round((+$("fOther").value||0)*100)) : +v;
+  const free=v==="0"||v===0; $("payBox").dataset.free=free?"1":""; payUI();
+  if(other) $("fOther").focus(); }
+function payUI(){ const free=$("payBox").dataset.free==="1";
+  $("payBox").hidden=free||$("payBox").dataset.single==="1"; $("pixNote").hidden=free; $("freeNote").hidden=!free;
+  $("fBtn").textContent=free?"💛 Enviar mensagem":"🎁 Enviar presente e mensagem"; }
+$("chips").addEventListener("click",e=>{ const b=e.target.closest(".chip"); if(b) pickAmount(b.dataset.v); });
 $("fOther").addEventListener("input",()=>{ gift=Math.max(0,Math.round((+$("fOther").value||0)*100)); });
 $("fPhoto").addEventListener("change",async()=>{ const f=$("fPhoto").files[0]; if(!f) return;
   try{ photoBlob=await resizeImage(f); $("fThumb").innerHTML='<img alt="" src="'+URL.createObjectURL(photoBlob)+'">'; }
@@ -659,7 +692,7 @@ $("form").addEventListener("submit",async e=>{ e.preventDefault(); const err=$("
   if(!name){ err.textContent="Escreva seu nome ou apelido."; $("fName").focus(); return; }
   if(!msg){ err.textContent="Escreva sua mensagem para o Buda."; $("fMsg").focus(); return; }
   if(!$("fConsent").checked){ err.textContent="Marque a autorização de publicação para enviar."; return; }
-  if(gift<1000){ err.textContent="O presente mínimo é R$ 10. Escolha um valor."; if(!$("otherBox").hidden) $("fOther").focus(); return; }
+  if(!$("otherBox").hidden && gift<1000){ err.textContent="O presente mínimo é R$ 10. Digite o valor ou escolha “Só mensagem”."; $("fOther").focus(); return; }
   if(!sb){ err.textContent="O site ainda não está conectado."; return; }
   const btn=$("fBtn"); btn.disabled=true; btn.textContent="Enviando…";
   try{
@@ -667,11 +700,11 @@ $("form").addEventListener("submit",async e=>{ e.preventDefault(); const err=$("
     if(photoBlob){ const p="t/"+crypto.randomUUID()+".jpg"; const up=await sb.storage.from("fotos").upload(p,photoBlob,{contentType:"image/jpeg",upsert:false}); if(!up.error) path=p; }
     const {data,error}=await sb.rpc("submit_tribute",{p_name:name,p_instagram:handle($("fInsta").value),p_message:msg,p_photo_path:path,
       p_show_name:$("pName").checked,p_show_instagram:$("pInsta").checked,p_show_photo:$("pPhoto").checked,p_show_gift_amount:$("pAmount").checked,
-      p_gift_cents:gift,p_consent:true,p_website:$("fSite").value,p_method:payMethod});
+      p_gift_cents:gift,p_consent:true,p_website:$("fSite").value,p_method:gift>0?payMethod:"pix"});
     if(error) throw error;
     showDone(name,data&&data.ref);
   }catch(ex){ err.textContent=/rate_limited/.test(ex?.message||"")?"Muita gente enviando agora. Espere um minuto e tente de novo.":/gift_min/.test(ex?.message||"")?"O presente mínimo é R$ 10.":"Não foi possível enviar. Confira sua internet e tente de novo."; }
-  finally{ btn.disabled=false; btn.textContent="🎁 Enviar presente e mensagem"; }
+  finally{ btn.disabled=false; payUI(); }
 });
 /* ---------- tela final (fica salva no celular, mesmo se a pessoa sair para o app do banco) ---------- */
 const SENT_KEY="buda_envio";
@@ -679,7 +712,7 @@ function saveSent(st){ try{ localStorage.setItem(SENT_KEY,JSON.stringify(st)); }
 function loadSent(){ try{ const st=JSON.parse(localStorage.getItem(SENT_KEY)||"null"); if(st && Date.now()-st.t<3*86400000) return st; }catch(e){} return null; }
 function clearSent(){ try{ localStorage.removeItem(SENT_KEY); }catch(e){} }
 function showDone(name,ref){
-  const st={name,ref,gift,method:payMethod,code:"",paid:false,t:Date.now()};
+  const st={name,ref,gift,method:gift>0?payMethod:"none",code:"",paid:false,t:Date.now()};
   if(payMethod==="pix" && gift>0 && SETTINGS.pix_key) st.code=pixPayload(String(SETTINGS.pix_key),SETTINGS.pix_name,SETTINGS.pix_city,gift,ref);
   saveSent(st); renderSent(st,true);
 }
@@ -759,7 +792,7 @@ function renderSent(st,scroll){
     if(payable&&!st.cardDone) $("showPix").onclick=()=>{ st.paid=false; saveSent(st); renderSent(st,true); };
   }
   d.insertAdjacentHTML("beforeend",'<button type="button" class="btn sm" id="again">Enviar outra homenagem</button>');
-  $("again").onclick=()=>{ clearSent(); $("form").reset(); photoBlob=null; gift=1000; $("fThumb").textContent="＋"; document.querySelectorAll(".chip").forEach((c,i)=>c.setAttribute("aria-pressed",i===0)); $("otherBox").hidden=true; d.hidden=true; $("form").hidden=false; $("homenagem").scrollTo({top:0,behavior:"smooth"}); };
+  $("again").onclick=()=>{ clearSent(); $("form").reset(); photoBlob=null; $("fThumb").textContent="＋"; pickAmount(gift>0?"1000":"0"); d.hidden=true; $("form").hidden=false; $("homenagem").scrollTo({top:0,behavior:"smooth"}); };
   if(scroll) d.scrollIntoView({behavior:"smooth",block:"start"});
 }
 
@@ -937,7 +970,8 @@ function openForm(){ const p=$("homenagem"); if(!p.hidden) return; p.hidden=fals
 function closeForm(){ const p=$("homenagem"); if(p.hidden) return false; p.hidden=true; document.documentElement.style.overflow=""; return true; }
 function route(){ const h=location.hash; if(h==="#painel") return adminView();
   $("admin").hidden=true; $("site").hidden=false; document.title="Aniversário do Buda · 19.10.2026"; if(!started){ started=true; startSite(); }
-  if(h==="#homenagem"||h==="#presente") return openForm();
+  if(h==="#mensagem"){ pickAmount("0"); return openForm(); }
+  if(h==="#homenagem"||h==="#presente"){ if(gift===0) pickAmount("1000"); return openForm(); }
   if(closeForm()){ loadStats(); loadWall(); if(h==="#mural") setTimeout(()=>$("mural").scrollIntoView({block:"start"}),40); } }
 window.addEventListener("hashchange",route);
 route();
