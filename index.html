@@ -165,6 +165,21 @@ details.priv summary{cursor:pointer;padding:10px 0;font-weight:600;font-size:.9r
 .status li.ok span{background:var(--ok);color:#06210f}
 .status li.wait span{background:var(--bg-3);border:1px solid var(--gold-deep)}
 
+/* Tela da mensagem */
+.cta-block{padding-block:44px 8px}
+.cta-card{border:1.5px solid var(--gold-deep);border-radius:24px;padding:24px;background:linear-gradient(160deg,#221b0c,var(--bg-2) 60%);display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.cta-card h2{font-size:clamp(1.7rem,6.5vw,2.4rem)}
+.sheetpage{position:fixed;inset:0;z-index:30;background:var(--bg);overflow-y:auto;-webkit-overflow-scrolling:touch;overscroll-behavior:contain;padding-block:0 calc(48px + env(safe-area-inset-bottom,0px));animation:sheetIn .35s ease}
+.sheetpage[hidden]{display:none}
+.sheet-bar{position:sticky;top:0;z-index:2;background:color-mix(in srgb,var(--bg) 92%,transparent);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+.sheet-bar .wrap{display:flex;align-items:center;justify-content:space-between;gap:10px;height:60px}
+.sheet-back{color:var(--white);text-decoration:none;font-weight:700}
+.sheet-intro{padding-block:28px 22px;display:flex;flex-direction:column;gap:14px}
+.sheet-intro h2{font-size:clamp(2rem,7.5vw,3rem)}
+.sheet-intro p{color:#e7e0cf;font-size:1.05rem;line-height:1.6}
+.sheet-intro p.note{color:var(--muted);font-size:.88rem}
+@keyframes sheetIn{from{transform:translateY(24px);opacity:0}to{transform:none;opacity:1}}
+
 /* Mural */
 .tabs{display:flex;gap:8px;flex-wrap:wrap}
 .tab{appearance:none;border:1.5px solid var(--line);background:transparent;color:var(--muted);border-radius:999px;padding:9px 16px;font:700 .9rem var(--body);cursor:pointer}
@@ -293,12 +308,29 @@ footer{border-top:1px solid var(--line);padding-block:24px calc(24px + env(safe-
   </div>
 </div>
 
-<section id="homenagem">
+<section class="cta-block">
   <div class="wrap narrow">
-    <div class="sec-head">
+    <div class="cta-card">
       <div class="kicker">Livro de visitas</div>
-      <h2>Deixe sua homenagem</h2>
-      <p class="muted">Sem cadastro e sem senha. Assim que o Buda aprovar, ela aparece no mural com seu nome e, se você quiser, com o seu presente.</p>
+      <h2>Deixe sua mensagem de aniversário 💛</h2>
+      <p class="muted">Uma lembrança de vocês, uma palavra de força ou um desejo para esse recomeço. Leva 1 minutinho.</p>
+      <a class="btn gold" href="#homenagem">Escrever minha mensagem</a>
+    </div>
+  </div>
+</section>
+
+<section id="homenagem" class="sheetpage" hidden aria-label="Deixar mensagem para o Buda">
+  <div class="sheet-bar"><div class="wrap narrow">
+    <a class="sheet-back" href="#mural">← Voltar ao mural</a>
+    <span class="brand">Buda <span>· 19.10</span></span>
+  </div></div>
+  <div class="wrap narrow">
+    <div class="sheet-intro">
+      <div class="kicker">Mensagem para o Buda</div>
+      <h2>Deixe sua mensagem de aniversário e apoio</h2>
+      <p>Relembre um momento entre vocês: uma história, uma risada, uma viagem, uma foto antiga. Ou deixe uma palavra de força e um desejo para essa nova fase.</p>
+      <p>Tudo fica guardado para sempre neste mural. Daqui a muitos anos, o Buda vai voltar aqui para lembrar de cada amigo, cliente e parceiro que esteve com ele no aniversário e no recomeço depois da cirurgia. Obrigado pela força 💛</p>
+      <p class="note">Sem cadastro e sem senha. Assim que o Buda aprovar, sua mensagem aparece no mural.</p>
     </div>
 
     <form class="card-form" id="form" novalidate>
@@ -308,10 +340,10 @@ footer{border-top:1px solid var(--line);padding-block:24px calc(24px + env(safe-
           <label class="f" for="fName">Nome ou apelido<input type="text" id="fName" maxlength="60" autocomplete="name" required></label>
           <label class="f" for="fInsta">Instagram <small>opcional</small><input type="text" id="fInsta" maxlength="31" placeholder="@seuperfil" autocapitalize="off" autocorrect="off"></label>
         </div>
-        <label class="f" for="fMsg">Mensagem<textarea id="fMsg" maxlength="1500" required placeholder="Escreva o que você quer que o Buda guarde para sempre…"></textarea></label>
+        <label class="f" for="fMsg">Mensagem<textarea id="fMsg" maxlength="1500" required placeholder="Conte uma lembrança de vocês, deixe uma palavra de força ou um desejo para essa nova fase…"></textarea></label>
         <label class="upload" for="fPhoto">
           <span class="thumb" id="fThumb">＋</span>
-          <span><strong>Adicionar uma foto</strong><br><span class="note">Opcional. Uma foto de vocês juntos fica linda no mural.</span></span>
+          <span><strong>Adicionar uma foto</strong><br><span class="note">Opcional. Uma foto de vocês juntos ou de um momento marcante fica linda no mural.</span></span>
           <input type="file" id="fPhoto" accept="image/*">
         </label>
       </div>
@@ -341,7 +373,7 @@ footer{border-top:1px solid var(--line);padding-block:24px calc(24px + env(safe-
           <span>Autorizo a publicação da minha homenagem com as opções acima. Meus dados são usados só para este mural e posso pedir a remoção quando quiser.</span></label>
         <div class="hp" aria-hidden="true"><label for="fSite">Não preencha</label><input type="text" id="fSite" tabindex="-1" autocomplete="off"></div>
         <p class="err" id="fErr" role="alert"></p>
-        <button type="submit" class="btn gold" id="fBtn">Enviar minha homenagem</button>
+        <button type="submit" class="btn gold" id="fBtn">Enviar minha mensagem</button>
       </div>
     </form>
 
@@ -410,6 +442,10 @@ const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt
 const brl = c => (c/100).toLocaleString("pt-BR",{style:"currency",currency:"BRL",minimumFractionDigits:c%100?2:0});
 const handle = h => String(h||"").trim().replace(/^@/,"").replace(/[^A-Za-z0-9._]/g,"").slice(0,30);
 const plain = s => String(s||"").normalize("NFD").replace(/[̀-ͯ]/g,"");
+function hm(t){ return new Date(t).toLocaleTimeString("pt-BR",{hour:"2-digit",minute:"2-digit",timeZone:"America/Sao_Paulo"}); }
+function dmy(t){ return new Date(t).toLocaleDateString("pt-BR",{day:"2-digit",month:"2-digit",year:"numeric",timeZone:"America/Sao_Paulo"}); }
+function exactTime(t){ return "🕒 "+dmy(t)+" às "+hm(t); }
+function shortTime(t){ const today=dmy(Date.now())===dmy(t); return (today?"hoje":dmy(t).slice(0,5))+" às "+hm(t); }
 function ago(t){ const d=(Date.now()-new Date(t))/1000; if(d<60) return "agora"; if(d<3600) return "há "+Math.floor(d/60)+" min"; if(d<86400) return "há "+Math.floor(d/3600)+" h";
   return new Date(t).toLocaleDateString("pt-BR",{day:"2-digit",month:"2-digit",year:"numeric"}); }
 function fullDate(t){ return new Date(t).toLocaleString("pt-BR",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"}); }
@@ -470,7 +506,7 @@ function renderGallery(list){
 let liveItems=[], liveIdx=0, liveTimer=null, liveMode="gift", liveKey="";
 function liveItemHTML(r){ const nm=r.name||"Alguém especial";
   return '<span class="li-av">'+esc(nm.trim().charAt(0).toUpperCase()||"?")+'</span><span class="li-txt"><span class="li-l1"><b>'+esc(nm)+'</b> '+
-    '</span><span class="li-l2">'+(r.has_gift?'🎁 presente · ':'💛 mensagem · ')+ago(r.published_at)+'</span></span>'+
+    '</span><span class="li-l2">'+(r.has_gift?'🎁 presente · ':'💛 mensagem · ')+shortTime(r.published_at)+'</span></span>'+
     (r.has_gift?'<span class="li-amt">'+(r.gift_cents?brl(r.gift_cents):'🎁')+'</span>':''); }
 function renderLive(rows,mode){
   const key=mode+rows.map(r=>r.id).join(",");
@@ -494,7 +530,7 @@ function postHTML(r,isNew){ const name=r.name||"Alguém especial", ph=photoUrl(r
    (ph?'<img class="img" loading="lazy" alt="Foto enviada por '+esc(name)+'" src="'+esc(ph)+'">':'')+
    '<div class="in"><div class="who"><div class="av">'+esc(name.trim().charAt(0).toUpperCase()||"?")+'</div><div><strong>'+esc(name)+'</strong>'+
    (h?'<a href="https://instagram.com/'+esc(h)+'" target="_blank" rel="noopener">@'+esc(h)+'</a>':'')+'</div></div>'+
-   '<p class="msg">'+esc(r.message)+'</p><span class="when" title="'+esc(fullDate(r.published_at))+'">'+ago(r.published_at)+'</span></div></article>'; }
+   '<p class="msg">'+esc(r.message)+'</p><span class="when">'+exactTime(r.published_at)+'</span></div></article>'; }
 const WALL_TABS={
   all:{sub:'Todas as homenagens · as mais recentes primeiro · <b class="legend">em dourado, quem enviou presente 🎁</b>',empty:"As homenagens aprovadas aparecem aqui. Seja a primeira pessoa a deixar a sua!"},
   msg:{sub:"Mensagens de carinho · as mais recentes primeiro",empty:"As mensagens aprovadas aparecem aqui. Deixe a sua!"},
@@ -571,7 +607,7 @@ $("form").addEventListener("submit",async e=>{ e.preventDefault(); const err=$("
     if(error) throw error;
     showDone(name,data&&data.ref);
   }catch(ex){ err.textContent=/rate_limited/.test(ex?.message||"")?"Muita gente enviando agora. Espere um minuto e tente de novo.":"Não foi possível enviar. Confira sua internet e tente de novo."; }
-  finally{ btn.disabled=false; btn.textContent="Enviar minha homenagem"; }
+  finally{ btn.disabled=false; btn.textContent="Enviar minha mensagem"; }
 });
 /* ---------- tela final (fica salva no celular, mesmo se a pessoa sair para o app do banco) ---------- */
 const SENT_KEY="buda_envio";
@@ -611,7 +647,7 @@ function renderSent(st,scroll){
     if(st.code) $("showPix").onclick=()=>{ st.paid=false; saveSent(st); renderSent(st,true); };
   }
   d.insertAdjacentHTML("beforeend",'<button type="button" class="btn sm" id="again">Enviar outra homenagem</button>');
-  $("again").onclick=()=>{ clearSent(); $("form").reset(); photoBlob=null; gift=0; $("fThumb").textContent="＋"; document.querySelectorAll(".chip").forEach((c,i)=>c.setAttribute("aria-pressed",i===0)); $("otherBox").hidden=true; d.hidden=true; $("form").hidden=false; $("homenagem").scrollIntoView({behavior:"smooth"}); };
+  $("again").onclick=()=>{ clearSent(); $("form").reset(); photoBlob=null; gift=0; $("fThumb").textContent="＋"; document.querySelectorAll(".chip").forEach((c,i)=>c.setAttribute("aria-pressed",i===0)); $("otherBox").hidden=true; d.hidden=true; $("form").hidden=false; $("homenagem").scrollTo({top:0,behavior:"smooth"}); };
   if(scroll) d.scrollIntoView({behavior:"smooth",block:"start"});
 }
 
@@ -750,11 +786,15 @@ async function exportAll(){ const [t,p,w,s]=await Promise.all([sb.from("tributes
 /* ---------- início ---------- */
 async function startSite(){ if(!configured) $("setupWarn").hidden=false;
   await loadSettings(); loadStats(); loadWall(); loadLiveOnly(); loadWish();
-  const sent=loadSent(); if(sent) renderSent(sent, !!sent.code && !sent.paid);
+  const sent=loadSent(); if(sent){ renderSent(sent,false); if(sent.code && !sent.paid && location.hash!=="#homenagem") location.hash="homenagem"; }
   setInterval(()=>{ if(document.hidden) return; loadStats(); loadWall(); loadLiveOnly(); },20000); }
 let started=false;
-function route(){ if(location.hash==="#painel") return adminView();
-  $("admin").hidden=true; $("site").hidden=false; document.title="Aniversário do Buda · 19.10.2026"; if(!started){ started=true; startSite(); } }
+function openForm(){ const p=$("homenagem"); if(!p.hidden) return; p.hidden=false; p.scrollTop=0; document.documentElement.style.overflow="hidden"; }
+function closeForm(){ const p=$("homenagem"); if(p.hidden) return false; p.hidden=true; document.documentElement.style.overflow=""; return true; }
+function route(){ const h=location.hash; if(h==="#painel") return adminView();
+  $("admin").hidden=true; $("site").hidden=false; document.title="Aniversário do Buda · 19.10.2026"; if(!started){ started=true; startSite(); }
+  if(h==="#homenagem"||h==="#presente") return openForm();
+  if(closeForm()){ loadStats(); loadWall(); if(h==="#mural") setTimeout(()=>$("mural").scrollIntoView({block:"start"}),40); } }
 window.addEventListener("hashchange",route);
 route();
 </script>
