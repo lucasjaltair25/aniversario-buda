@@ -35,6 +35,7 @@ window.CONFIG = {
   color-scheme:dark;
 }
 *{box-sizing:border-box}
+[hidden]{display:none!important}
 html{scroll-behavior:smooth;scroll-padding-top:72px}
 body{margin:0;background:var(--bg);color:var(--white);font:16px/1.6 var(--body);-webkit-font-smoothing:antialiased}
 .wrap{max-width:1080px;margin:0 auto;padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px))}
@@ -164,6 +165,21 @@ details.priv summary{cursor:pointer;padding:10px 0;font-weight:600;font-size:.9r
 .status li span{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;flex:none;font-size:.95rem}
 .status li.ok span{background:var(--ok);color:#06210f}
 .status li.wait span{background:var(--bg-3);border:1px solid var(--gold-deep)}
+
+/* Formas de pagamento */
+.paym{display:flex;flex-direction:column;gap:8px;margin-top:4px}
+.paym-h{font-weight:700;font-size:.92rem}
+.mchips{display:flex;gap:8px;flex-wrap:wrap}
+.mchip{appearance:none;flex:1 1 90px;display:flex;flex-direction:column;align-items:center;gap:1px;border:1.5px solid var(--line);background:var(--bg);color:var(--white);border-radius:14px;padding:10px 8px;cursor:pointer;font:600 .95rem var(--body)}
+.mchip[hidden]{display:none}
+.mchip small{font:500 .72rem var(--body);color:var(--muted)}
+.mchip[aria-pressed="true"]{border-color:var(--gold);background:#221b0c}
+.ctabs{display:flex;gap:6px;width:100%}
+.ctab{flex:1;appearance:none;border:1.5px solid var(--line);background:var(--bg);color:var(--muted);border-radius:12px;padding:9px 4px;font:700 .85rem var(--body);cursor:pointer}
+.ctab[aria-selected="true"]{border-color:var(--gold);color:var(--white);background:#221b0c}
+.netwarn{width:100%;text-align:left;border:1px solid var(--warn);color:#f6d3a8;background:#2a1d0c;border-radius:12px;padding:10px 12px;font-size:.86rem;line-height:1.45}
+.approx{font-size:.95rem;color:#e7e0cf}
+.approx b{color:var(--gold)}
 
 /* Tela da mensagem */
 .cta-block{padding-block:44px 8px}
@@ -373,13 +389,21 @@ footer{border-top:1px solid var(--line);padding-block:24px calc(24px + env(safe-
       <div class="step" id="presente">
         <div class="step-h"><i>2</i>Escolha seu presente</div>
         <div class="chips" id="chips">
-          <button type="button" class="chip" data-v="1000" aria-pressed="true">R$ 10<small>presente Pix</small></button>
-          <button type="button" class="chip" data-v="5000" aria-pressed="false">R$ 50<small>presente Pix</small></button>
-          <button type="button" class="chip" data-v="10000" aria-pressed="false">R$ 100<small>presente Pix</small></button>
+          <button type="button" class="chip" data-v="1000" aria-pressed="true">R$ 10<small>presente</small></button>
+          <button type="button" class="chip" data-v="5000" aria-pressed="false">R$ 50<small>presente</small></button>
+          <button type="button" class="chip" data-v="10000" aria-pressed="false">R$ 100<small>presente</small></button>
           <button type="button" class="chip" data-v="outro" aria-pressed="false">Outro valor<small>a partir de R$ 10</small></button>
         </div>
         <label class="f" for="fOther" id="otherBox" hidden>Valor do presente (R$)<input type="number" id="fOther" min="10" step="1" inputmode="numeric" placeholder="Mínimo R$ 10"></label>
-        <p class="note" id="pixNote">Depois de enviar, aparecem o QR Code e o Pix Copia e Cola. Sua mensagem e seu presente entram juntos no mural quando o Buda confirmar o Pix, com destaque para quem presenteou 🎁</p>
+        <div class="paym" id="payBox">
+          <div class="paym-h">Como quer presentear?</div>
+          <div class="mchips" id="mchips">
+            <button type="button" class="mchip" data-m="pix" aria-pressed="true"><b>Pix</b><small>na hora</small></button>
+            <button type="button" class="mchip" data-m="card" aria-pressed="false" hidden><b>💳 Cartão</b><small>crédito</small></button>
+            <button type="button" class="mchip" data-m="crypto" aria-pressed="false" hidden><b>₿ Cripto</b><small>USDT · BTC · ETH</small></button>
+          </div>
+        </div>
+        <p class="note" id="pixNote">Depois de enviar, aparecem as instruções de pagamento. Sua mensagem e seu presente entram juntos no mural quando o Buda confirmar o recebimento, com destaque para quem presenteou 🎁</p>
       </div>
 
       <div class="step">
@@ -496,12 +520,22 @@ const C = window.CONFIG||{};
 const configured = /^https:\/\//.test(C.SUPABASE_URL||"") && (C.SUPABASE_ANON_KEY||"").length>20;
 const sb = configured ? supabase.createClient(C.SUPABASE_URL, C.SUPABASE_ANON_KEY) : null;
 const photoUrl = p => p && sb ? sb.storage.from("fotos").getPublicUrl(p).data.publicUrl : "";
-let SETTINGS = {pix_key:"",pix_name:"BUDA",pix_city:"SAO PAULO",show_total:true,hero_photo:""};
+let SETTINGS = {pix_key:"",pix_name:"BUDA",pix_city:"SAO PAULO",show_total:true,hero_photo:"",infinite_tag:"",card_link:"",crypto_usdt:"",crypto_btc:"",crypto_eth:""};
 
 async function loadSettings(){ if(!sb) return; const {data}=await sb.from("public_settings").select("*"); (data||[]).forEach(r=>SETTINGS[r.key]=r.value);
   renderGallery(heroList(SETTINGS.hero_photo));
   $("sTotalBox").hidden = SETTINGS.show_total===false; document.querySelector(".stats").style.gridTemplateColumns = SETTINGS.show_total===false?"repeat(2,1fr)":"";
-  const hasPix=!!String(SETTINGS.pix_key||"").trim(); $("presente").hidden=!hasPix; }
+  const has=k=>!!String(SETTINGS[k]||"").trim();
+  const hasPix=has("pix_key"), hasCard=has("infinite_tag")||/^https:\/\//.test(String(SETTINGS.card_link||"")), hasCrypto=has("crypto_usdt")||has("crypto_btc")||has("crypto_eth");
+  $("presente").hidden=!(hasPix||hasCard||hasCrypto);
+  document.querySelector('.mchip[data-m="pix"]').hidden=!hasPix;
+  document.querySelector('.mchip[data-m="card"]').hidden=!hasCard;
+  document.querySelector('.mchip[data-m="crypto"]').hidden=!hasCrypto;
+  $("payBox").hidden=[hasPix,hasCard,hasCrypto].filter(Boolean).length<2;
+  if(!hasPix) setMethod(hasCard?"card":"crypto"); }
+let payMethod="pix";
+function setMethod(m){ payMethod=m; document.querySelectorAll(".mchip").forEach(c=>c.setAttribute("aria-pressed",String(c.dataset.m===m))); }
+document.addEventListener("click",e=>{ const c=e.target.closest(".mchip"); if(c) setMethod(c.dataset.m); });
 
 /* ---------- números + ao vivo ---------- */
 async function loadStats(){ if(!sb) return; const {data}=await sb.from("public_stats").select("*").single(); if(!data) return;
@@ -633,7 +667,7 @@ $("form").addEventListener("submit",async e=>{ e.preventDefault(); const err=$("
     if(photoBlob){ const p="t/"+crypto.randomUUID()+".jpg"; const up=await sb.storage.from("fotos").upload(p,photoBlob,{contentType:"image/jpeg",upsert:false}); if(!up.error) path=p; }
     const {data,error}=await sb.rpc("submit_tribute",{p_name:name,p_instagram:handle($("fInsta").value),p_message:msg,p_photo_path:path,
       p_show_name:$("pName").checked,p_show_instagram:$("pInsta").checked,p_show_photo:$("pPhoto").checked,p_show_gift_amount:$("pAmount").checked,
-      p_gift_cents:gift,p_consent:true,p_website:$("fSite").value});
+      p_gift_cents:gift,p_consent:true,p_website:$("fSite").value,p_method:payMethod});
     if(error) throw error;
     showDone(name,data&&data.ref);
   }catch(ex){ err.textContent=/rate_limited/.test(ex?.message||"")?"Muita gente enviando agora. Espere um minuto e tente de novo.":/gift_min/.test(ex?.message||"")?"O presente mínimo é R$ 10.":"Não foi possível enviar. Confira sua internet e tente de novo."; }
@@ -645,36 +679,84 @@ function saveSent(st){ try{ localStorage.setItem(SENT_KEY,JSON.stringify(st)); }
 function loadSent(){ try{ const st=JSON.parse(localStorage.getItem(SENT_KEY)||"null"); if(st && Date.now()-st.t<3*86400000) return st; }catch(e){} return null; }
 function clearSent(){ try{ localStorage.removeItem(SENT_KEY); }catch(e){} }
 function showDone(name,ref){
-  const st={name,ref,gift,code:"",paid:false,t:Date.now()};
-  if(gift>0 && SETTINGS.pix_key) st.code=pixPayload(String(SETTINGS.pix_key),SETTINGS.pix_name,SETTINGS.pix_city,gift,ref);
+  const st={name,ref,gift,method:payMethod,code:"",paid:false,t:Date.now()};
+  if(payMethod==="pix" && gift>0 && SETTINGS.pix_key) st.code=pixPayload(String(SETTINGS.pix_key),SETTINGS.pix_name,SETTINGS.pix_city,gift,ref);
   saveSent(st); renderSent(st,true);
+}
+const COINS={usdt:{label:"USDT",net:"rede TRON (TRC20)",key:"crypto_usdt",cg:"tether",dec:2},btc:{label:"Bitcoin",net:"rede Bitcoin",key:"crypto_btc",cg:"bitcoin",dec:6},eth:{label:"Ethereum",net:"rede Ethereum (ERC20)",key:"crypto_eth",cg:"ethereum",dec:5}};
+let cgPrices=null;
+async function loadPrices(){ if(cgPrices) return cgPrices; try{ const r=await fetch("https://api.coingecko.com/api/v3/simple/price?ids=tether,bitcoin,ethereum&vs_currencies=brl"); if(r.ok) cgPrices=await r.json(); }catch(e){} return cgPrices; }
+const methodName=m=>({pix:"Pix",card:"pagamento no cartão",crypto:"envio em cripto"}[m]||"presente");
+function findUrl(o){ if(!o) return ""; if(typeof o==="string") return /^https:\/\//.test(o)?o:""; for(const k of ["url","link","checkout_url","payment_url","invoice_url"]) if(typeof o[k]==="string"&&/^https:\/\//.test(o[k])) return o[k];
+  for(const v of Object.values(o)){ const u=typeof v==="object"?findUrl(v):(typeof v==="string"&&/^https:\/\//.test(v)?v:""); if(u) return u; } return ""; }
+async function startCard(st){ const btn=$("cardGo");
+  if(st.cardUrl){ location.href=st.cardUrl; return; }
+  const tag=String(SETTINGS.infinite_tag||"").trim().replace(/^\$/,"");
+  if(tag){ btn.disabled=true; btn.textContent="Gerando pagamento seguro…";
+    try{ const r=await fetch("https://api.checkout.infinitepay.io/links",{method:"POST",headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({handle:tag,order_nsu:st.ref,redirect_url:siteUrl,items:[{quantity:1,price:st.gift,description:"Presente de aniversário para o Buda"}]})});
+      const j=await r.json().catch(()=>null); const u=findUrl(j);
+      if(r.ok&&u){ st.cardUrl=u; saveSent(st); location.href=u; return; }
+    }catch(e){}
+    btn.disabled=false; btn.textContent="💳 Pagar com cartão"; }
+  if(/^https:\/\//.test(String(SETTINGS.card_link||""))){ window.open(SETTINGS.card_link,"_blank","noopener"); return; }
+  toast("Não consegui abrir o cartão agora. Tente de novo ou escolha Pix.");
+}
+async function handleCardReturn(){ const q=new URLSearchParams(location.search); const nsu=q.get("order_nsu"); if(!nsu) return;
+  const info={txn:q.get("transaction_nsu")||"",slug:q.get("slug")||"",receipt:q.get("receipt_url")||"",cap:q.get("capture_method")||""};
+  history.replaceState(null,"",siteUrl+"#homenagem");
+  if(sb) sb.rpc("attach_card_payment",{p_ref:nsu,p_txn:info.txn,p_slug:info.slug,p_receipt:info.receipt}).then(()=>{},()=>{});
+  const st=loadSent(); if(st&&st.ref===nsu){ st.paid=true; st.cardDone=true; saveSent(st); return true; }
+  return false;
+}
+function paidBtnHTML(label){ return '<button type="button" class="btn gold" id="paidBtn" style="width:100%">✓ '+label+'</button>'; }
+function renderPay(st,d,first){
+  const head='<div class="kicker">Mensagem enviada ✓</div><div class="big">Falta só o presente, '+first+'!</div><p class="muted">Seu presente para o Buda:</p><div class="amount">'+brl(st.gift)+'</div>';
+  if(st.method==="card"){
+    d.innerHTML=head+'<button type="button" class="btn gold" id="cardGo" style="width:100%">💳 Pagar com cartão</button>'+
+      '<p class="note" style="text-align:center">Pagamento seguro pela InfinitePay · em até 12x</p>'+
+      '<ol class="howto"><li>Toque em <b>Pagar com cartão</b></li><li>Pague <b>'+brl(st.gift)+'</b> na página segura que abrir</li><li>Você volta para cá sozinho no final</li></ol>'+paidBtnHTML("Já paguei");
+    $("cardGo").onclick=()=>startCard(st);
+  } else if(st.method==="crypto"){
+    const list=Object.entries(COINS).filter(([k,c])=>String(SETTINGS[c.key]||"").trim()); const cur=st.coin&&COINS[st.coin]&&String(SETTINGS[COINS[st.coin].key]||"").trim()?st.coin:list[0][0];
+    st.coin=cur; saveSent(st); const c=COINS[cur], addr=String(SETTINGS[c.key]).trim();
+    d.innerHTML=head+'<div class="ctabs" role="tablist">'+list.map(([k,x])=>'<button type="button" class="ctab" role="tab" data-coin="'+k+'" aria-selected="'+(k===cur)+'">'+x.label+'</button>').join("")+'</div>'+
+      '<p class="approx" id="approx">Envie o equivalente a <b>'+brl(st.gift)+'</b> em '+c.label+'</p>'+
+      '<div class="qr" id="qr"></div><button type="button" class="btn gold" id="copyAddr" style="width:100%">Copiar endereço '+c.label+'</button><div class="code">'+esc(addr)+'</div>'+
+      '<div class="netwarn">⚠️ Envie <b>somente '+c.label+'</b> pela <b>'+c.net+'</b>. Outra moeda ou outra rede pode fazer o valor se perder.</div>'+
+      '<ol class="howto"><li>Copie o endereço</li><li>No seu app (Binance, Trust Wallet…), envie '+c.label+' pela '+c.net+'</li><li><b>Volte aqui</b> para finalizar</li></ol>'+paidBtnHTML("Já enviei");
+    try{ new QRCode($("qr"),{text:addr,width:200,height:200,colorDark:"#000000",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M}); }catch(e){ $("qr").remove(); }
+    $("copyAddr").onclick=async()=>{ await copy(addr); toast("Endereço copiado! Envie pelo seu app e volte aqui."); };
+    d.querySelectorAll(".ctab").forEach(t=>t.onclick=()=>{ st.coin=t.dataset.coin; saveSent(st); renderSent(st,false); });
+    loadPrices().then(p=>{ const v=p&&p[c.cg]&&p[c.cg].brl; if(v&&$("approx")) $("approx").innerHTML='Envie <b>≈ '+(st.gift/100/v).toLocaleString("pt-BR",{maximumFractionDigits:c.dec})+' '+(cur==="usdt"?"USDT":cur.toUpperCase())+'</b> (cerca de '+brl(st.gift)+')'; });
+  } else {
+    d.innerHTML=head+'<div class="qr" id="qr"></div>'+
+     '<button type="button" class="btn gold" id="copyPix" style="width:100%">Copiar Pix Copia e Cola</button>'+
+     '<div class="code" id="pixCode">'+esc(st.code)+'</div>'+
+     '<ol class="howto"><li>Toque em <b>Copiar</b> acima</li><li>Abra o app do seu banco › <b>Pix › Copia e Cola</b></li><li>Pague e <b>volte aqui</b> para finalizar</li></ol>'+paidBtnHTML("Já fiz o Pix");
+    try{ new QRCode($("qr"),{text:st.code,width:220,height:220,colorDark:"#000000",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M}); }catch(e){ $("qr").remove(); }
+    $("copyPix").onclick=async()=>{ await copy(st.code); toast("Pix copiado! Cole no app do banco e depois volte aqui."); };
+  }
+  $("paidBtn").onclick=()=>{ st.paid=true; saveSent(st); renderSent(st,true); };
 }
 function renderSent(st,scroll){
   const d=$("done"); $("form").hidden=true; d.hidden=false;
   const first=esc(String(st.name||"").split(" ")[0]);
-  if(st.code && !st.paid){
-    d.innerHTML='<div class="kicker">Mensagem enviada ✓</div><div class="big">Falta só o Pix, '+first+'!</div>'+
-     '<p class="muted">Seu presente para o Buda:</p><div class="amount">'+brl(st.gift)+'</div>'+
-     '<div class="qr" id="qr"></div>'+
-     '<button type="button" class="btn gold" id="copyPix" style="width:100%">Copiar Pix Copia e Cola</button>'+
-     '<div class="code" id="pixCode">'+esc(st.code)+'</div>'+
-     '<ol class="howto"><li>Toque em <b>Copiar</b> acima</li><li>Abra o app do seu banco › <b>Pix › Copia e Cola</b></li><li>Pague e <b>volte aqui</b> para finalizar</li></ol>'+
-     '<button type="button" class="btn gold" id="paidBtn" style="width:100%">✓ Já fiz o Pix</button>';
-    try{ new QRCode($("qr"),{text:st.code,width:220,height:220,colorDark:"#000000",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M}); }catch(e){ $("qr").remove(); }
-    $("copyPix").onclick=async()=>{ await copy(st.code); toast("Pix copiado! Cole no app do banco e depois volte aqui."); };
-    $("paidBtn").onclick=()=>{ st.paid=true; saveSent(st); renderSent(st,true); };
+  const payable=st.code||st.method==="card"||st.method==="crypto";
+  if(payable && !st.paid){ renderPay(st,d,first);
   } else {
     d.innerHTML='<div class="kicker">Tudo certo ✓</div><div class="big">Obrigado, '+first+'! 💛</div>'+
      '<p class="thanks">Sua mensagem foi enviada para o Buda. Ele agradece de coração pelo carinho e por você fazer parte dessa memória tão importante da vida dele. <strong>Ele vai ler e responder você aqui no mural ❤️</strong></p>'+
      '<ul class="status">'+
        '<li class="ok"><span>✓</span>Mensagem enviada para o Buda</li>'+
-       (st.code?'<li class="wait"><span>⏳</span>Pix de '+brl(st.gift)+' aguardando confirmação</li>':'')+
+       (st.cardDone?'<li class="ok"><span>✓</span>Pagamento no cartão de '+brl(st.gift)+' concluído</li>':'')+
+       (payable&&!st.cardDone?'<li class="wait"><span>⏳</span>'+methodName(st.method||"pix").replace(/^./,c=>c.toUpperCase())+' de '+brl(st.gift)+' aguardando confirmação</li>':'')+
        '<li class="wait"><span>⏳</span>Aguardando aprovação para o mural</li>'+
      '</ul>'+
-     '<p class="muted">Assim que o Buda aprovar, sua homenagem'+(st.code?' e seu presente aparecem':' aparece')+' no mural junto com todas as outras. Acompanhe em breve!</p>'+
+     '<p class="muted">Assim que o Buda aprovar, sua homenagem'+(payable?' e seu presente aparecem':' aparece')+' no mural junto com todas as outras. Acompanhe em breve!</p>'+
      '<a class="btn gold" href="#mural" style="width:100%">Ver o mural</a>'+
-     (st.code?'<button type="button" class="btn sm" id="showPix">Ver o Pix de novo</button>':'');
-    if(st.code) $("showPix").onclick=()=>{ st.paid=false; saveSent(st); renderSent(st,true); };
+     (payable&&!st.cardDone?'<button type="button" class="btn sm" id="showPix">Ver o pagamento de novo</button>':'');
+    if(payable&&!st.cardDone) $("showPix").onclick=()=>{ st.paid=false; saveSent(st); renderSent(st,true); };
   }
   d.insertAdjacentHTML("beforeend",'<button type="button" class="btn sm" id="again">Enviar outra homenagem</button>');
   $("again").onclick=()=>{ clearSent(); $("form").reset(); photoBlob=null; gift=1000; $("fThumb").textContent="＋"; document.querySelectorAll(".chip").forEach((c,i)=>c.setAttribute("aria-pressed",i===0)); $("otherBox").hidden=true; d.hidden=true; $("form").hidden=false; $("homenagem").scrollTo({top:0,behavior:"smooth"}); };
@@ -711,7 +793,7 @@ async function renderAdmin(){
   if(pend.error){ await sb.auth.signOut(); return renderLogin("Este e-mail não tem acesso ao painel."); }
   const tabs=[["pending","Aprovar"],["approved","Publicadas"],["hidden","Ocultas"],["physical","Presentes ML"],["wish","Lista de desejos"],["settings","Configurações"]];
   let h='<div class="adm-head"><div><div class="kicker">Área privada</div><h2>Painel do Buda</h2></div><div style="display:flex;gap:8px"><a class="btn sm" href="./" target="_blank">Ver site</a><button class="btn sm" id="logout">Sair</button></div></div>'+
-   '<div class="sum"><div><b>'+(pend.count||0)+'</b><span>aguardando aprovação</span></div><div><b>'+(pixw.count||0)+'</b><span>Pix a conferir no banco</span></div>'+
+   '<div class="sum"><div><b>'+(pend.count||0)+'</b><span>aguardando aprovação</span></div><div><b>'+(pixw.count||0)+'</b><span>presentes a conferir</span></div>'+
    '<div><b>'+(stats.data?.messages||0)+'</b><span>mensagens publicadas</span></div><div><b style="color:var(--gold)">'+brl(Number(stats.data?.total_cents||0))+'</b><span>Pix confirmado</span></div></div>'+
    '<div class="tabs">'+tabs.map(([k,l])=>'<button class="tab" data-at="'+k+'" aria-selected="'+(admTab===k)+'">'+l+(k==="pending"&&pend.count?' ('+pend.count+')':'')+'</button>').join("")+'</div><div id="admBody" class="list"><p class="note">Carregando…</p></div>'+
    '<button class="btn sm" id="exportBtn">Baixar backup completo</button>';
@@ -726,6 +808,7 @@ async function renderAdmBody(){ const B=$("admBody");
     const {data}=await q; let rows=data||[];
     const search='<input type="search" id="aq" placeholder="Procurar por nome ou data (ex.: 19/10)" value="'+esc(admQ)+'" aria-label="Procurar">';
     if(admQ){ const s=plain(admQ).toLowerCase(); rows=rows.filter(r=>plain(r.name).toLowerCase().includes(s)||fullDate(r.created_at).includes(admQ)); }
+    setTimeout(()=>verifyCards(rows),50);
     B.innerHTML=search+(rows.length?rows.map(tributeRow).join(""):'<div class="empty">'+(admTab==="pending"?"Nenhuma homenagem esperando. 🎉":"Nada aqui.")+'</div>');
     const i=$("aq"); i.oninput=()=>{ admQ=i.value; clearTimeout(i.t); i.t=setTimeout(async()=>{ await renderAdmBody(); const n=$("aq"); n.focus(); n.setSelectionRange(n.value.length,n.value.length); },300); };
   } else if(admTab==="physical"){
@@ -756,9 +839,22 @@ async function renderAdmBody(){ const B=$("admBody");
     B.innerHTML='<div class="ar"><strong>Fotos do topo (carrossel)</strong><p class="note">Passam sozinhas no topo do site e dá para arrastar para o lado, como no Instagram. A primeira é a capa.</p><div class="gal-admin" id="galAdmin"></div><label class="btn gold sm" for="gAdd">+ Adicionar fotos<input type="file" id="gAdd" accept="image/*" multiple hidden></label></div>'+
      '<form class="ar" id="sForm"><label class="f" for="sKey">Sua chave Pix <small>CPF, e-mail, celular (+5511999999999) ou chave aleatória</small><input type="text" id="sKey" value="'+esc(s.pix_key||"")+'"></label>'+
      '<div class="row2"><label class="f" for="sName">Nome do recebedor<input type="text" id="sName" maxlength="25" value="'+esc(s.pix_name||"")+'"></label><label class="f" for="sCity">Cidade<input type="text" id="sCity" maxlength="15" value="'+esc(s.pix_city||"")+'"></label></div>'+
+     '<div class="row2"><strong style="grid-column:1/-1;margin-top:6px">💳 Cartão</strong></div>'+
+     '<label class="f" for="sTag">Sua InfiniteTag (InfinitePay) <small>ex.: lucas-jaltair ou buda-motors · o site gera o pagamento com o valor certo</small><input type="text" id="sTag" autocapitalize="off" placeholder="sem o $" value="'+esc(s.infinite_tag||"")+'"></label>'+
+     '<label class="f" for="sCard">Link de pagamento reserva <small>opcional · só usado se a InfinitePay falhar</small><input type="url" id="sCard" placeholder="https://…" value="'+esc(s.card_link||"")+'"></label>'+
+     '<strong style="margin-top:6px">₿ Cripto</strong><p class="note">Cole o endereço de cada moeda. Deixe vazio a que não quiser mostrar. Confira a rede com cuidado.</p>'+
+     '<label class="f" for="sUsdt">USDT · rede TRON (TRC20) <small>começa com T</small><input type="text" id="sUsdt" autocapitalize="off" value="'+esc(s.crypto_usdt||"")+'"></label>'+
+     '<label class="f" for="sBtc">Bitcoin · rede Bitcoin <small>começa com bc1, 1 ou 3</small><input type="text" id="sBtc" autocapitalize="off" value="'+esc(s.crypto_btc||"")+'"></label>'+
+     '<label class="f" for="sEth">Ethereum · rede Ethereum (ERC20) <small>começa com 0x</small><input type="text" id="sEth" autocapitalize="off" value="'+esc(s.crypto_eth||"")+'"></label>'+
      '<label class="tg" for="sTotal">Mostrar total arrecadado no site<input type="checkbox" id="sTotal" '+(s.show_total!==false?"checked":"")+'></label>'+
      '<button class="btn gold sm" type="submit">Salvar configurações</button><p class="note">Depois de salvar, faça um Pix de teste de R$ 1 pelo site para conferir se chega na sua conta.</p></form>';
-    $("sForm").onsubmit=async e=>{ e.preventDefault(); const rows=[{key:"pix_key",value:$("sKey").value.trim()},{key:"pix_name",value:$("sName").value.trim()},{key:"pix_city",value:$("sCity").value.trim()},{key:"show_total",value:$("sTotal").checked}];
+    $("sForm").onsubmit=async e=>{ e.preventDefault(); const rows=[{key:"pix_key",value:$("sKey").value.trim()},{key:"pix_name",value:$("sName").value.trim()},{key:"pix_city",value:$("sCity").value.trim()},{key:"show_total",value:$("sTotal").checked},
+        {key:"card_link",value:$("sCard").value.trim()},{key:"crypto_usdt",value:$("sUsdt").value.trim()},{key:"crypto_btc",value:$("sBtc").value.trim()},{key:"crypto_eth",value:$("sEth").value.trim()}];
+      rows.push({key:"infinite_tag",value:$("sTag").value.trim().replace(/^\$/,"").toLowerCase()});
+      if(rows[4].value && !/^https:\/\//.test(rows[4].value)){ toast("O link do cartão precisa começar com https://"); return; }
+      if(rows[5].value && !/^T[1-9A-HJ-NP-Za-km-z]{33}$/.test(rows[5].value)){ toast("Endereço USDT (TRC20) parece errado: confira"); return; }
+      if(rows[7].value && !/^0x[0-9a-fA-F]{40}$/.test(rows[7].value)){ toast("Endereço Ethereum parece errado: confira"); return; }
+      if(rows[6].value && !/^(bc1|[13])[a-zA-HJ-NP-Z0-9]{25,62}$/.test(rows[6].value)){ toast("Endereço Bitcoin parece errado: confira"); return; }
       let fail=null; for(const r of rows){ const {error}=await sb.from("site_settings").update({value:r.value}).eq("key",r.key); if(error){ fail=error; break; } }
       if(fail){ console.error(fail); toast("Não salvou: "+(fail.message||fail.code||"erro")); } else toast("Configurações salvas"); };
     const drawHero=()=>{ $("galAdmin").innerHTML=hero.length?hero.map((u,i)=>'<figure><img alt="" src="'+esc(u)+'"><div>'+(i?'<button type="button" data-gl="'+i+'" aria-label="Mover para a esquerda">←</button>':'')+'<button type="button" data-gx="'+i+'" aria-label="Remover">✕</button></div></figure>').join(""):'<p class="note">Nenhuma foto ainda.</p>'; };
@@ -773,16 +869,24 @@ async function renderAdmBody(){ const B=$("admBody");
       $("gAdd").value=""; if(ok && await saveHero()) toast(ok+" foto(s) adicionada(s) ✨"); };
   }
 }
+async function verifyCards(rows){ const {data}=await sb.from("site_settings").select("value").eq("key","infinite_tag").maybeSingle(); const tag=String(data?.value||"").trim(); if(!tag) return;
+  for(const r of rows.filter(x=>x.pay_method==="card"&&x.gift_status==="pending")){ const el=document.getElementById("ck-"+r.id); if(!el) continue;
+    if(!r.card_txn&&!r.card_slug){ el.innerHTML='<span class="pill warn">sem retorno da InfinitePay · confira no app</span>'; continue; }
+    try{ const res=await fetch("https://api.checkout.infinitepay.io/payment_check",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({handle:tag,order_nsu:r.gift_ref,transaction_nsu:r.card_txn,slug:r.card_slug})});
+      const j=await res.json(); el.innerHTML=j&&j.paid?'<span class="pill ok">✓ pago na InfinitePay · '+brl(j.amount||r.gift_cents)+(j.installments>1?' em '+j.installments+'x':'')+'</span>':'<span class="pill bad">ainda não pago na InfinitePay</span>';
+    }catch(e){ el.innerHTML='<span class="pill warn">não consegui verificar · confira no app</span>'; } } }
 function tributeRow(r){ const ph=photoUrl(r.photo_path);
-  const giftLine = r.gift_cents>0 ? '<p>🎁 <strong>'+brl(r.gift_cents)+'</strong> · código <code>'+esc(r.gift_ref||"")+'</code><span class="pill '+({pending:"warn",confirmed:"ok",not_received:"bad"}[r.gift_status]||"warn")+'">'+({pending:"conferir no banco",confirmed:"Pix recebido",not_received:"não chegou"}[r.gift_status]||r.gift_status)+'</span></p>' : '';
+  const giftLine = r.gift_cents>0 ? '<p>🎁 <strong>'+brl(r.gift_cents)+'</strong> · código <code>'+esc(r.gift_ref||"")+'</code> · via <strong>'+({pix:"Pix",card:"Cartão",crypto:"Cripto"}[r.pay_method]||"Pix")+'</strong><span class="pill '+({pending:"warn",confirmed:"ok",not_received:"bad"}[r.gift_status]||"warn")+'">'+({pending:({card:"conferir na InfinitePay",crypto:"conferir na carteira"}[r.pay_method]||"conferir no banco"),confirmed:"recebido",not_received:"não chegou"}[r.gift_status]||r.gift_status)+'</span>'+
+    (r.pay_method==="card"&&r.gift_status==="pending"?'<br><span id="ck-'+r.id+'"><span class="pill warn">verificando na InfinitePay…</span></span>':'')+
+    (r.card_receipt?' <a class="note" href="'+esc(r.card_receipt)+'" target="_blank" rel="noopener">ver comprovante</a>':'')+'</p>' : '';
   const hiddenBits=[!r.show_name&&"nome",!r.show_instagram&&"Instagram",!r.show_photo&&"foto",!r.show_gift_amount&&"valor"].filter(Boolean);
   let acts="";
   if(r.status==="pending"){
-    if(r.gift_cents>0) acts+='<button class="btn sm okb" data-act="approve_paid" data-id="'+r.id+'">Aprovar + Pix recebido</button><button class="btn sm" data-act="approve_nopay" data-id="'+r.id+'">Aprovar só a mensagem</button>';
+    if(r.gift_cents>0) acts+='<button class="btn sm okb" data-act="approve_paid" data-id="'+r.id+'">Aprovar + presente recebido</button><button class="btn sm" data-act="approve_nopay" data-id="'+r.id+'">Aprovar só a mensagem</button>';
     else acts+='<button class="btn sm okb" data-act="approve" data-id="'+r.id+'">Aprovar</button>';
     acts+='<button class="btn sm" data-act="hide" data-id="'+r.id+'">Ocultar</button>';
   } else if(r.status==="approved"){
-    if(r.gift_cents>0&&r.gift_status!=="confirmed") acts+='<button class="btn sm okb" data-act="paid" data-id="'+r.id+'">Pix recebido</button>';
+    if(r.gift_cents>0&&r.gift_status!=="confirmed") acts+='<button class="btn sm okb" data-act="paid" data-id="'+r.id+'">Presente recebido</button>';
     acts+='<button class="btn sm" data-act="hide" data-id="'+r.id+'">Ocultar do mural</button>';
   } else acts+='<button class="btn sm okb" data-act="approve" data-id="'+r.id+'">Publicar</button>';
   if(r.instagram) acts+='<button class="btn sm" data-act="'+(r.ig_verified?"unverify":"verify")+'" data-id="'+r.id+'">'+(r.ig_verified?"Tirar verificado":"Marcar verificado ✓")+'</button>';
@@ -825,7 +929,8 @@ async function exportAll(){ const [t,p,w,s]=await Promise.all([sb.from("tributes
 /* ---------- início ---------- */
 async function startSite(){ if(!configured) $("setupWarn").hidden=false;
   await loadSettings(); loadStats(); loadWall(); loadLiveOnly(); loadWish();
-  const sent=loadSent(); if(sent){ renderSent(sent,false); if(sent.code && !sent.paid && location.hash!=="#homenagem") location.hash="homenagem"; }
+  const cardBack=await handleCardReturn();
+  const sent=loadSent(); if(sent){ renderSent(sent,false); if((sent.code||sent.method==="card"||sent.method==="crypto") && !sent.paid && location.hash!=="#homenagem") location.hash="homenagem"; if(cardBack) openForm(); }
   setInterval(()=>{ if(document.hidden) return; loadStats(); loadWall(); loadLiveOnly(); },20000); }
 let started=false;
 function openForm(){ const p=$("homenagem"); if(!p.hidden) return; p.hidden=false; p.scrollTop=0; document.documentElement.style.overflow="hidden"; }
