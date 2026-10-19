@@ -263,6 +263,9 @@ details.priv summary{cursor:pointer;padding:10px 0;font-weight:600;font-size:.9r
 .storybtn .ig{width:16px;height:16px}
 .storybtn{align-self:stretch;justify-content:center;text-align:center;display:inline-flex;align-items:center;gap:6px;min-height:38px;padding:7px 14px;border-radius:999px;border:1.5px solid var(--line);background:var(--bg);color:var(--gold-2);font:700 .88rem var(--body);cursor:pointer}
 .storybtn:hover{border-color:var(--gold-deep)}
+.sharehint{border:1px solid var(--gold-deep);background:#1a1509;border-radius:14px;padding:12px 14px;color:#e7e0cf!important;text-align:left}
+.tagbox{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap;border:1px solid var(--gold-deep);background:#1a1509;border-radius:14px;padding:10px 12px}
+.tagbox b{color:var(--gold-2)}
 .story-prev{width:100%;max-width:260px;aspect-ratio:9/16;align-self:center;border-radius:14px;border:1px solid var(--line);background:var(--bg);object-fit:contain}
 .readmore{align-self:flex-start;margin-top:-6px;background:none;border:0;padding:0;color:var(--gold-2);font:700 .9rem var(--body);cursor:pointer}
 .who strong{display:block;overflow-wrap:anywhere;line-height:1.2;font-size:1.08rem}
@@ -633,7 +636,8 @@ function wrap(ctx,text,maxW){ const out=[]; String(text||"").split(/\n/).forEach
   words.forEach(w=>{ const t=line?line+" "+w:w; if(ctx.measureText(t).width<=maxW) line=t; else { if(line) out.push(line); line=w; while(ctx.measureText(line).width>maxW && line.length>1){ let k=line.length-1; while(k>1&&ctx.measureText(line.slice(0,k)).width>maxW) k--; out.push(line.slice(0,k)); line=line.slice(k); } } });
   out.push(line); }); while(out.length&&out[out.length-1]==="") out.pop(); return out; }
 function clampLines(ctx,lines,max,maxW){ if(lines.length<=max) return lines; const l=lines.slice(0,max); let last=l[max-1]; while(last.length&&ctx.measureText(last+"…").width>maxW) last=last.slice(0,-1); l[max-1]=last.trimEnd()+"…"; return l; }
-async function makeStory(r){
+async function isOwnerViewer(){ try{ if(!sb) return false; const {data}=await sb.auth.getSession(); return !!(data&&data.session); }catch(e){ return false; } }
+async function makeStory(r,owner){
   try{ await document.fonts.ready; }catch(e){}
   const W=1080,H=1920,P=80, c=document.createElement("canvas"); c.width=W; c.height=H; const x=c.getContext("2d");
   const D='"Bricolage Grotesque", "Arial Narrow", system-ui, sans-serif', B='Figtree, system-ui, -apple-system, sans-serif';
@@ -643,9 +647,11 @@ async function makeStory(r){
   const g2=x.createRadialGradient(0,H,10,0,H,900); g2.addColorStop(0,"rgba(242,193,78,.18)"); g2.addColorStop(1,"rgba(242,193,78,0)"); x.fillStyle=g2; x.fillRect(0,0,W,H);
   x.textBaseline="top"; x.fillStyle=gold; x.font="700 30px "+B; x.letterSpacing="6px";
   x.fillText("ANIVERSÁRIO DO BUDA · 19.10.26",P,110); x.letterSpacing="0px";
-  x.fillStyle=white; x.font="800 74px "+D; x.fillText("Minha homenagem",P,165); x.fillStyle=gold; x.fillText("para o Buda 💛",P,248);
+  x.fillStyle=white; x.font="800 74px "+D;
+  if(owner){ x.fillText("Carinho que",P,165); x.fillStyle=gold; x.fillText("recebi 💛",P,248); }
+  else { x.fillText("Minha homenagem",P,165); x.fillStyle=gold; x.fillText("para o Buda 💛",P,248); }
   // cartão
-  const cx=P-20, cw=W-2*(P-20), top0=380, bottomLimit=H-360; let cy=top0;
+  const cx=P-20, cw=W-2*(P-20), top0=380, bottomLimit=owner?H-130:H-290; let cy=top0;
   const name=r.name||"Alguém especial", ph=photoUrl(r.photo_path), img=await loadImg(ph);
   x.font="400 40px "+B; const msgW=cw-80; let msg=wrap(x,r.message,msgW);
   x.font="400 36px "+B; let rep=r.reply?wrap(x,r.reply,msgW-40):[];
@@ -685,28 +691,28 @@ async function makeStory(r){
     x.font="800 34px "+B; x.fillStyle=gold; x.fillText("💬 Buda respondeu",ix+36,y+26);
     x.fillStyle="#ece5d4"; x.font="400 36px "+B; let yy=y+80; rep.forEach(l=>{ x.fillText(l,ix+36,yy); yy+=50; }); }
   // rodapé
-  x.fillStyle=gold; x.font="700 36px "+B; x.fillText(BUDA_IG?"Marque @"+BUDA_IG.replace(/^@/,"")+" 💛":"Marque o Buda 💛",P,H-310);
-  const fy=H-230; x.fillStyle=white; x.font="700 40px "+B; x.fillText("Deixe a sua também 👇",P,fy);
-  const link=(location.host+location.pathname).replace(/\/$/,""); x.font="800 40px "+D;
-  const lw=Math.min(W-2*P,x.measureText(link).width+80); rr(x,P,fy+70,lw,90,45); x.fillStyle=gold; x.fill();
-  x.fillStyle="#1a1405"; x.fillText(link,P+40,fy+92);
+  if(!owner){ x.fillStyle=gold; x.font="800 42px "+B; x.fillText(BUDA_IG?"Marque @"+BUDA_IG.replace(/^@/,"")+" 💛":"Marque o Buda 💛",P,H-230);
+    x.fillStyle=white; x.font="600 36px "+B; x.fillText("Deixe a sua mensagem de carinho",P,H-165); x.fillText("para o Buda também 🎂",P,H-118); }
   return await new Promise(res=>c.toBlob(b=>res(b),"image/png"));
 }
 function closeModal(){ $("modalHost").innerHTML=""; }
 document.addEventListener("click",async e=>{ const b=e.target.closest("[data-story]"); if(!b) return; const r=POSTS[b.dataset.story]; if(!r) return;
   const old=b.textContent; b.disabled=true; b.textContent="Gerando imagem…";
-  let blob=null; try{ blob=await makeStory(r); }catch(err){ console.error(err); }
+  const owner=await isOwnerViewer();
+  let blob=null; try{ blob=await makeStory(r,owner); }catch(err){ console.error(err); }
   b.disabled=false; b.textContent=old; if(!blob){ toast("Não consegui gerar a imagem. Tente de novo."); return; }
   const url=URL.createObjectURL(blob), file=new File([blob],"homenagem-buda.png",{type:"image/png"});
   const canFile=!!(navigator.canShare&&navigator.canShare({files:[file]}));
-  $("modalHost").innerHTML='<div class="modal" id="mdl"><div class="sheet"><h3 style="font-size:1.5rem">Compartilhe no seu Instagram 💛</h3>'+
+  $("modalHost").innerHTML='<div class="modal" id="mdl"><div class="sheet"><h3 style="font-size:1.5rem">'+(owner?'Repostar no seu Stories 💛':'Compartilhe no seu Instagram 💛')+'</h3>'+
     '<img class="story-prev" alt="Prévia da imagem para o Stories" src="'+url+'">'+
     (canFile?'<button type="button" class="btn gold" id="doShare">Compartilhar no Instagram</button><p class="note">No menu que abrir, escolha <b>Instagram</b> e depois <b>Stories</b>.</p>'
             :'<p class="note"><b>Toque e segure na imagem</b> e escolha <b>Salvar</b> ou <b>Adicionar às Fotos</b>. Depois poste no Stories pelo Instagram.</p>')+
-    '<p class="note"><b>Marque o Buda'+(BUDA_IG?' (@'+esc(BUDA_IG.replace(/^@/,""))+')':'')+'</b> no Stories para ele ver e repostar!</p><p class="note">Dica: adicione a <b>figurinha de Link</b> com <b>'+esc(location.host+location.pathname)+'</b> para os amigos deixarem a mensagem deles também 💛</p>'+
+    (owner?(r.instagram?'<div class="tagbox"><span>Marque <b>@'+esc(r.instagram)+'</b> no seu Stories</span><button type="button" class="btn sm" id="copyTag">Copiar @</button></div>':'<p class="note">Essa pessoa não deixou Instagram.</p>')
+          :'<p class="note"><b>Marque o Buda'+(BUDA_IG?' (@'+esc(BUDA_IG.replace(/^@/,""))+')':'')+'</b> no Stories para ele ver e repostar!</p>')+
     '<button type="button" class="btn sm" id="mdlClose">Fechar</button></div></div>';
+  if($("copyTag")) $("copyTag").onclick=()=>copy("@"+r.instagram);
   $("mdlClose").onclick=closeModal; $("mdl").onclick=ev=>{ if(ev.target.id==="mdl") closeModal(); };
-  if(canFile) $("doShare").onclick=async()=>{ try{ await navigator.share({files:[file],title:"Minha homenagem para o Buda",text:"Deixe a sua também: "+location.host+location.pathname}); }catch(err){ if(err&&err.name!=="AbortError") toast("Não deu para compartilhar. Segure na imagem e salve."); } };
+  if(canFile) $("doShare").onclick=async()=>{ try{ await navigator.share({files:[file],title:"Minha homenagem para o Buda",text:owner?"":"Deixe a sua também: "+location.host+location.pathname}); }catch(err){ if(err&&err.name!=="AbortError") toast("Não deu para compartilhar. Segure na imagem e salve."); } };
 });
 const WALL_TABS={
   all:{sub:'Todas as homenagens · as mais recentes primeiro · <b class="legend">em dourado, quem enviou presente 🎁</b>',empty:"As homenagens aprovadas aparecem aqui. Seja a primeira pessoa a deixar a sua!"},
@@ -896,6 +902,7 @@ function renderSent(st,scroll){
        (payable&&!st.cardDone?'<li class="wait"><span>⏳</span>'+methodName(st.method||"pix").replace(/^./,c=>c.toUpperCase())+' de '+brl(st.gift)+' aguardando confirmação</li>':'')+
        '<li class="wait"><span>⏳</span>Aguardando aprovação para o mural</li>'+
      '</ul>'+
+     '<p class="note sharehint">📲 Quando o Buda aprovar e responder, volte no mural e toque em <b>“Compartilhe no seu Instagram”</b> na sua homenagem. Vira uma imagem pronta para o seu Stories, com a sua mensagem e a resposta dele!</p>'+
      '<p class="muted">Assim que o Buda aprovar, sua homenagem'+(payable?' e seu presente aparecem':' aparece')+' no mural junto com todas as outras. Acompanhe em breve!</p>'+
      '<a class="btn gold" href="#mural" style="width:100%">Ver o mural</a>'+
      (payable&&!st.cardDone?'<button type="button" class="btn sm" id="showPix">Ver o pagamento de novo</button>':'');
