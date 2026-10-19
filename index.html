@@ -577,8 +577,9 @@ async function renderAdmBody(){ const B=$("admBody");
      '<label class="tg" for="sTotal">Mostrar total arrecadado no site<input type="checkbox" id="sTotal" '+(s.show_total!==false?"checked":"")+'></label>'+
      '<button class="btn gold sm" type="submit">Salvar configurações</button><p class="note">Depois de salvar, faça um Pix de teste de R$ 1 pelo site para conferir se chega na sua conta.</p></form>';
     $("sForm").onsubmit=async e=>{ e.preventDefault(); const rows=[{key:"pix_key",value:$("sKey").value.trim()},{key:"pix_name",value:$("sName").value.trim()},{key:"pix_city",value:$("sCity").value.trim()},{key:"show_total",value:$("sTotal").checked}];
-      const f=$("sPhoto").files[0]; if(f){ try{ const b=await resizeImage(f,1200,.85); const p="site/hero-"+Date.now()+".jpg"; const up=await sb.storage.from("fotos").upload(p,b,{contentType:"image/jpeg"}); if(!up.error) rows.push({key:"hero_photo",value:photoUrl(p)}); }catch(x){ toast("Não consegui abrir a foto"); } }
-      const {error}=await sb.from("site_settings").upsert(rows); toast(error?"Não salvou. Tente de novo.":"Configurações salvas"); };
+      const f=$("sPhoto").files[0]; if(f){ try{ const b=await resizeImage(f,1200,.85); const p="site/hero-"+Date.now()+".jpg"; const up=await sb.storage.from("fotos").upload(p,b,{contentType:"image/jpeg"}); if(!up.error) rows.push({key:"hero_photo",value:photoUrl(p)}); else { toast("Foto não subiu: "+(up.error.message||"erro")); return; } }catch(x){ toast("Não consegui abrir a foto"); return; } }
+      let fail=null; for(const r of rows){ const {error}=await sb.from("site_settings").update({value:r.value}).eq("key",r.key); if(error){ fail=error; break; } }
+      if(fail){ console.error(fail); toast("Não salvou: "+(fail.message||fail.code||"erro")); } else toast("Configurações salvas"); };
   }
 }
 function tributeRow(r){ const ph=photoUrl(r.photo_path);
@@ -608,7 +609,7 @@ document.addEventListener("click",async e=>{ if($("admin").hidden) return; const
       const {data}=await sb.from("tributes").select("photo_path").eq("id",id).single(); if(data?.photo_path) await sb.storage.from("fotos").remove([data.photo_path]);
       await sb.from("tributes").delete().eq("id",id); delArm=null; toast("Excluída"); return renderAdmin(); }
     b.disabled=true; const {error}=await sb.from("tributes").update(patch).eq("id",id);
-    toast(error?"Não deu certo. Tente de novo.":(patch.status==="approved"?"Publicada no mural ✨":"Atualizado")); return renderAdmin(); }
+    toast(error?"Não deu certo: "+(error.message||error.code):(patch.status==="approved"?"Publicada no mural ✨":"Atualizado")); return renderAdmin(); }
   if(d.pg){ await sb.from("physical_gifts").update({status:d.s}).eq("id",d.pg); toast("Atualizado"); return renderAdmBody(); }
   if(d.wst){ await sb.from("wishlist_items").update({status:d.v}).eq("id",d.wst); return renderAdmBody(); }
   if(d.wact){ await sb.from("wishlist_items").update({active:d.v==="true"}).eq("id",d.wact); return renderAdmBody(); }
