@@ -725,6 +725,14 @@ function findUrl(o){ if(!o) return ""; if(typeof o==="string") return /^https:\/
 async function startCard(st){ const btn=$("cardGo");
   if(st.cardUrl){ location.href=st.cardUrl; return; }
   const tag=String(SETTINGS.infinite_tag||"").trim().replace(/^\$/,"");
+  if(sb){ btn.disabled=true; btn.textContent="Gerando pagamento seguro…";
+    try{ const {data,error}=await sb.rpc("create_card_link",{p_ref:st.ref,p_redirect:siteUrl});
+      let body=data&&data.body; try{ body=JSON.parse(body); }catch(e){}
+      const u=!error&&findUrl(body);
+      if(u){ st.cardUrl=u; saveSent(st); location.href=u; return; }
+      if(error) console.warn("create_card_link",error); else console.warn("infinitepay",data);
+    }catch(e){ console.warn(e); }
+    btn.disabled=false; btn.textContent="💳 Pagar com cartão"; }
   if(tag){ btn.disabled=true; btn.textContent="Gerando pagamento seguro…";
     try{ const r=await fetch("https://api.checkout.infinitepay.io/links",{method:"POST",headers:{"Content-Type":"application/json"},
         body:JSON.stringify({handle:tag,order_nsu:st.ref,redirect_url:siteUrl,items:[{quantity:1,price:st.gift,description:"Presente de aniversário para o Buda"}]})});
@@ -733,7 +741,7 @@ async function startCard(st){ const btn=$("cardGo");
     }catch(e){}
     btn.disabled=false; btn.textContent="💳 Pagar com cartão"; }
   if(/^https:\/\//.test(String(SETTINGS.card_link||""))){ window.open(SETTINGS.card_link,"_blank","noopener"); return; }
-  toast("Não consegui abrir o cartão agora. Tente de novo ou escolha Pix.");
+  toast("O cartão está instável agora. Toque em “Enviar outra homenagem” e escolha Pix, ou tente de novo em instantes.");
 }
 async function handleCardReturn(){ const q=new URLSearchParams(location.search); const nsu=q.get("order_nsu"); if(!nsu) return;
   const info={txn:q.get("transaction_nsu")||"",slug:q.get("slug")||"",receipt:q.get("receipt_url")||"",cap:q.get("capture_method")||""};
@@ -904,9 +912,9 @@ async function renderAdmBody(){ const B=$("admBody");
 }
 async function verifyCards(rows){ const {data}=await sb.from("site_settings").select("value").eq("key","infinite_tag").maybeSingle(); const tag=String(data?.value||"").trim(); if(!tag) return;
   for(const r of rows.filter(x=>x.pay_method==="card"&&x.gift_status==="pending")){ const el=document.getElementById("ck-"+r.id); if(!el) continue;
-    if(!r.card_txn&&!r.card_slug){ el.innerHTML='<span class="pill warn">sem retorno da InfinitePay · confira no app</span>'; continue; }
-    try{ const res=await fetch("https://api.checkout.infinitepay.io/payment_check",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({handle:tag,order_nsu:r.gift_ref,transaction_nsu:r.card_txn,slug:r.card_slug})});
-      const j=await res.json(); el.innerHTML=j&&j.paid?'<span class="pill ok">✓ pago na InfinitePay · '+brl(j.amount||r.gift_cents)+(j.installments>1?' em '+j.installments+'x':'')+'</span>':'<span class="pill bad">ainda não pago na InfinitePay</span>';
+
+    try{ const {data,error}=await sb.rpc("check_card_payment",{p_id:r.id}); if(error) throw error;
+      let j=data&&data.body; try{ j=JSON.parse(j); }catch(e){} el.innerHTML=j&&j.paid?'<span class="pill ok">✓ pago na InfinitePay · '+brl(j.amount||r.gift_cents)+(j.installments>1?' em '+j.installments+'x':'')+'</span>':'<span class="pill bad">ainda não pago na InfinitePay</span>';
     }catch(e){ el.innerHTML='<span class="pill warn">não consegui verificar · confira no app</span>'; } } }
 function tributeRow(r){ const ph=photoUrl(r.photo_path);
   const giftLine = r.gift_cents>0 ? '<p>🎁 <strong>'+brl(r.gift_cents)+'</strong> · código <code>'+esc(r.gift_ref||"")+'</code> · via <strong>'+({pix:"Pix",card:"Cartão",crypto:"Cripto"}[r.pay_method]||"Pix")+'</strong><span class="pill '+({pending:"warn",confirmed:"ok",not_received:"bad"}[r.gift_status]||"warn")+'">'+({pending:({card:"conferir na InfinitePay",crypto:"conferir na carteira"}[r.pay_method]||"conferir no banco"),confirmed:"recebido",not_received:"não chegou"}[r.gift_status]||r.gift_status)+'</span>'+
