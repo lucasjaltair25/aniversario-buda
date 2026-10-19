@@ -188,6 +188,8 @@ details.priv summary{cursor:pointer;padding:10px 0;font-weight:600;font-size:.9r
 .finale{text-align:center;padding-block:80px}
 .finale blockquote{margin:0 auto;max-width:22em;font:700 clamp(1.6rem,6vw,2.6rem)/1.15 var(--display);letter-spacing:-.02em}
 .finale blockquote em{font-style:normal;color:var(--gold)}
+.finale .afterword{margin:28px auto 0;max-width:34em;display:flex;flex-direction:column;gap:14px;font-size:1.08rem;line-height:1.6;color:#e7e0cf}
+.finale .afterword strong{color:var(--gold)}
 .finale .sign{margin-top:22px;font-weight:800;letter-spacing:.28em;color:var(--gold);font-size:.85rem}
 .share{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:28px}
 footer{border-top:1px solid var(--line);padding-block:24px calc(24px + env(safe-area-inset-bottom,0px));text-align:center;font-size:.8rem;color:var(--muted)}
@@ -326,10 +328,9 @@ footer{border-top:1px solid var(--line);padding-block:24px calc(24px + env(safe-
       <h2>Quem esteve comigo</h2>
     </div>
     <div class="tabs" role="tablist">
-      <button class="tab" role="tab" aria-selected="true" data-f="all">Todas</button>
-      <button class="tab" role="tab" aria-selected="false" data-f="gift">🎁 Presentes</button>
+      <button class="tab" role="tab" aria-selected="true" data-f="gift">🎁 Presentes</button>
       <button class="tab" role="tab" aria-selected="false" data-f="msg">💛 Mensagens</button>
-      <button class="tab" role="tab" aria-selected="false" data-f="photo">Com foto</button>
+      <button class="tab" role="tab" aria-selected="false" data-f="photo">📸 Com foto</button>
     </div>
     <div class="wall" id="wall"></div>
     <div class="more"><button class="btn sm" id="moreBtn" hidden>Carregar mais</button></div>
@@ -350,6 +351,10 @@ footer{border-top:1px solid var(--line);padding-block:24px calc(24px + env(safe-
 <section class="finale" style="border-top:1px solid var(--line)">
   <div class="wrap">
     <blockquote>Não foi o aniversário que eu imaginava, mas talvez seja <em>um dos mais importantes da minha vida.</em> Obrigado por fazer parte desse recomeço. Seja forte e corajoso. Deus está no controle.</blockquote>
+    <div class="afterword">
+      <p>Este mural vai ficar guardado para sempre. Daqui a muitos anos, vou voltar aqui e lembrar de cada pessoa que me apoiou neste dia tão especial: amigos, família, clientes e parceiros. Tenho muita gratidão por cada um de vocês.</p>
+      <p>Essa fase da cirurgia marca um recomeço. Novas fases, novos planos e energias renovadas. Obrigado por fazer parte da nossa história. <strong>Vambora!</strong> 💪</p>
+    </div>
     <div class="sign">BUDA — 19.10.2026</div>
     <div class="share">
       <a class="btn gold sm" id="shareWa" target="_blank" rel="noopener">Compartilhar no WhatsApp</a>
@@ -422,7 +427,7 @@ function renderLive(rows){ const items=rows.slice(0,12).map(r=> r.has_gift ? '<s
   if(!items.length){ $("live").hidden=true; return; } $("live").hidden=false; const html=items.join(""); $("liveTrack").innerHTML=html+html; }
 
 /* ---------- mural ---------- */
-let wallFilter="all", wallLimit=24, seen=new Set(), firstLoad=true;
+let wallFilter="gift", wallLimit=24, seen=new Set(), firstLoad=true;
 function postHTML(r,isNew){ const name=r.name||"Alguém especial", ph=photoUrl(r.photo_path), h=r.instagram;
   return '<article class="post'+(r.has_gift?' gift':'')+(isNew?' new':'')+'">'+
    (r.has_gift?'<div class="gbar"><span>🎁 Presente</span><b>'+(r.gift_cents?brl(r.gift_cents):'Enviado')+'</b></div>':'')+
@@ -430,20 +435,22 @@ function postHTML(r,isNew){ const name=r.name||"Alguém especial", ph=photoUrl(r
    '<div class="in"><div class="who"><div class="av">'+esc(name.trim().charAt(0).toUpperCase()||"?")+'</div><div><strong>'+esc(name)+'</strong>'+
    (h?'<a href="https://instagram.com/'+esc(h)+'" target="_blank" rel="noopener">@'+esc(h)+'</a>':'')+'</div></div>'+
    '<p class="msg">'+esc(r.message)+'</p><span class="when" title="'+esc(fullDate(r.published_at))+'">'+ago(r.published_at)+'</span></div></article>'; }
+const WALL_TABS={
+  gift:{sub:"Quem presenteou o Buda · maiores valores primeiro",empty:"Os presentes confirmados aparecem aqui. Que tal ser o primeiro?"},
+  msg:{sub:"Mensagens de carinho · as mais recentes primeiro",empty:"As mensagens aprovadas aparecem aqui. Deixe a sua!"},
+  photo:{sub:"Homenagens com foto · as mais recentes primeiro",empty:"As homenagens com foto aparecem aqui."}
+};
 async function loadWall(){ if(!sb){ $("wall").innerHTML='<div class="empty">O mural aparece aqui assim que o site for conectado.</div>'; return; }
-  let q=sb.from("public_wall").select("*")
-    .order("has_gift",{ascending:false}).order("gift_cents",{ascending:false,nullsFirst:false}).order("published_at",{ascending:false})
-    .limit(wallLimit+1);
-  if(wallFilter==="gift") q=q.eq("has_gift",true); if(wallFilter==="msg") q=q.eq("has_gift",false); if(wallFilter==="photo") q=q.not("photo_path","is",null);
-  const {data,error}=await q; if(error){ return; }
+  const tab=WALL_TABS[wallFilter]||WALL_TABS.gift;
+  let q=sb.from("public_wall").select("*");
+  if(wallFilter==="gift") q=q.eq("has_gift",true).order("gift_cents",{ascending:false,nullsFirst:false}).order("published_at",{ascending:false});
+  else if(wallFilter==="msg") q=q.eq("has_gift",false).order("published_at",{ascending:false});
+  else q=q.not("photo_path","is",null).order("published_at",{ascending:false});
+  const {data,error}=await q.limit(wallLimit+1); if(error){ return; }
   const rows=data.slice(0,wallLimit);
-  if(!rows.length){ $("wall").innerHTML='<div class="empty">'+(wallFilter==="all"?"As homenagens aprovadas aparecem aqui. Seja a primeira pessoa a deixar a sua!":"Nada por aqui ainda.")+'</div>'; }
-  else {
-    const card=r=>{ const isNew=!firstLoad&&!seen.has(r.id); seen.add(r.id); return postHTML(r,isNew); };
-    const gifts=rows.filter(r=>r.has_gift), msgs=rows.filter(r=>!r.has_gift);
-    const group=(title,sub,list)=> list.length?'<div class="wgroup"><div class="wgroup-h"><h3>'+title+'</h3><span>'+sub+'</span></div><div class="wcol">'+list.map(card).join("")+'</div></div>':'';
-    $("wall").innerHTML = group("🎁 Presentes","quem presenteou o Buda · maiores valores primeiro",gifts) + group("💛 Mensagens de carinho","as mais recentes primeiro",msgs);
-  }
+  if(!rows.length) $("wall").innerHTML='<div class="empty">'+tab.empty+'</div>';
+  else $("wall").innerHTML='<div class="wgroup"><div class="wgroup-h"><span>'+tab.sub+'</span></div><div class="wcol">'+
+    rows.map(r=>{ const isNew=!firstLoad&&!seen.has(r.id); seen.add(r.id); return postHTML(r,isNew); }).join("")+'</div></div>';
   firstLoad=false; $("moreBtn").hidden=data.length<=wallLimit; }
 async function loadLiveOnly(){ if(!sb) return; const {data}=await sb.from("public_wall").select("*").order("published_at",{ascending:false}).limit(12); renderLive(data||[]); }
 document.querySelector(".tabs").addEventListener("click",e=>{ const b=e.target.closest(".tab"); if(!b) return; document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",t===b)); wallFilter=b.dataset.f; wallLimit=24; firstLoad=true; loadWall(); });
