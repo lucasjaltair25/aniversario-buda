@@ -115,9 +115,11 @@ textarea{min-height:130px;resize:vertical}
 .upload .thumb{width:64px;height:64px;border-radius:12px;background:var(--bg-3);display:grid;place-items:center;overflow:hidden;flex:none;color:var(--gold);font-size:1.6rem}
 .upload .thumb img{width:100%;height:100%;object-fit:cover}
 .upload input{position:absolute;width:1px;height:1px;opacity:0}
-.chips{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.chips{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.chip.wide{grid-column:1/-1}
+.chip.free{padding:16px 12px}
 .chip{appearance:none;border:1.5px solid var(--line);background:var(--bg);color:var(--white);border-radius:14px;padding:14px 6px;font:800 1.05rem var(--display);cursor:pointer;font-variant-numeric:tabular-nums}
-.chip small{display:block;font:500 .72rem var(--body);color:var(--muted)}
+.chip small{display:block;font:500 .78rem var(--body);color:var(--muted);margin-top:2px}
 .chip[aria-pressed=true]{background:var(--gold);border-color:var(--gold);color:#1a1405}
 .chip[aria-pressed=true] small{color:#4a3a10}
 details.priv{border:1px solid var(--line);border-radius:14px;padding:4px 14px}
@@ -132,14 +134,26 @@ details.priv summary{cursor:pointer;padding:10px 0;font-weight:600;font-size:.9r
 .qr{background:#fff;padding:14px;border-radius:16px;line-height:0}
 .code{width:100%;font:12px/1.45 ui-monospace,SFMono-Regular,Menlo,monospace;word-break:break-all;background:var(--bg);border:1.5px dashed var(--gold-deep);border-radius:12px;padding:12px;color:#cfc7b3;user-select:all;text-align:left}
 .amount{font:800 2.4rem/1 var(--display);color:var(--gold)}
+.howto{margin:0;padding-left:1.3em;text-align:left;width:100%;display:flex;flex-direction:column;gap:6px;color:#e7e0cf;font-size:.95rem}
+.thanks{font-size:1.08rem;line-height:1.55;color:#ece5d4;max-width:30em}
+.status{list-style:none;margin:0;padding:0;width:100%;display:flex;flex-direction:column;gap:8px;text-align:left}
+.status li{display:flex;gap:12px;align-items:center;background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:12px 14px;font-weight:600}
+.status li span{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;flex:none;font-size:.95rem}
+.status li.ok span{background:var(--ok);color:#06210f}
+.status li.wait span{background:var(--bg-3);border:1px solid var(--gold-deep)}
 
 /* Mural */
 .tabs{display:flex;gap:8px;flex-wrap:wrap}
 .tab{appearance:none;border:1.5px solid var(--line);background:transparent;color:var(--muted);border-radius:999px;padding:9px 16px;font:700 .9rem var(--body);cursor:pointer}
 .tab[aria-selected=true]{background:var(--white);border-color:var(--white);color:#15110a}
-.wall{columns:1;column-gap:14px;margin-top:20px}
-@media(min-width:700px){.wall{columns:2}}
-@media(min-width:1000px){.wall{columns:3}}
+.wall{margin-top:20px;display:flex;flex-direction:column;gap:28px}
+.wgroup{display:flex;flex-direction:column;gap:14px}
+.wgroup-h{display:flex;align-items:baseline;justify-content:space-between;gap:10px;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:10px}
+.wgroup-h h3{font-size:1.5rem;font-weight:800}
+.wgroup-h span{font-size:.85rem;color:var(--muted)}
+.wcol{columns:1;column-gap:14px}
+@media(min-width:700px){.wcol{columns:2}}
+@media(min-width:1000px){.wcol{columns:3}}
 .post{break-inside:avoid;margin-bottom:14px;background:var(--bg-2);border:1px solid var(--line);border-radius:var(--r);overflow:hidden;display:flex;flex-direction:column}
 .post.gift{border-color:var(--gold-deep);background:linear-gradient(180deg,#221b0c,var(--bg-2) 140px)}
 .post .gbar{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 16px;background:var(--gold);color:#1a1405}
@@ -275,15 +289,13 @@ footer{border-top:1px solid var(--line);padding-block:24px calc(24px + env(safe-
       <div class="step" id="presente">
         <div class="step-h"><i>2</i>Quer deixar um presente?</div>
         <div class="chips" id="chips">
-          <button type="button" class="chip" data-v="0" aria-pressed="true">Só<small>mensagem</small></button>
-          <button type="button" class="chip" data-v="1000" aria-pressed="false">R$ 10<small>Pix</small></button>
-          <button type="button" class="chip" data-v="2000" aria-pressed="false">R$ 20<small>Pix</small></button>
-          <button type="button" class="chip" data-v="5000" aria-pressed="false">R$ 50<small>Pix</small></button>
-          <button type="button" class="chip" data-v="10000" aria-pressed="false">R$ 100<small>Pix</small></button>
-          <button type="button" class="chip" data-v="outro" aria-pressed="false">Outro<small>valor</small></button>
+          <button type="button" class="chip wide free" data-v="0" aria-pressed="true">💛 Só mensagem · grátis<small>Sua mensagem já deixa o Buda muito feliz</small></button>
+          <button type="button" class="chip" data-v="5000" aria-pressed="false">R$ 50<small>presente Pix</small></button>
+          <button type="button" class="chip" data-v="10000" aria-pressed="false">R$ 100<small>presente Pix</small></button>
+          <button type="button" class="chip wide" data-v="outro" aria-pressed="false">Outro valor<small>você escolhe quanto</small></button>
         </div>
         <label class="f" for="fOther" id="otherBox" hidden>Valor do presente (R$)<input type="number" id="fOther" min="1" step="1" inputmode="numeric" placeholder="Ex.: 30"></label>
-        <p class="note" id="pixNote">Depois de enviar, aparece o QR Code e o Pix Copia e Cola. Seu presente entra no mural quando o Buda confirmar que recebeu.</p>
+        <p class="note" id="pixNote">Quem envia presente aparece em destaque no mural, na seção de presentes. Depois de enviar, aparece o QR Code e o Pix Copia e Cola, e o presente entra no mural quando o Buda confirmar que recebeu.</p>
       </div>
 
       <div class="step">
@@ -315,7 +327,8 @@ footer{border-top:1px solid var(--line);padding-block:24px calc(24px + env(safe-
     </div>
     <div class="tabs" role="tablist">
       <button class="tab" role="tab" aria-selected="true" data-f="all">Todas</button>
-      <button class="tab" role="tab" aria-selected="false" data-f="gift">🎁 Com presente</button>
+      <button class="tab" role="tab" aria-selected="false" data-f="gift">🎁 Presentes</button>
+      <button class="tab" role="tab" aria-selected="false" data-f="msg">💛 Mensagens</button>
       <button class="tab" role="tab" aria-selected="false" data-f="photo">Com foto</button>
     </div>
     <div class="wall" id="wall"></div>
@@ -418,15 +431,21 @@ function postHTML(r,isNew){ const name=r.name||"Alguém especial", ph=photoUrl(r
    (h?'<a href="https://instagram.com/'+esc(h)+'" target="_blank" rel="noopener">@'+esc(h)+'</a>':'')+'</div></div>'+
    '<p class="msg">'+esc(r.message)+'</p><span class="when" title="'+esc(fullDate(r.published_at))+'">'+ago(r.published_at)+'</span></div></article>'; }
 async function loadWall(){ if(!sb){ $("wall").innerHTML='<div class="empty">O mural aparece aqui assim que o site for conectado.</div>'; return; }
-  let q=sb.from("public_wall").select("*").order("published_at",{ascending:false}).limit(wallLimit+1);
-  if(wallFilter==="gift") q=q.eq("has_gift",true); if(wallFilter==="photo") q=q.not("photo_path","is",null);
+  let q=sb.from("public_wall").select("*")
+    .order("has_gift",{ascending:false}).order("gift_cents",{ascending:false,nullsFirst:false}).order("published_at",{ascending:false})
+    .limit(wallLimit+1);
+  if(wallFilter==="gift") q=q.eq("has_gift",true); if(wallFilter==="msg") q=q.eq("has_gift",false); if(wallFilter==="photo") q=q.not("photo_path","is",null);
   const {data,error}=await q; if(error){ return; }
   const rows=data.slice(0,wallLimit);
   if(!rows.length){ $("wall").innerHTML='<div class="empty">'+(wallFilter==="all"?"As homenagens aprovadas aparecem aqui. Seja a primeira pessoa a deixar a sua!":"Nada por aqui ainda.")+'</div>'; }
-  else $("wall").innerHTML=rows.map(r=>{ const isNew=!firstLoad&&!seen.has(r.id); seen.add(r.id); return postHTML(r,isNew); }).join("");
-  firstLoad=false; $("moreBtn").hidden=data.length<=wallLimit;
-  if(wallFilter==="all") renderLive(rows); }
-async function loadLiveOnly(){ if(!sb||wallFilter==="all") return; const {data}=await sb.from("public_wall").select("*").order("published_at",{ascending:false}).limit(12); renderLive(data||[]); }
+  else {
+    const card=r=>{ const isNew=!firstLoad&&!seen.has(r.id); seen.add(r.id); return postHTML(r,isNew); };
+    const gifts=rows.filter(r=>r.has_gift), msgs=rows.filter(r=>!r.has_gift);
+    const group=(title,sub,list)=> list.length?'<div class="wgroup"><div class="wgroup-h"><h3>'+title+'</h3><span>'+sub+'</span></div><div class="wcol">'+list.map(card).join("")+'</div></div>':'';
+    $("wall").innerHTML = group("🎁 Presentes","quem presenteou o Buda · maiores valores primeiro",gifts) + group("💛 Mensagens de carinho","as mais recentes primeiro",msgs);
+  }
+  firstLoad=false; $("moreBtn").hidden=data.length<=wallLimit; }
+async function loadLiveOnly(){ if(!sb) return; const {data}=await sb.from("public_wall").select("*").order("published_at",{ascending:false}).limit(12); renderLive(data||[]); }
 document.querySelector(".tabs").addEventListener("click",e=>{ const b=e.target.closest(".tab"); if(!b) return; document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",t===b)); wallFilter=b.dataset.f; wallLimit=24; firstLoad=true; loadWall(); });
 $("moreBtn").addEventListener("click",()=>{ wallLimit+=24; loadWall(); });
 
@@ -482,22 +501,46 @@ $("form").addEventListener("submit",async e=>{ e.preventDefault(); const err=$("
   }catch(ex){ err.textContent=/rate_limited/.test(ex?.message||"")?"Muita gente enviando agora. Espere um minuto e tente de novo.":"Não foi possível enviar. Confira sua internet e tente de novo."; }
   finally{ btn.disabled=false; btn.textContent="Enviar minha homenagem"; }
 });
-function showDone(name,ref){ const d=$("done"); $("form").hidden=true; d.hidden=false;
-  const first=esc(name.split(" ")[0]);
-  if(gift>0 && SETTINGS.pix_key){
-    const code=pixPayload(String(SETTINGS.pix_key),SETTINGS.pix_name,SETTINGS.pix_city,gift,ref);
-    d.innerHTML='<div class="kicker">Mensagem recebida</div><div class="big">Obrigado, '+first+'! 💛</div><p class="muted">Agora é só fazer o Pix do seu presente:</p><div class="amount">'+brl(gift)+'</div>'+
-     '<div class="qr" id="qr"></div><div class="code" id="pixCode">'+esc(code)+'</div><button type="button" class="btn gold" id="copyPix">Copiar Pix Copia e Cola</button>'+
-     '<p class="note">Abra o app do seu banco › Pix › Pagar com QR Code ou Copia e Cola. Quando o Buda confirmar, sua mensagem e seu presente aparecem juntos no mural.</p>'+
-     '<a class="btn sm" href="#mural">Ver o mural</a>';
-    try{ new QRCode($("qr"),{text:code,width:220,height:220,colorDark:"#000000",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M}); }catch(e){ $("qr").remove(); }
-    $("copyPix").onclick=()=>copy(code);
+/* ---------- tela final (fica salva no celular, mesmo se a pessoa sair para o app do banco) ---------- */
+const SENT_KEY="buda_envio";
+function saveSent(st){ try{ localStorage.setItem(SENT_KEY,JSON.stringify(st)); }catch(e){} }
+function loadSent(){ try{ const st=JSON.parse(localStorage.getItem(SENT_KEY)||"null"); if(st && Date.now()-st.t<3*86400000) return st; }catch(e){} return null; }
+function clearSent(){ try{ localStorage.removeItem(SENT_KEY); }catch(e){} }
+function showDone(name,ref){
+  const st={name,ref,gift,code:"",paid:false,t:Date.now()};
+  if(gift>0 && SETTINGS.pix_key) st.code=pixPayload(String(SETTINGS.pix_key),SETTINGS.pix_name,SETTINGS.pix_city,gift,ref);
+  saveSent(st); renderSent(st,true);
+}
+function renderSent(st,scroll){
+  const d=$("done"); $("form").hidden=true; d.hidden=false;
+  const first=esc(String(st.name||"").split(" ")[0]);
+  if(st.code && !st.paid){
+    d.innerHTML='<div class="kicker">Mensagem enviada ✓</div><div class="big">Falta só o Pix, '+first+'!</div>'+
+     '<p class="muted">Seu presente para o Buda:</p><div class="amount">'+brl(st.gift)+'</div>'+
+     '<div class="qr" id="qr"></div>'+
+     '<button type="button" class="btn gold" id="copyPix" style="width:100%">Copiar Pix Copia e Cola</button>'+
+     '<div class="code" id="pixCode">'+esc(st.code)+'</div>'+
+     '<ol class="howto"><li>Toque em <b>Copiar</b> acima</li><li>Abra o app do seu banco › <b>Pix › Copia e Cola</b></li><li>Pague e <b>volte aqui</b> para finalizar</li></ol>'+
+     '<button type="button" class="btn gold" id="paidBtn" style="width:100%">✓ Já fiz o Pix</button>';
+    try{ new QRCode($("qr"),{text:st.code,width:220,height:220,colorDark:"#000000",colorLight:"#ffffff",correctLevel:QRCode.CorrectLevel.M}); }catch(e){ $("qr").remove(); }
+    $("copyPix").onclick=async()=>{ await copy(st.code); toast("Pix copiado! Cole no app do banco e depois volte aqui."); };
+    $("paidBtn").onclick=()=>{ st.paid=true; saveSent(st); renderSent(st,true); };
   } else {
-    d.innerHTML='<div class="kicker">Mensagem recebida</div><div class="big">Obrigado, '+first+'! 💛</div><p class="muted">Sua homenagem aparece no mural assim que o Buda aprovar.</p><a class="btn gold" href="#mural">Ver o mural</a>';
+    d.innerHTML='<div class="kicker">Tudo certo ✓</div><div class="big">Obrigado, '+first+'! 💛</div>'+
+     '<p class="thanks">Sua mensagem foi enviada para o Buda. Ele agradece de coração pelo carinho e por você fazer parte dessa memória tão importante da vida dele.</p>'+
+     '<ul class="status">'+
+       '<li class="ok"><span>✓</span>Mensagem enviada para o Buda</li>'+
+       (st.code?'<li class="wait"><span>⏳</span>Pix de '+brl(st.gift)+' aguardando confirmação</li>':'')+
+       '<li class="wait"><span>⏳</span>Aguardando aprovação para o mural</li>'+
+     '</ul>'+
+     '<p class="muted">Assim que o Buda aprovar, sua homenagem'+(st.code?' e seu presente aparecem':' aparece')+' no mural junto com todas as outras. Acompanhe em breve!</p>'+
+     '<a class="btn gold" href="#mural" style="width:100%">Ver o mural</a>'+
+     (st.code?'<button type="button" class="btn sm" id="showPix">Ver o Pix de novo</button>':'');
+    if(st.code) $("showPix").onclick=()=>{ st.paid=false; saveSent(st); renderSent(st,true); };
   }
   d.insertAdjacentHTML("beforeend",'<button type="button" class="btn sm" id="again">Enviar outra homenagem</button>');
-  $("again").onclick=()=>{ $("form").reset(); photoBlob=null; gift=0; $("fThumb").textContent="＋"; document.querySelectorAll(".chip").forEach((c,i)=>c.setAttribute("aria-pressed",i===0)); $("otherBox").hidden=true; d.hidden=true; $("form").hidden=false; };
-  d.scrollIntoView({behavior:"smooth",block:"start"});
+  $("again").onclick=()=>{ clearSent(); $("form").reset(); photoBlob=null; gift=0; $("fThumb").textContent="＋"; document.querySelectorAll(".chip").forEach((c,i)=>c.setAttribute("aria-pressed",i===0)); $("otherBox").hidden=true; d.hidden=true; $("form").hidden=false; $("homenagem").scrollIntoView({behavior:"smooth"}); };
+  if(scroll) d.scrollIntoView({behavior:"smooth",block:"start"});
 }
 
 /* ---------- compartilhar ---------- */
@@ -624,7 +667,8 @@ async function exportAll(){ const [t,p,w,s]=await Promise.all([sb.from("tributes
 
 /* ---------- início ---------- */
 async function startSite(){ if(!configured) $("setupWarn").hidden=false;
-  await loadSettings(); loadStats(); loadWall(); loadWish();
+  await loadSettings(); loadStats(); loadWall(); loadLiveOnly(); loadWish();
+  const sent=loadSent(); if(sent) renderSent(sent, !!sent.code && !sent.paid);
   setInterval(()=>{ if(document.hidden) return; loadStats(); loadWall(); loadLiveOnly(); },20000); }
 let started=false;
 function route(){ if(location.hash==="#painel") return adminView();
