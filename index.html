@@ -298,6 +298,40 @@ details.priv summary{cursor:pointer;padding:10px 0;font-weight:600;font-size:.9r
 .share{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:28px}
 footer{border-top:1px solid var(--line);padding-block:24px calc(24px + env(safe-area-inset-bottom,0px));text-align:center;font-size:.8rem;color:var(--muted)}
 
+/* Memorial: todas as mensagens em grade */
+.memo-cta{display:flex;flex-direction:column;align-items:center;gap:8px;margin-top:26px;text-align:center}
+.memo-btn{appearance:none;display:flex;align-items:center;justify-content:center;gap:10px;width:100%;max-width:520px;padding:18px 20px;border-radius:20px;border:1.5px solid var(--gold);background:linear-gradient(100deg,#2a210c,var(--bg-2) 75%);color:var(--white);font:800 1.1rem/1.25 var(--display);cursor:pointer;text-decoration:none}
+.memo-btn:hover{background:#2a210c}.memo-btn b{color:var(--gold)}
+.memo-mini{display:inline-flex;align-items:center;gap:6px;margin:4px 0 14px;color:var(--gold-2);font-weight:700;font-size:.9rem;text-decoration:none}
+#todas .memo-head{padding-block:22px 14px;display:flex;flex-direction:column;gap:8px}
+#todas .memo-head h2{font-size:clamp(1.6rem,6.5vw,2.6rem)}
+.memo-tools{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.memo-cols{display:flex;gap:4px;background:var(--bg-2);border:1px solid var(--line);border-radius:12px;padding:3px}
+.memo-cols button{appearance:none;border:0;background:transparent;color:var(--muted);font:800 .8rem var(--body);padding:6px 10px;border-radius:9px;cursor:pointer}
+.memo-cols button[aria-pressed="true"]{background:var(--white);color:#15110a}
+.memo-grid{--cols:3;display:grid;grid-template-columns:repeat(var(--cols),minmax(0,1fr));gap:8px;align-items:start;padding-bottom:30px}
+@media(min-width:760px){.memo-grid{gap:14px}}
+.mcard{appearance:none;text-align:left;font:inherit;color:var(--white);cursor:pointer;background:var(--bg-2);border:1px solid var(--line);border-radius:14px;padding:9px;display:flex;flex-direction:column;gap:7px;min-width:0}
+.mcard.gift{border-color:var(--gold-deep);background:linear-gradient(180deg,#221b0c,var(--bg-2) 90px)}
+.mc-who{display:flex;align-items:center;gap:6px;min-width:0}
+.mc-av{width:24px;height:24px;border-radius:50%;flex:none;overflow:hidden;background:var(--bg-3);border:1.5px solid var(--gold-deep);display:grid;place-items:center;font:800 .7rem var(--display);color:var(--gold)}
+.mc-av img{width:100%;height:100%;object-fit:cover}
+.mc-name{font:800 .78rem/1.2 var(--display);min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mc-gift{align-self:flex-start;background:var(--gold);color:#1a1405;font:800 .68rem/1 var(--body);padding:4px 7px;border-radius:99px;white-space:nowrap}
+.mc-ph{width:100%;aspect-ratio:1/1;border-radius:9px;object-fit:cover;display:block;background:var(--bg-3)}
+.mc-msg{margin:0;font-size:.74rem;line-height:1.42;color:#e6dfcd;white-space:pre-line;overflow-wrap:anywhere;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:9;overflow:hidden}
+.mc-rep{margin:0;font-size:.7rem;line-height:1.38;color:#cfc7b3;border-left:2px solid var(--gold);padding-left:6px;overflow-wrap:anywhere;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:4;overflow:hidden}
+.mc-rep b{color:var(--gold)}
+.memo-grid[data-cols="2"] .mc-msg{font-size:.84rem;-webkit-line-clamp:12}
+.memo-grid[data-cols="2"] .mc-rep{font-size:.78rem;-webkit-line-clamp:6}
+.memo-grid[data-cols="2"] .mc-av{width:30px;height:30px}.memo-grid[data-cols="2"] .mc-name{font-size:.9rem}
+.memo-grid[data-cols="1"] .mc-msg{font-size:.95rem;-webkit-line-clamp:unset;display:block}
+.memo-grid[data-cols="1"] .mc-rep{font-size:.88rem;-webkit-line-clamp:unset;display:block}
+.memo-grid[data-cols="1"] .mcard{padding:14px;gap:10px}.memo-grid[data-cols="1"] .mc-av{width:38px;height:38px}.memo-grid[data-cols="1"] .mc-name{font-size:1.05rem}
+.memo-grid[data-cols="1"] .mc-ph{aspect-ratio:auto;max-height:70vh;object-fit:contain;background:#000}
+@media(min-width:760px){.memo-grid:not([data-cols="1"]) .mc-ph{aspect-ratio:4/3}.mc-msg{font-size:.9rem}.mc-rep{font-size:.84rem}.mc-name{font-size:.95rem}.mc-av{width:32px;height:32px}.mcard{padding:12px}}
+.memo-full{position:relative}
+.memo-full .post{margin:0}
 /* Modal */
 .modal{position:fixed;inset:0;z-index:40;background:rgba(0,0,0,.7);display:grid;place-items:end center;padding:16px}
 @media(min-width:600px){.modal{place-items:center}}
@@ -457,6 +491,27 @@ footer{border-top:1px solid var(--line);padding-block:24px calc(24px + env(safe-
   </div>
 </section>
 
+<section id="todas" class="sheetpage" hidden aria-label="Todas as mensagens que o Buda recebeu">
+  <div class="sheet-bar"><div class="wrap">
+    <a class="sheet-back" href="#mural">← Voltar</a>
+    <span class="brand">Buda <span>· 19.10</span></span>
+  </div></div>
+  <div class="wrap">
+    <div class="memo-head">
+      <div class="kicker">Memorial · 19.10.2026</div>
+      <h2>Todas as mensagens que o Buda recebeu 💛</h2>
+      <div class="memo-tools">
+        <span class="note" id="memoSub">Carregando…</span>
+        <div class="memo-cols" role="group" aria-label="Mensagens por linha">
+          <button type="button" data-cols="3" aria-pressed="true">3</button><button type="button" data-cols="2" aria-pressed="false">2</button><button type="button" data-cols="1" aria-pressed="false">1</button>
+        </div>
+      </div>
+      <span class="note">Toque em uma mensagem para abrir completa.</span>
+    </div>
+    <div class="memo-grid" id="memoGrid" data-cols="3"></div>
+  </div>
+</section>
+
 <section id="mural" style="border-top:1px solid var(--line)">
   <div class="wrap">
     <div class="sec-head">
@@ -468,8 +523,13 @@ footer{border-top:1px solid var(--line);padding-block:24px calc(24px + env(safe-
       <button class="tab" role="tab" aria-selected="false" data-f="gift">🎁 Presentes <span class="tc gold" id="tcGift"></span></button>
       <button class="tab" role="tab" aria-selected="false" data-f="msg">💛 Mensagens gratuitas <span class="tc" id="tcMsg"></span></button>
     </div>
+    <a class="memo-mini" href="#todas">📖 Ver todas de uma vez, em grade →</a>
     <div class="wall" id="wall"></div>
     <div class="more"><button class="btn sm" id="moreBtn" hidden>Carregar mais</button></div>
+    <div class="memo-cta">
+      <a class="memo-btn" href="#todas">📖 Veja todas as mensagens que o Buda recebeu <b id="memoCount"></b></a>
+      <span class="note">Tudo junto, uma do lado da outra, para ler rolando a tela.</span>
+    </div>
   </div>
 </section>
 
@@ -742,7 +802,7 @@ async function loadTabCounts(){ if(!sb) return;
   const [a,g,m]=await Promise.all([c(sb.from("public_wall").select("id",{count:"exact",head:true})),
     c(sb.from("public_wall").select("id",{count:"exact",head:true}).eq("has_gift",true)),
     c(sb.from("public_wall").select("id",{count:"exact",head:true}).eq("has_gift",false))]);
-  if(a!=null) $("tcAll").textContent=a.toLocaleString("pt-BR"); if(g!=null) $("tcGift").textContent=g.toLocaleString("pt-BR"); if(m!=null) $("tcMsg").textContent=m.toLocaleString("pt-BR"); }
+  if(a!=null){ $("tcAll").textContent=a.toLocaleString("pt-BR"); $("memoCount").textContent="("+a.toLocaleString("pt-BR")+")"; } if(g!=null) $("tcGift").textContent=g.toLocaleString("pt-BR"); if(m!=null) $("tcMsg").textContent=m.toLocaleString("pt-BR"); }
 async function loadWall(){ loadTabCounts(); if(!sb){ $("wall").innerHTML='<div class="empty">O mural aparece aqui assim que o site for conectado.</div>'; return; }
   $("moreBtn").hidden=true;
   if(wallFilter==="all"){
@@ -764,6 +824,32 @@ document.querySelector(".tabs").addEventListener("click",e=>{ const b=e.target.c
 $("liveStage").addEventListener("click",()=>{ selectTab(liveMode); $("mural").scrollIntoView({behavior:"smooth",block:"start"}); });
 $("liveAll").addEventListener("click",e=>{ e.preventDefault(); selectTab(liveMode); $("mural").scrollIntoView({behavior:"smooth",block:"start"}); });
 $("moreBtn").addEventListener("click",()=>{ wallLimit+=24; loadWall(); });
+
+/* ---------- memorial: todas as mensagens ---------- */
+let MEMO=[];
+function memoCard(r){ POSTS[r.id]=r; const name=r.name||"Alguém especial", ph=photoUrl(r.photo_path);
+  return '<button type="button" class="mcard'+(r.has_gift?' gift':'')+'" data-memo="'+esc(r.id)+'">'+
+    '<span class="mc-who"><span class="mc-av">'+(ph?'<img alt="" loading="lazy" src="'+esc(ph)+'">':esc(name.trim().charAt(0).toUpperCase()||"?"))+'</span><span class="mc-name">'+esc(name)+'</span></span>'+
+    (r.has_gift?'<span class="mc-gift">🎁 '+(r.gift_cents?brl(r.gift_cents):'Presente')+'</span>':'')+
+    (ph?'<img class="mc-ph" alt="Foto de '+esc(name)+'" loading="lazy" src="'+esc(ph)+'">':'')+
+    '<p class="mc-msg">'+esc(r.message)+'</p>'+
+    (r.reply?'<p class="mc-rep"><b>Buda:</b> '+esc(r.reply)+'</p>':'')+
+  '</button>'; }
+function setMemoCols(n){ const g=$("memoGrid"); g.dataset.cols=n; g.style.setProperty("--cols",n);
+  document.querySelectorAll(".memo-cols button").forEach(b=>b.setAttribute("aria-pressed",String(b.dataset.cols===String(n))));
+  try{ localStorage.setItem("buda_memo_cols",n); }catch(e){} }
+async function loadMemorial(){ if(!sb){ $("memoGrid").innerHTML='<div class="empty">As mensagens aparecem aqui assim que o site for conectado.</div>'; return; }
+  if(!MEMO.length) $("memoGrid").innerHTML='<div class="empty" style="grid-column:1/-1">Carregando as mensagens… 💛</div>';
+  const {data,error}=await sb.from("public_wall").select("*").order("published_at",{ascending:true}).limit(2000);
+  if(error){ if(!MEMO.length) $("memoGrid").innerHTML='<div class="empty" style="grid-column:1/-1">Não consegui carregar agora. Puxe para atualizar.</div>'; return; }
+  MEMO=data||[]; const g=MEMO.filter(r=>r.has_gift).length, rp=MEMO.filter(r=>r.reply).length;
+  $("memoSub").textContent=MEMO.length+" mensagens · "+g+" com presente · "+rp+" respondidas · em ordem de chegada";
+  $("memoGrid").innerHTML=MEMO.length?MEMO.map(memoCard).join(""):'<div class="empty" style="grid-column:1/-1">Nenhuma mensagem aprovada ainda.</div>'; }
+document.querySelector(".memo-cols").addEventListener("click",e=>{ const b=e.target.closest("[data-cols]"); if(b) setMemoCols(b.dataset.cols); });
+try{ const c=localStorage.getItem("buda_memo_cols"); if(c&&/^[123]$/.test(c)) setMemoCols(c); }catch(e){}
+document.addEventListener("click",e=>{ const b=e.target.closest("[data-memo]"); if(!b) return; const r=POSTS[b.dataset.memo]; if(!r) return;
+  $("modalHost").innerHTML='<div class="modal" id="mdl"><div class="sheet memo-full">'+postHTML(r,false)+'<button type="button" class="btn sm" id="mClose">Fechar</button></div></div>';
+  $("mClose").onclick=closeModal; $("mdl").onclick=ev=>{ if(ev.target.id==="mdl") closeModal(); }; });
 
 /* ---------- lista de desejos ---------- */
 let WISH=[];
@@ -1091,10 +1177,13 @@ async function startSite(){ if(!configured) $("setupWarn").hidden=false;
   const sent=loadSent(); if(sent){ renderSent(sent,false); if((sent.code||sent.method==="card"||sent.method==="crypto") && !sent.paid && location.hash!=="#homenagem") location.hash="homenagem"; if(cardBack) openForm(); }
   setInterval(()=>{ if(document.hidden) return; loadStats(); loadWall(); loadLiveOnly(); },20000); }
 let started=false;
-function openForm(){ const p=$("homenagem"); if(!p.hidden) return; p.hidden=false; p.scrollTop=0; document.documentElement.style.overflow="hidden"; }
-function closeForm(){ const p=$("homenagem"); if(p.hidden) return false; p.hidden=true; document.documentElement.style.overflow=""; return true; }
+function openForm(){ closeMemo(); const p=$("homenagem"); if(!p.hidden) return; p.hidden=false; p.scrollTop=0; document.documentElement.style.overflow="hidden"; }
+function closeForm(){ const m=closeMemo(); const p=$("homenagem"); if(p.hidden) return m; p.hidden=true; document.documentElement.style.overflow=""; return true; }
+function openMemo(){ const f=$("homenagem"); if(!f.hidden){ f.hidden=true; } const p=$("todas"); loadMemorial(); if(!p.hidden) return; p.hidden=false; p.scrollTop=0; document.documentElement.style.overflow="hidden"; }
+function closeMemo(){ const p=$("todas"); if(p.hidden) return false; p.hidden=true; document.documentElement.style.overflow=""; closeModal(); return true; }
 function route(){ const h=location.hash; if(h==="#painel") return adminView();
   $("admin").hidden=true; $("site").hidden=false; document.title="Aniversário do Buda · 19.10.2026"; if(!started){ started=true; startSite(); }
+  if(h==="#todas"||h==="#memorial") return openMemo();
   if(h==="#mensagem"){ pickAmount("0"); return openForm(); }
   if(h==="#homenagem"||h==="#presente"){ if(gift===0) pickAmount("1000"); return openForm(); }
   if(closeForm()){ loadStats(); loadWall(); if(h==="#mural") setTimeout(()=>$("mural").scrollIntoView({block:"start"}),40); } }
